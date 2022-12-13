@@ -1,0 +1,7 @@
+query generations($slug: String!) {
+	projectCollection (where: {slug:$slug}) {
+		items {
+			support
+		}
+	}
+}

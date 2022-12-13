@@ -17,6 +17,7 @@
 
 package io.spring.projectapi;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +33,6 @@ import io.spring.projectapi.release.ReleaseMetadata;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 
@@ -41,7 +41,6 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
  *
  * @author Madhura Bhave
  */
-@Component
 public class ContentfulService {
 
 	private final HttpGraphQlClient graphQlClient;
@@ -52,23 +51,18 @@ public class ContentfulService {
 
 	private static final String LOCALE = "en-US";
 
-	public ContentfulService(Builder webClientBuilder, ApplicationProperties properties) {
+	public ContentfulService(Builder webClientBuilder, String baseUrl, ApplicationProperties properties) {
 		this.properties = properties;
 		this.client = getClient();
-		WebClient webClient = webClientBuilder.baseUrl(getBaseUrl()).build();
+		WebClient webClient = webClientBuilder.baseUrl(baseUrl).build();
 		this.graphQlClient = HttpGraphQlClient.builder(webClient)
 				.headers(headers -> headers.setBearerAuth(this.properties.getContentful().getAccessToken())).build();
 	}
 
 	public CMAClient getClient() {
-		return new CMAClient.Builder().setAccessToken(this.properties.getContentful().getAccessToken())
+		return new CMAClient.Builder().setAccessToken(this.properties.getContentful().getContentManagementToken())
 				.setSpaceId(this.properties.getContentful().getSpaceId())
 				.setEnvironmentId(this.properties.getContentful().getEnvironmentId()).build();
-	}
-
-	private String getBaseUrl() {
-		return "https://graphql.contentful.com/content/v1/spaces/" + this.properties.getContentful().getSpaceId()
-				+ "/environments/" + this.properties.getContentful().getEnvironmentId();
 	}
 
 	/**
@@ -76,11 +70,34 @@ public class ContentfulService {
 	 * @return the list of projects
 	 */
 	public List<ProjectMetadata> getProjects() {
-		String query = "query {\n" + "  projectCollection {\n" + "    items {\n" + "      title, slug, github, status\n"
-				+ "    }\n" + "  }\n" + "}";
-		ClientGraphQlResponse block = this.graphQlClient.document(query).execute().block();
-		return block.field("projectCollection.items").toEntity(new ParameterizedTypeReference<>() {
+		ClientGraphQlResponse response = this.graphQlClient.documentName("projects").execute().block();
+		if (isValid(response)) {
+			return Collections.emptyList();
+		}
+		return response.field("projectCollection.items").toEntity(new ParameterizedTypeReference<>() {
 		});
+	}
+
+	/**
+	 * Get the project with the given id
+	 * @param projectId the project id
+	 * @return the project
+	 */
+	public ProjectMetadata getProject(String projectId) {
+		ClientGraphQlResponse response = this.graphQlClient.documentName("single-project").variable("slug", projectId)
+				.execute().block();
+		if (!isValid(response)) {
+			return null;
+		}
+		return response.field("projectCollection.items[0]").toEntity(new ParameterizedTypeReference<>() {
+		});
+	}
+
+	private boolean isValid(ClientGraphQlResponse response) {
+		if (response == null || !response.isValid()) {
+			return false;
+		}
+		return response.field("projectCollection.items[0]").hasValue();
 	}
 
 	/**
@@ -89,8 +106,12 @@ public class ContentfulService {
 	 * @return the list of releases
 	 */
 	public List<ReleaseMetadata> getReleases(String projectId) {
-		ClientGraphQlResponse block = getClientGraphQlResponse(projectId, "documentation");
-		return block.field("projectCollection.items[0].documentation").toEntity(new ParameterizedTypeReference<>() {
+		ClientGraphQlResponse response = this.graphQlClient.documentName("releases").variable("slug", projectId)
+				.execute().block();
+		if (!isValid(response)) {
+			return Collections.emptyList();
+		}
+		return response.field("projectCollection.items[0].documentation").toEntity(new ParameterizedTypeReference<>() {
 		});
 	}
 
@@ -100,15 +121,13 @@ public class ContentfulService {
 	 * @return the list of generations
 	 */
 	public List<GenerationMetadata> getGenerations(String projectId) {
-		ClientGraphQlResponse block = getClientGraphQlResponse(projectId, "support");
-		return block.field("projectCollection.items[0].support").toEntity(new ParameterizedTypeReference<>() {
+		ClientGraphQlResponse response = this.graphQlClient.documentName("generations").variable("slug", projectId)
+				.execute().block();
+		if (!isValid(response)) {
+			return Collections.emptyList();
+		}
+		return response.field("projectCollection.items[0].support").toEntity(new ParameterizedTypeReference<>() {
 		});
-	}
-
-	private ClientGraphQlResponse getClientGraphQlResponse(String projectId, String field) {
-		String query = "query {\n" + "  projectCollection(where: {slug:\"" + projectId + "\"}) {\n" + "    items {\n"
-				+ field + "    }\n" + "  }\n" + "}";
-		return this.graphQlClient.document(query).execute().block();
 	}
 
 	private CMAEntry getCmaEntry(String projectId) {
@@ -116,6 +135,7 @@ public class ContentfulService {
 		query.put("content_type", "project");
 		query.put("fields.slug", projectId);
 		CMAArray<CMAEntry> cmaArray = this.client.entries().fetchAll(query);
+		//FIXME for project that doesn't exist
 		List<CMAEntry> items = cmaArray.getItems();
 		return items.get(0);
 	}

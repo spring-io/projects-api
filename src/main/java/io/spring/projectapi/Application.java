@@ -17,9 +17,13 @@
 
 package io.spring.projectapi;
 
+import javax.swing.text.AbstractDocument.Content;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationProperties.class)
@@ -27,6 +31,13 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+	}
+
+	@Bean
+	public ContentfulService contentfulService(WebClient.Builder builder, ApplicationProperties properties) {
+		String baseUrl = "https://graphql.contentful.com/content/v1/spaces/" + properties.getContentful().getSpaceId()
+				+ "/environments/" + properties.getContentful().getEnvironmentId();
+		return new ContentfulService(builder, baseUrl, properties);
 	}
 
 }

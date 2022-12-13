@@ -26,7 +26,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *
  * @author Madhura Bhave
  */
-@ConfigurationProperties(prefix = "app")
+@ConfigurationProperties(prefix = "projects")
 public class ApplicationProperties {
 
 	private final Contentful contentful;
@@ -51,13 +51,16 @@ public class ApplicationProperties {
 
 		private String accessToken;
 
+		private String contentManagementToken;
+
 		private String spaceId;
 
 		private String environmentId;
 
 		@ConstructorBinding
-		Contentful(String accessToken, String spaceId, String environmentId) {
+		Contentful(String accessToken, String contentManagementToken, String spaceId, String environmentId) {
 			this.accessToken = accessToken;
+			this.contentManagementToken = contentManagementToken;
 			this.spaceId = spaceId;
 			this.environmentId = environmentId;
 		}
@@ -74,6 +77,9 @@ public class ApplicationProperties {
 			return this.environmentId;
 		}
 
+		public String getContentManagementToken() {
+			return this.contentManagementToken;
+		}
 	}
 
 	public static class Github {

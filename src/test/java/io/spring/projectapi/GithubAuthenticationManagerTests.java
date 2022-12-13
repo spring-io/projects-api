@@ -57,7 +57,8 @@ class GithubAuthenticationManagerTests {
 
 	@BeforeEach
 	void setup() {
-		this.properties = new ApplicationProperties(new Contentful("access-token", "space-id", "environment-id"),
+		this.properties = new ApplicationProperties(
+				new Contentful("access-token", "management-token", "space-id", "environment-id"),
 				new Github("test-org", "test-team"));
 		MockServerRestTemplateCustomizer mockServerCustomizer = new MockServerRestTemplateCustomizer();
 		this.restTemplateBuilder = new RestTemplateBuilder(mockServerCustomizer);

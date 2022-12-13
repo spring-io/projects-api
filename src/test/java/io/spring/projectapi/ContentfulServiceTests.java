@@ -17,7 +17,27 @@
 //
 package io.spring.projectapi;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.function.Consumer;
+
+import io.spring.projectapi.ApplicationProperties.Contentful;
+import io.spring.projectapi.generation.GenerationMetadata;
+import io.spring.projectapi.project.ProjectMetadata;
+import io.spring.projectapi.release.ReleaseMetadata;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import okio.Buffer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link ContentfulService}.
@@ -26,44 +46,149 @@ import org.junit.jupiter.api.Test;
  */
 class ContentfulServiceTests {
 
-	@Test
-	void getProjects() {
+	private MockWebServer server;
 
+	private WebClient.Builder builder;
+
+	private ContentfulService service;
+
+	private static final String CONTENTFUL_URL = "/contentful.com";
+
+	@BeforeEach
+	void setup() {
+		this.server = new MockWebServer();
+		this.builder = WebClient.builder();
+		Contentful contentfulProperties = new Contentful("test-token", "management-token", "test-space",
+				"test-environment");
+		ApplicationProperties properties = new ApplicationProperties(contentfulProperties, null);
+		this.service = new ContentfulService(this.builder, this.server.url(CONTENTFUL_URL).toString(), properties);
+	}
+
+	@AfterEach
+	void shutdown() throws Exception {
+		this.server.shutdown();
 	}
 
 	@Test
-	void getProjectsWhenProjectDoesNotExist() {
-
+	void getProjects() throws Exception {
+		Resource resource = new ClassPathResource("project/successful-response.json");
+		setupMockResponse(resource);
+		List<ProjectMetadata> projects = this.service.getProjects();
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
+		assertThat(projects.size()).isEqualTo(3);
 	}
 
 	@Test
-	void getReleases() {
-
+	void getProject() throws Exception {
+		Resource resource = new ClassPathResource("project/successful-response-single-project.json");
+		setupMockResponse(resource);
+		ProjectMetadata project = this.service.getProject("spring-boot");
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
+		assertThat(project.getName()).isEqualTo("Spring Boot");
 	}
 
 	@Test
-	void getReleasesWhenProjectDoesNotExist() {
-
+	void getProjectWhenProjectDoesNotExist() throws Exception {
+		Resource resource = new ClassPathResource("not-found.json");
+		setupMockResponse(resource);
+		ProjectMetadata project = this.service.getProject("non-existent");
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
+		assertThat(project).isNull();
 	}
 
 	@Test
-	void getGenerations() {
-
+	void getReleases() throws Exception {
+		Resource resource = new ClassPathResource("release/successful-response.json");
+		setupMockResponse(resource);
+		List<ReleaseMetadata> releases = this.service.getReleases("spring-boot");
+		expectRequest((request) -> {
+			assertThat(request.getPath()).isEqualTo("/contentful.com");
+			// FIXME line breaks cause assertion to fail
+			// String body = request.getBody().readString(Charset.defaultCharset());
+			// Resource document = new
+			// ClassPathResource("graphql-documents/releases.graphql");
+			// try {
+			// String contents = FileCopyUtils
+			// .copyToString(new InputStreamReader(document.getInputStream(),
+			// Charset.defaultCharset()));
+			// assertThat(body).contains(contents);
+			// }
+			// catch (IOException e) {
+			// fail("Failed to load file");
+			// }
+		});
+		assertThat(releases.size()).isEqualTo(6);
 	}
 
 	@Test
-	void getGenerationsWhenProjectDoesNotExist() {
-
+	void getReleasesWhenProjectDoesNotExist() throws Exception {
+		Resource resource = new ClassPathResource("not-found.json");
+		setupMockResponse(resource);
+		List<ReleaseMetadata> releases = this.service.getReleases("spring-boot");
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
+		assertThat(releases).isEmpty();
 	}
 
 	@Test
-	void addRelease() {
+	void getGenerations() throws Exception {
+		Resource resource = new ClassPathResource("generation/successful-response.json");
+		setupMockResponse(resource);
+		List<GenerationMetadata> generations = this.service.getGenerations("spring-boot");
+		expectRequest((request) -> {
+			assertThat(request.getPath()).isEqualTo("/contentful.com");
+			// FIXME line breaks cause assertion to fail
+			// String body = request.getBody().readString(Charset.defaultCharset());
+			// Resource document = new
+			// ClassPathResource("graphql-documents/releases.graphql");
+			// try {
+			// String contents = FileCopyUtils
+			// .copyToString(new InputStreamReader(document.getInputStream(),
+			// Charset.defaultCharset()));
+			// assertThat(body).contains(contents);
+			// }
+			// catch (IOException e) {
+			// fail("Failed to load file");
+			// }
+		});
+		assertThat(generations.size()).isEqualTo(10);
+	}
 
+	@Test
+	void getGenerationsWhenProjectDoesNotExist() throws Exception {
+		Resource resource = new ClassPathResource("not-found.json");
+		setupMockResponse(resource);
+		List<GenerationMetadata> generations = this.service.getGenerations("spring-boot");
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
+		assertThat(generations).isEmpty();
+	}
+
+	@Test
+	void addRelease() throws Exception {
+		Resource resource = new ClassPathResource("release/successful-response.json");
+		setupMockResponse(resource);
+		ReleaseMetadata releaseMetadata = new ReleaseMetadata();
+		this.service.addRelease("spring-boot", releaseMetadata);
+		expectRequest((request) -> assertThat(request.getPath()).isEqualTo("/contentful.com"));
 	}
 
 	@Test
 	void deleteRelease() {
 
+	}
+
+	private void setupMockResponse(Resource resourceBody) throws Exception {
+		try (InputStream metadataSource = resourceBody.getInputStream()) {
+			try (Buffer metadataBuffer = new Buffer()) {
+				metadataBuffer.readFrom(metadataSource);
+				MockResponse metadataResponse = new MockResponse().setBody(metadataBuffer).setHeader("Content-Type",
+						"application/json");
+				this.server.enqueue(metadataResponse);
+			}
+		}
+	}
+
+	private void expectRequest(Consumer<RecordedRequest> consumer) throws InterruptedException {
+		consumer.accept(this.server.takeRequest());
 	}
 
 }

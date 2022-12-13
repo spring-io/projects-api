@@ -1,0 +1,7 @@
+query releases($slug: String!) {
+	projectCollection (where: {slug:$slug}) {
+		items {
+			documentation
+		}
+	}
+}

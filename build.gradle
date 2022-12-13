@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'com.contentful.java:cma-sdk:3.4.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
 }
 
 tasks.named('test') {

@@ -1,0 +1,10 @@
+query {
+	projectCollection {
+		items {
+			title,
+			slug,
+			github,
+			status
+		}
+	}
+}

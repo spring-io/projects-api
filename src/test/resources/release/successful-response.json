@@ -1,0 +1,60 @@
+{
+  "data": {
+    "projectCollection": {
+      "items": [
+        {
+          "documentation": [
+            {
+              "version": "3.0.0-SNAPSHOT",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "SNAPSHOT",
+              "repository": "SNAPSHOT",
+              "current": false
+            },
+            {
+              "version": "2.6.13",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "GENERAL_AVAILABILITY",
+              "repository": "RELEASE",
+              "current": false
+            },
+            {
+              "version": "2.6.14-SNAPSHOT",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "SNAPSHOT",
+              "repository": "SNAPSHOT",
+              "current": false
+            },
+            {
+              "version": "2.7.5",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "GENERAL_AVAILABILITY",
+              "repository": "RELEASE",
+              "current": true
+            },
+            {
+              "version": "2.7.6-SNAPSHOT",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "SNAPSHOT",
+              "repository": "SNAPSHOT",
+              "current": false
+            },
+            {
+              "version": "3.0.0-RC2",
+              "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+              "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+              "status": "PRERELEASE",
+              "repository": "MILESTONE",
+              "current": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
