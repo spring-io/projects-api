@@ -1,0 +1,52 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs: { }
+  push:
+    branches:
+      - main
+    paths:
+      - '/**'
+env:
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  KEY_VAULT: ${{ secrets.KEY_VAULT }}
+  PROJECT_API_APP: project-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: project-api
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+          build-root-directory: .
+      - name: Set up Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Set up Azure Spring Extension
+        run: az extension add --name spring
+      - name: Deploy
+        run: |
+          keyvault_uri=$(az keyvault show \
+           --resource-group ${RESOURCE_GROUP} \
+           --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+          az spring app deploy \
+            --name ${PROJECT_API_APP} \
+            --resource-group "$RESOURCE_GROUP" \
+            --service "$SPRING_APPS_SERVICE" \
+            --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='azure-key-vault'" "SPRING_PROFILES_ACTIVE=key-vault" \
+            --source-path ./

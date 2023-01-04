@@ -29,9 +29,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
+	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
 	implementation 'com.contentful.java:cma-sdk:3.4.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.squareup.okhttp3:mockwebserver'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:4.5.0"
+	}
 }
 
 tasks.named('test') {
