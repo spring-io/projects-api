@@ -36,6 +36,15 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
+      - name: Create app
+        run: |
+          az spring app create \
+          --name ${PROJECT_API_APP} \
+          --resource-group "$RESOURCE_GROUP" \
+          --instance-count 2 \
+          --assign-endpoint true \
+          --service "$SPRING_APPS_SERVICE"
+        continue-on-error: true  
       - name: Deploy
         run: |
           keyvault_uri=$(az keyvault show \
