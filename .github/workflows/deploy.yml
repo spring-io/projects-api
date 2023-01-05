@@ -54,6 +54,5 @@ jobs:
             --name ${PROJECT_API_APP} \
             --resource-group "$RESOURCE_GROUP" \
             --service "$SPRING_APPS_SERVICE" \
-            --runtime-version "Java_11" \
             --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME='azure-key-vault'" "SPRING_PROFILES_ACTIVE=key-vault" \
             --source-path ./
