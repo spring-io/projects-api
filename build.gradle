@@ -3,7 +3,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.35")
+		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:${javaformatVersion}")
 	}
 }
 
@@ -14,6 +14,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.javaformat'
+apply plugin: 'checkstyle'
 
 group = 'io.spring.project-api'
 version = "1.0.0-SNAPSHOT"
@@ -21,6 +22,10 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+}
+
+checkstyle {
+	toolVersion = "10.5.0"
 }
 
 dependencies {
@@ -36,6 +41,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.graphql:spring-graphql-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:${javaformatVersion}")
 }
 
 dependencyManagement {
