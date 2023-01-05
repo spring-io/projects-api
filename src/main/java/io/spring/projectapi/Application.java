@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package io.spring.projectapi;
 
-import javax.swing.text.AbstractDocument.Content;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spring.projectapi.ApplicationProperties.Contentful;
+import io.spring.projectapi.contentful.ContentfulService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,15 +30,22 @@ import org.springframework.web.reactive.function.client.WebClient;
 @EnableConfigurationProperties(ApplicationProperties.class)
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+	private static final String BASE_URL = "https://graphql.contentful.com/content/v1/spaces/%s/environments/%s";
 
 	@Bean
-	public ContentfulService contentfulService(WebClient.Builder builder, ApplicationProperties properties) {
-		String baseUrl = "https://graphql.contentful.com/content/v1/spaces/" + properties.getContentful().getSpaceId()
-				+ "/environments/" + properties.getContentful().getEnvironmentId();
-		return new ContentfulService(builder, baseUrl, properties);
+	public ContentfulService contentfulService(ObjectMapper objectMapper, WebClient.Builder webClientBuilder,
+			ApplicationProperties properties) {
+		Contentful contentful = properties.getContentful();
+		String accessToken = contentful.getAccessToken();
+		String spaceId = contentful.getSpaceId();
+		String environmentId = contentful.getEnvironmentId();
+		String baseUrl = String.format(BASE_URL, spaceId, environmentId);
+		WebClient webClient = webClientBuilder.baseUrl(baseUrl).build();
+		return new ContentfulService(objectMapper, webClient, accessToken, spaceId, environmentId);
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
 	}
 
 }

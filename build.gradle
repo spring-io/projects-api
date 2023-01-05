@@ -17,6 +17,7 @@ apply plugin: 'io.spring.javaformat'
 
 group = 'io.spring.project-api'
 version = "1.0.0-SNAPSHOT"
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -31,8 +32,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
 	implementation 'com.contentful.java:cma-sdk:3.4.5'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.squareup.okhttp3:mockwebserver'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.graphql:spring-graphql-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {

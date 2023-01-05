@@ -1,0 +1,26 @@
+{
+  "data": {
+    "projectCollection": {
+      "items": [
+        {
+          "title": "Spring XD",
+          "slug": "spring-xd",
+          "github": "http://github.com/spring-projects/spring-xd",
+          "status": "END_OF_LIFE"
+        },
+        {
+          "title": "Spring Web Services",
+          "slug": "spring-ws",
+          "github": "http://github.com/spring-projects/spring-ws",
+          "status": "ACTIVE"
+        },
+        {
+          "title": "Spring Boot",
+          "slug": "spring-boot",
+          "github": "http://github.com/spring-projects/spring-boot",
+          "status": "ACTIVE"
+        }
+      ]
+    }
+  }
+}

@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package io.spring.projectapi;
+package io.spring.projectapi.web.error;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@SpringBootTest
-class IntegrationTests {
+/**
+ * Exception thrown when a resource is not found.
+ *
+ * @author Madhura Bhave
+ */
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+
+	public ResourceNotFoundException(String message) {
+		super(message);
+	}
 
 }

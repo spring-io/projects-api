@@ -1,0 +1,5 @@
+{
+	"version": "2.8.0",
+	"apiDocUrl": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+	"referenceDocUrl": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/"
+}

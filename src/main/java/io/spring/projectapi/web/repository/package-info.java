@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.projectapi;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class IntegrationTests {
-
-}
+/**
+ * Web repository API.
+ */
+package io.spring.projectapi.web.repository;

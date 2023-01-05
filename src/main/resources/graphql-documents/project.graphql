@@ -1,0 +1,11 @@
+query project($slug: String!) {
+	projectCollection (where: {slug:$slug}) {
+		items {
+			title,
+			description,
+			slug,
+			github,
+			status
+		}
+	}
+}

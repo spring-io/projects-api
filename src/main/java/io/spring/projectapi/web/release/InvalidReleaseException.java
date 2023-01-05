@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-package io.spring.projectapi;
+package io.spring.projectapi.web.release;
 
-import org.springframework.boot.test.context.SpringBootTest;
+/**
+ * Exception thrown when creating a release that already exists.
+ *
+ * @author Madhura Bhave
+ */
+public class InvalidReleaseException extends RuntimeException {
 
-@SpringBootTest
-class IntegrationTests {
+	public InvalidReleaseException(String message) {
+		super(message);
+	}
 
 }

@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package io.spring.projectapi;
+package io.spring.projectapi.contentful;
 
-import org.springframework.boot.test.context.SpringBootTest;
+/**
+ * {@link RuntimeException} indicating a problem with Contentful.
+ *
+ * @author Phillip Webb
+ */
+public class ContentfulException extends RuntimeException {
 
-@SpringBootTest
-class IntegrationTests {
+	ContentfulException(String message) {
+		super(message);
+	}
+
+	ContentfulException(Throwable cause) {
+		super(cause);
+	}
 
 }
