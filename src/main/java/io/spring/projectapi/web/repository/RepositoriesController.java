@@ -17,7 +17,6 @@
 package io.spring.projectapi.web.repository;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 
@@ -47,13 +46,13 @@ public class RepositoriesController {
 
 	@GetMapping
 	public CollectionModel<EntityModel<Repository>> repositories() {
-		return CollectionModel.of(Repository.ALL.stream().map(this::asModel).collect(Collectors.toList()));
+		return CollectionModel.of(Repository.ALL.stream().map(this::asModel).toList());
 	}
 
 	@GetMapping("/{id}")
 	public EntityModel<Repository> repository(@PathVariable String id) {
 		return asModel(findRepository(id).orElseThrow(
-				() -> new ResourceNotFoundException(String.format("No artifact repository found with id '%s'", id))));
+				() -> new ResourceNotFoundException("No artifact repository found with id '%s'".formatted(id))));
 	}
 
 	private Optional<Repository> findRepository(String id) {

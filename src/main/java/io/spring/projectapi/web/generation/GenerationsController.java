@@ -17,7 +17,6 @@
 package io.spring.projectapi.web.generation;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.ProjectSupport;
@@ -57,9 +56,9 @@ public class GenerationsController {
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
 		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
-		List<Generation> generations = supports.stream().map(this::asGeneration).collect(Collectors.toList());
+		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
 		CollectionModel<EntityModel<Generation>> model = CollectionModel
-				.of(generations.stream().map((generation) -> asModel(id, generation)).collect(Collectors.toList()));
+				.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
 		model.add(linkToProject(id));
 		return model;
 	}
@@ -67,10 +66,10 @@ public class GenerationsController {
 	@GetMapping("/{name}")
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
 		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
-		List<Generation> generations = supports.stream().map(this::asGeneration).collect(Collectors.toList());
+		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
 		Generation generation = generations.stream().filter((candidate) -> candidate.getName().equals(name)).findFirst()
 				.orElseThrow(() -> new ResourceNotFoundException(
-						String.format("Generation '%s' cannot be found for project '%s'", name, id)));
+						"Generation '%s' cannot be found for project '%s'".formatted(name, id)));
 		return asModel(id, generation);
 	}
 

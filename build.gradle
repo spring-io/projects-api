@@ -18,7 +18,7 @@ apply plugin: 'checkstyle'
 
 group = 'io.spring.project-api'
 version = "1.0.0-SNAPSHOT"
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()

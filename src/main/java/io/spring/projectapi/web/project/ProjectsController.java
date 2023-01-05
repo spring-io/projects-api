@@ -17,7 +17,6 @@
 package io.spring.projectapi.web.project;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.web.generation.GenerationsController;
@@ -60,10 +59,9 @@ public class ProjectsController {
 
 	@GetMapping
 	public CollectionModel<EntityModel<Project>> projects() {
-		List<Project> projects = this.contentfulService.getProjects().stream().map(this::asProject)
-				.collect(Collectors.toList());
+		List<Project> projects = this.contentfulService.getProjects().stream().map(this::asProject).toList();
 		CollectionModel<EntityModel<Project>> collection = CollectionModel
-				.of(projects.stream().map(this::asModel).collect(Collectors.toList()));
+				.of(projects.stream().map(this::asModel).toList());
 		collection.add(linkTo(methodOn(ProjectsController.class).project(null)).withRel("project"));
 		return collection;
 	}

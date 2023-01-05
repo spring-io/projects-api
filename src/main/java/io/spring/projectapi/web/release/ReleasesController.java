@@ -18,7 +18,6 @@ package io.spring.projectapi.web.release;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.ProjectDocumentation;
@@ -67,9 +66,9 @@ public class ReleasesController {
 	@GetMapping
 	public CollectionModel<EntityModel<Release>> releases(@PathVariable String id) {
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
-		List<Release> releases = documentations.stream().map(this::asRelease).collect(Collectors.toList());
+		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
-				.of(releases.stream().map((generation) -> asModel(id, generation)).collect(Collectors.toList()));
+				.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
 		Link linkToProject = WebMvcLinkBuilder.linkTo(methodOn(ProjectsController.class).project(id))
 				.withRel("project");
 		Link linkToCurrent = linkTo(methodOn(ReleasesController.class).current(id)).withRel("current");
@@ -80,10 +79,10 @@ public class ReleasesController {
 	@GetMapping("/{version}")
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
-		List<Release> releases = documentations.stream().map(this::asRelease).collect(Collectors.toList());
+		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream().filter((candididate) -> candididate.getVersion().equals(version))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException(
-						String.format("Version '%s' cannot be found for project '%s'", version, id)));
+						"Version '%s' cannot be found for project '%s'".formatted(version, id)));
 		return asModel(id, release);
 	}
 
@@ -91,10 +90,9 @@ public class ReleasesController {
 	public EntityModel<Release> current(@PathVariable String id) {
 		this.contentfulService.getProjectDocumentations(id);
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
-		List<Release> releases = documentations.stream().map(this::asRelease).collect(Collectors.toList());
-		Release release = releases.stream().filter(Release::isCurrent).findFirst()
-				.orElseThrow(() -> new ResourceNotFoundException(
-						String.format("Could not find current release for project '%s'", id)));
+		List<Release> releases = documentations.stream().map(this::asRelease).toList();
+		Release release = releases.stream().filter(Release::isCurrent).findFirst().orElseThrow(
+				() -> new ResourceNotFoundException("Could not find current release for project '%s'".formatted(id)));
 		return asModel(id, release);
 	}
 
@@ -103,7 +101,7 @@ public class ReleasesController {
 		String version = release.getVersion();
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
 		if (documentations.stream().anyMatch((candidate) -> candidate.getVersion().equals(version))) {
-			String message = String.format("Release '%s' already present for project '%s'", version, id);
+			String message = "Release '%s' already present for project '%s'".formatted(version, id);
 			return ResponseEntity.badRequest().body(message);
 		}
 		Release.Status status = Release.Status.fromVersion(version);
@@ -139,15 +137,11 @@ public class ReleasesController {
 	}
 
 	private Repository getRepository(Release.Status status) {
-		switch (status) {
-			case SNAPSHOT:
-				return Repository.SNAPSHOT;
-			case PRERELEASE:
-				return Repository.MILESTONE;
-			case GENERAL_AVAILABILITY:
-				return Repository.RELEASE;
-		}
-		throw new IllegalStateException("Unknown status " + status);
+		return switch (status) {
+			case SNAPSHOT -> Repository.SNAPSHOT;
+			case PRERELEASE -> Repository.MILESTONE;
+			case GENERAL_AVAILABILITY -> Repository.RELEASE;
+		};
 	}
 
 }

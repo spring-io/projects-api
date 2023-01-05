@@ -39,7 +39,7 @@ public class Application {
 		String accessToken = contentful.getAccessToken();
 		String spaceId = contentful.getSpaceId();
 		String environmentId = contentful.getEnvironmentId();
-		String baseUrl = String.format(BASE_URL, spaceId, environmentId);
+		String baseUrl = BASE_URL.formatted(spaceId, environmentId);
 		WebClient webClient = webClientBuilder.baseUrl(baseUrl).build();
 		return new ContentfulService(objectMapper, webClient, accessToken, spaceId, environmentId);
 	}

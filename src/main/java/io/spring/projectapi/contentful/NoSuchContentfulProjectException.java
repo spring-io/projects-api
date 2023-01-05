@@ -32,7 +32,7 @@ public final class NoSuchContentfulProjectException extends ContentfulException 
 	private final String projectSlug;
 
 	private NoSuchContentfulProjectException(String projectSlug) {
-		super(String.format("No contentful project found for slug '%s'", projectSlug));
+		super("No contentful project found for slug '%s'".formatted(projectSlug));
 		this.projectSlug = projectSlug;
 	}
 

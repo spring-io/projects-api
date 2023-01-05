@@ -30,7 +30,7 @@ public final class NoUniqueContentfulProjectException extends ContentfulExceptio
 	private final String projectSlug;
 
 	private NoUniqueContentfulProjectException(String projectSlug) {
-		super(String.format("No unique contentful project found for slug '%s'", projectSlug));
+		super("No unique contentful project found for slug '%s'".formatted(projectSlug));
 		this.projectSlug = projectSlug;
 	}
 
