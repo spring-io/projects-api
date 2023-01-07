@@ -51,6 +51,7 @@ jobs:
           az spring app deploy \
             --name ${PROJECT_API_APP} \
             --resource-group "$RESOURCE_GROUP" \
+            --build-env BP_JVM_VERSION=17 \
             --service "$SPRING_APPS_SERVICE" \
             --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=key-vault" \
             --source-path ./
