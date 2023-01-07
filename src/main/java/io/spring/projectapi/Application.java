@@ -37,11 +37,13 @@ public class Application {
 			ApplicationProperties properties) {
 		Contentful contentful = properties.getContentful();
 		String accessToken = contentful.getAccessToken();
+		String contentManagementToken = contentful.getContentManagementToken();
 		String spaceId = contentful.getSpaceId();
 		String environmentId = contentful.getEnvironmentId();
 		String baseUrl = BASE_URL.formatted(spaceId, environmentId);
 		WebClient webClient = webClientBuilder.baseUrl(baseUrl).build();
-		return new ContentfulService(objectMapper, webClient, accessToken, spaceId, environmentId);
+		return new ContentfulService(objectMapper, webClient, accessToken, contentManagementToken, spaceId,
+				environmentId);
 	}
 
 	public static void main(String[] args) {

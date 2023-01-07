@@ -34,10 +34,10 @@ public class ContentfulService {
 
 	private final ContentfulOperations operations;
 
-	public ContentfulService(ObjectMapper objectMapper, WebClient webClient, String accessToken, String spaceId,
-			String environmentId) {
+	public ContentfulService(ObjectMapper objectMapper, WebClient webClient, String accessToken,
+			String contentManagementToken, String spaceId, String environmentId) {
 		this.queries = new ContentfulQueries(webClient, accessToken);
-		this.operations = new ContentfulOperations(objectMapper, accessToken, spaceId, environmentId);
+		this.operations = new ContentfulOperations(objectMapper, contentManagementToken, spaceId, environmentId);
 	}
 
 	ContentfulService(ContentfulQueries queries, ContentfulOperations operations) {

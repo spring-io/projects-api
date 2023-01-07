@@ -99,7 +99,7 @@ public class Release {
 		 */
 		public static Status fromVersion(String version) {
 			Assert.notNull(version, "'version' must not be null");
-			if (version.toString().endsWith(SNAPSHOT_SUFFIX)) {
+			if (version.endsWith(SNAPSHOT_SUFFIX)) {
 				return SNAPSHOT;
 			}
 			if (PRERELEASE_PATTERN.matcher(version).matches()) {

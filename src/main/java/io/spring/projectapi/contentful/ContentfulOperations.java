@@ -59,14 +59,15 @@ class ContentfulOperations {
 		CMAEntry projectEntry = getProjectEntry(projectSlug);
 		List<Map<String, Object>> releases = projectEntry.getField("documentation", LOCALE);
 		releases.add(convertToMap(documentation));
-		this.client.entries().update(projectEntry);
+		this.client.entries().publish(projectEntry);
 	}
 
 	void deleteDocumentation(String projectSlug, String version) {
 		CMAEntry projectEntry = getProjectEntry(projectSlug);
 		List<Map<String, Object>> documentations = projectEntry.getField("documentation", LOCALE);
+		NoSuchContentfulProjectDocumentationFoundException.throwIfHasNotPresent(documentations, projectSlug, version);
 		documentations.removeIf((documentation) -> documentation.get("version").equals(version));
-		this.client.entries().update(projectEntry);
+		this.client.entries().publish(projectEntry);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -16,6 +16,7 @@
 
 package io.spring.projectapi.web.error;
 
+import io.spring.projectapi.contentful.NoSuchContentfulProjectDocumentationFoundException;
 import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.NoUniqueContentfulProjectException;
 
@@ -41,6 +42,12 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler
 	private ResponseEntity<?> noUniqueContentfulProjectExceptionHandler(NoUniqueContentfulProjectException ex) {
+		return NOT_FOUND;
+	}
+
+	@ExceptionHandler
+	private ResponseEntity<?> noSuchContentfulProjectDocumentationExceptionHandler(
+			NoSuchContentfulProjectDocumentationFoundException ex) {
 		return NOT_FOUND;
 	}
 
