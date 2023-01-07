@@ -28,7 +28,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build -xtest -xcheck
+          arguments: build
           build-root-directory: .
       - name: Set up Azure
         uses: azure/login@v1
