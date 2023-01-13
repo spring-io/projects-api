@@ -25,6 +25,7 @@ import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.ProjectDocumentation;
 import io.spring.projectapi.contentful.ProjectDocumentation.Status;
+import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,6 +35,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.hypermedia.LinkDescriptor;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileCopyUtils;
@@ -43,6 +47,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -78,9 +92,9 @@ class ReleasesControllerTests {
 				.andExpect(jsonPath("$._embedded.releases[0].apiDocUrl")
 						.value("https://docs.spring.io/spring-boot/docs/2.3.0/api/"))
 				.andExpect(jsonPath("$._embedded.releases[0]._links.self.href")
-						.value("http://localhost/projects/spring-boot/releases/2.3.0"))
+						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
 				.andExpect(jsonPath("$._embedded.releases[0]._links.repository.href")
-						.value("http://localhost/repositories/spring-releases"))
+						.value("https://api.spring.io/repositories/spring-releases"))
 				.andExpect(jsonPath("$._embedded.releases[1].version").value("2.3.1-SNAPSHOT"))
 				.andExpect(jsonPath("$._embedded.releases[1].status").value("SNAPSHOT"))
 				.andExpect(jsonPath("$._embedded.releases[1].current").value(false))
@@ -89,12 +103,17 @@ class ReleasesControllerTests {
 				.andExpect(jsonPath("$._embedded.releases[1].apiDocUrl")
 						.value("https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/api/"))
 				.andExpect(jsonPath("$._embedded.releases[1]._links.self.href")
-						.value("http://localhost/projects/spring-boot/releases/2.3.1-SNAPSHOT"))
+						.value("https://api.spring.io/projects/spring-boot/releases/2.3.1-SNAPSHOT"))
 				.andExpect(jsonPath("$._embedded.releases[1]._links.repository.href")
-						.value("http://localhost/repositories/spring-snapshots"))
+						.value("https://api.spring.io/repositories/spring-snapshots"))
 				.andExpect(jsonPath("$._links.current.href")
-						.value("http://localhost/projects/spring-boot/releases/current"))
-				.andExpect(jsonPath("$._links.project.href").value("http://localhost/projects/spring-boot"));
+						.value("https://api.spring.io/projects/spring-boot/releases/current"))
+				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
+				.andDo(document("{method-name}", preprocessResponse(prettyPrint()),
+						responseFields(fieldWithPath("_embedded.releases").description("An array of Project Releases"))
+								.andWithPrefix("_embedded.releases[]", releasePayload())
+								.and(subsectionWithPath("_links").description("Links to other resources")),
+						links(releasesLinks())));
 	}
 
 	@Test
@@ -110,8 +129,12 @@ class ReleasesControllerTests {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.version").value("2.3.0"))
-				.andExpect(jsonPath("$._links.self.href").value("http://localhost/projects/spring-boot/releases/2.3.0"))
-				.andExpect(jsonPath("$._links.repository.href").value("http://localhost/repositories/spring-releases"));
+				.andExpect(jsonPath("$._links.self.href")
+						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
+				.andExpect(jsonPath("$._links.repository.href")
+						.value("https://api.spring.io/repositories/spring-releases"))
+				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), responseFields(releasePayload()),
+						links(releaseLinks())));
 	}
 
 	@Test
@@ -119,18 +142,27 @@ class ReleasesControllerTests {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/current").accept(MediaTypes.HAL_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.version").value("2.3.0"))
-				.andExpect(jsonPath("$._links.self.href").value("http://localhost/projects/spring-boot/releases/2.3.0"))
-				.andExpect(jsonPath("$._links.repository.href").value("http://localhost/repositories/spring-releases"));
+				.andExpect(jsonPath("$._links.self.href")
+						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
+				.andExpect(jsonPath("$._links.repository.href")
+						.value("https://api.spring.io/repositories/spring-releases"));
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addAddsRelease() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
-		String expectedLocation = "http://localhost/projects/spring-boot/releases/2.8.0";
+		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
+		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isCreated())
-				.andExpect(header().string("Location", expectedLocation));
+						.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isCreated())
+				.andExpect(header().string("Location", expectedLocation))
+				.andDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+						requestFields(fields.withPath("version").description("The Release version"),
+								fields.withPath("referenceDocUrl").description(
+										"URL of the reference documentation, {version} template variable is supported"),
+								fields.withPath("apiDocUrl").description(
+										"URL of the API documentation, {version} template variable is supported"))));
 		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
 		verify(this.contentfulService).addProjectDocumentation(eq("spring-boot"), captor.capture());
 		ProjectDocumentation added = captor.getValue();
@@ -147,7 +179,7 @@ class ReleasesControllerTests {
 	@Test
 	void addWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add.json")))
+						.contentType(MediaType.APPLICATION_JSON).content(from("add.json")))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -165,7 +197,7 @@ class ReleasesControllerTests {
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add-already-exists.json")))
+						.contentType(MediaType.APPLICATION_JSON).content(from("add-already-exists.json")))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -174,7 +206,7 @@ class ReleasesControllerTests {
 	void deleteDeletesDocumentation() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNoContent());
+				.andExpect(status().isNoContent()).andDo(document("{method-name}"));
 		verify(this.contentfulService).deleteDocumentation("spring-boot", "2.3.0");
 	}
 
@@ -210,6 +242,29 @@ class ReleasesControllerTests {
 		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
 				Status.SNAPSHOT, null, false));
 		return result;
+	}
+
+	FieldDescriptor[] releasePayload() {
+		return new FieldDescriptor[] {
+				fieldWithPath("version").type(JsonFieldType.STRING).description("Release Version string"),
+				fieldWithPath("status").type(JsonFieldType.STRING)
+						.description("<<release-status, Status of this Release>>"),
+				fieldWithPath("referenceDocUrl").type(JsonFieldType.STRING)
+						.description("URL for the reference documentation"),
+				fieldWithPath("apiDocUrl").type(JsonFieldType.STRING).description("URL for the API documentation"),
+				fieldWithPath("current").type(JsonFieldType.BOOLEAN)
+						.description("Whether this release is the most recent, officially supported"),
+				subsectionWithPath("_links").description("Links to other resources") };
+	}
+
+	LinkDescriptor[] releasesLinks() {
+		return new LinkDescriptor[] { linkWithRel("project").description("Link to Project"),
+				linkWithRel("current").optional().description("Link to the <<release, Release>> marked as current") };
+	}
+
+	LinkDescriptor[] releaseLinks() {
+		return new LinkDescriptor[] { linkWithRel("self").description("Canonical self link"),
+				linkWithRel("repository").description("Link to the <<repository, Repository>> hosting this Release") };
 	}
 
 }

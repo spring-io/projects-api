@@ -108,7 +108,7 @@ public class ReleasesController {
 		Repository repository = getRepository(status);
 		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(),
 				release.getApiDocUrl(), release.getReferenceDocUrl(),
-				ProjectDocumentation.Status.valueOf(status.name()), repository.getId(), false);
+				ProjectDocumentation.Status.valueOf(status.name()), repository.getIdentifier(), false);
 		this.contentfulService.addProjectDocumentation(id, projectDocumentation);
 		URI linkToRelease = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).toUri();
 		return ResponseEntity.created(linkToRelease).build();
@@ -130,7 +130,7 @@ public class ReleasesController {
 		EntityModel<Release> model = EntityModel.of(release);
 		Repository repository = getRepository(release.getStatus());
 		Link linkToSelf = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).withSelfRel();
-		Link linkToRepository = linkTo(methodOn(RepositoriesController.class).repository(repository.getId()))
+		Link linkToRepository = linkTo(methodOn(RepositoriesController.class).repository(repository.getIdentifier()))
 				.withRel("repository");
 		model.add(linkToRepository, linkToSelf);
 		return model;

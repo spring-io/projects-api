@@ -51,7 +51,7 @@ public class Repository {
 	 */
 	public static final List<Repository> ALL = List.of(SNAPSHOT, MILESTONE, RELEASE);
 
-	private final String id;
+	private final String identifier;
 
 	private final String name;
 
@@ -59,15 +59,15 @@ public class Repository {
 
 	private final boolean snapshotsEnabled;
 
-	Repository(String id, String name, String url, boolean snapshotsEnabled) {
-		this.id = id;
+	Repository(String identifier, String name, String url, boolean snapshotsEnabled) {
+		this.identifier = identifier;
 		this.name = name;
 		this.url = url;
 		this.snapshotsEnabled = snapshotsEnabled;
 	}
 
-	public String getId() {
-		return this.id;
+	public String getIdentifier() {
+		return this.identifier;
 	}
 
 	public String getName() {

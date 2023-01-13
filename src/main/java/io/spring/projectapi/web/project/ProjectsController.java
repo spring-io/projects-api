@@ -79,7 +79,7 @@ public class ProjectsController {
 
 	private EntityModel<Project> asModel(Project project) {
 		EntityModel<Project> model = EntityModel.of(project);
-		String id = project.getId();
+		String id = project.getSlug();
 		Link linkToReleases = linkTo(methodOn(ReleasesController.class).releases(id)).withRel("releases");
 		Link linkToGenerations = linkTo(methodOn(GenerationsController.class).generations(id)).withRel("generations");
 		Link linkToSelf = this.entityLinks.linkToItemResource(Project.class, id).withSelfRel();

@@ -56,12 +56,13 @@ public class RepositoriesController {
 	}
 
 	private Optional<Repository> findRepository(String id) {
-		return Repository.ALL.stream().filter((candidate) -> candidate.getId().equals(id)).findFirst();
+		return Repository.ALL.stream().filter((candidate) -> candidate.getIdentifier().equals(id)).findFirst();
 	}
 
 	private EntityModel<Repository> asModel(Repository repository) {
 		EntityModel<Repository> model = EntityModel.of(repository);
-		Link linkToSelf = linkTo(methodOn(RepositoriesController.class).repository(repository.getId())).withSelfRel();
+		Link linkToSelf = linkTo(methodOn(RepositoriesController.class).repository(repository.getIdentifier()))
+				.withSelfRel();
 		model.add(linkToSelf);
 		return model;
 	}

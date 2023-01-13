@@ -30,16 +30,16 @@ public class Project {
 
 	private String name;
 
-	private String id;
+	private String slug;
 
 	private String repositoryUrl;
 
 	private Status status;
 
 	@JsonCreator
-	public Project(String name, String id, String repositoryUrl, Status status) {
+	public Project(String name, String slug, String repositoryUrl, Status status) {
 		this.name = name;
-		this.id = id;
+		this.slug = slug;
 		this.repositoryUrl = repositoryUrl;
 		this.status = status;
 	}
@@ -48,8 +48,8 @@ public class Project {
 		return this.name;
 	}
 
-	public String getId() {
-		return this.id;
+	public String getSlug() {
+		return this.slug;
 	}
 
 	public String getRepositoryUrl() {
