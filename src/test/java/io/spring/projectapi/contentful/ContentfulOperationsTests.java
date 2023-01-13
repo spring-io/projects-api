@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.contentful.java.cma.CMAClient;
 import com.contentful.java.cma.ModuleEntries;
@@ -62,14 +63,14 @@ class ContentfulOperationsTests {
 	@Test
 	void addProjectDocumentationWhenProjectDoesNotExistThrowsException() {
 		setupNonExistentProject();
-		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
-				.isThrownBy(() -> this.operations.addProjectDocumentation("does-not-exist", getDocumentation()));
+		assertThatExceptionOfType(NoSuchContentfulProjectException.class).isThrownBy(() -> this.operations
+				.addProjectDocumentation("does-not-exist", getDocumentation("1.0", Status.GENERAL_AVAILABILITY)));
 	}
 
 	@Test
 	void addProjectDocumentation() {
-		setupProject();
-		ProjectDocumentation documentation = getDocumentation();
+		setupProject(addRelease());
+		ProjectDocumentation documentation = getDocumentation("2.0", Status.GENERAL_AVAILABILITY);
 		this.operations.addProjectDocumentation("test-project", documentation);
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
 		verify(this.client.entries()).publish(captor.capture());
@@ -77,6 +78,51 @@ class ContentfulOperationsTests {
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
 		assertThat(updatedEntry.size()).isEqualTo(2);
 		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0", "2.0");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(false, true);
+	}
+
+	@Test
+	void addProjectDocumentationForNonCurrent() {
+		setupProject(addRelease());
+		ProjectDocumentation documentation = getDocumentation("0.7", Status.GENERAL_AVAILABILITY);
+		this.operations.addProjectDocumentation("test-project", documentation);
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
+		assertThat(updatedEntry.size()).isEqualTo(2);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0", "0.7");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true, false);
+	}
+
+	@Test
+	void addFirstProjectDocumentationForGARelease() {
+		setupProject((maps) -> {
+		});
+		ProjectDocumentation documentation = getDocumentation("1.0", Status.GENERAL_AVAILABILITY);
+		this.operations.addProjectDocumentation("test-project", documentation);
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
+		assertThat(updatedEntry.size()).isEqualTo(1);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true);
+	}
+
+	@Test
+	void addFirstProjectDocumentationForNonGARelease() {
+		setupProject((maps) -> {
+		});
+		ProjectDocumentation documentation = getDocumentation("1.0-M1", Status.PRERELEASE);
+		this.operations.addProjectDocumentation("test-project", documentation);
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
+		assertThat(updatedEntry.size()).isEqualTo(1);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0-M1");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(false);
 	}
 
 	@Test
@@ -88,39 +134,89 @@ class ContentfulOperationsTests {
 
 	@Test
 	void deleteProjectDocumentationWhenProjectDocumentationDoesNotExistThrowsException() {
-		setupProject();
+		setupProject(addRelease());
 		assertThatExceptionOfType(NoSuchContentfulProjectDocumentationFoundException.class)
 				.isThrownBy(() -> this.operations.deleteDocumentation("test-project", "2.0"));
 	}
 
 	@Test
 	void deleteProjectDocumentation() {
-		setupProject();
+		setupProject((maps) -> {
+			maps.add(getRelease(false));
+			maps.add(Map.of("version", "2.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		});
 		this.operations.deleteDocumentation("test-project", "1.0");
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
-		assertThat(updatedEntry.size()).isEqualTo(0);
+		assertThat(updatedEntry.size()).isEqualTo(1);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("2.0");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true);
+	}
+
+	@Test
+	void deleteCurrentProjectDocumentation() {
+		setupProject((maps) -> {
+			maps.add(getRelease(false));
+			maps.add(Map.of("version", "2.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		});
+		this.operations.deleteDocumentation("test-project", "2.0");
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
+		assertThat(updatedEntry.size()).isEqualTo(1);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true);
+	}
+
+	@Test
+	void deletePreReleaseProjectDocumentation() {
+		setupProject((maps) -> {
+			maps.add(getRelease(true));
+			maps.add(Map.of("version", "2.0-M1", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"PRERELEASE", "repository", "RELEASE", "current", false));
+		});
+		this.operations.deleteDocumentation("test-project", "2.0-M1");
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
+		assertThat(updatedEntry.size()).isEqualTo(1);
+		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0");
+		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupProject() {
+	private void setupProject(Consumer<List<Map<String, Object>>> consumer) {
 		ModuleEntries entries = mock(ModuleEntries.class);
 		CMAArray<CMAEntry> cmaArray = mock(CMAArray.class);
 		given(this.client.entries()).willReturn(entries);
 		given(entries.fetchAll(anyMap())).willReturn(cmaArray);
-		CMAEntry projectEntry = getProjectEntry();
-		given(cmaArray.getItems()).willReturn(Collections.singletonList(projectEntry));
+		List<CMAEntry> projects = new ArrayList<>();
+		CMAEntry projectEntry = getProjectEntry(consumer);
+		projects.add(projectEntry);
+		given(cmaArray.getItems()).willReturn(projects);
 	}
 
-	private CMAEntry getProjectEntry() {
+	private CMAEntry getProjectEntry(Consumer<List<Map<String, Object>>> consumer) {
 		CMAEntry projectEntry = new CMAEntry();
-		ArrayList<Map<String, Object>> documentation = new ArrayList<>();
-		documentation.add(Map.of("version", "1.0", "api", "http://api.com", "ref", "http://ref.com", "status",
-				"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		List<Map<String, Object>> documentation = new ArrayList<>();
+		consumer.accept(documentation);
 		projectEntry.setField("documentation", "en-US", documentation);
 		return projectEntry;
+	}
+
+	private Consumer<List<Map<String, Object>>> addRelease() {
+		return (maps) -> maps.add(getRelease(true));
+	}
+
+	private static Map<String, Object> getRelease(boolean current) {
+		return Map.of("version", "1.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+				"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", current);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,8 +228,8 @@ class ContentfulOperationsTests {
 		given(cmaArray.getItems()).willReturn(Collections.emptyList());
 	}
 
-	private ProjectDocumentation getDocumentation() {
-		return new ProjectDocumentation("2.0", "http://api.com", "http://ref.com", Status.GENERAL_AVAILABILITY,
+	private ProjectDocumentation getDocumentation(String version, Status status) {
+		return new ProjectDocumentation(version, "http://api.com", "http://ref.com", status,
 				Repository.RELEASE.getName(), false);
 	}
 

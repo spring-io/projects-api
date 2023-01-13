@@ -109,7 +109,7 @@ class ReleasesControllerTests {
 				.andExpect(jsonPath("$._links.current.href")
 						.value("https://api.spring.io/projects/spring-boot/releases/current"))
 				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()),
+				.andDo(document("list-releases", preprocessResponse(prettyPrint()),
 						responseFields(fieldWithPath("_embedded.releases").description("An array of Project Releases"))
 								.andWithPrefix("_embedded.releases[]", releasePayload())
 								.and(subsectionWithPath("_links").description("Links to other resources")),
@@ -133,7 +133,7 @@ class ReleasesControllerTests {
 						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
 				.andExpect(jsonPath("$._links.repository.href")
 						.value("https://api.spring.io/repositories/spring-releases"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), responseFields(releasePayload()),
+				.andDo(document("show-release", preprocessResponse(prettyPrint()), responseFields(releasePayload()),
 						links(releaseLinks())));
 	}
 
@@ -155,9 +155,9 @@ class ReleasesControllerTests {
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-						.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isCreated())
+				.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isCreated())
 				.andExpect(header().string("Location", expectedLocation))
-				.andDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+				.andDo(document("create-release", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
 						requestFields(fields.withPath("version").description("The Release version"),
 								fields.withPath("referenceDocUrl").description(
 										"URL of the reference documentation, {version} template variable is supported"),
@@ -172,14 +172,12 @@ class ReleasesControllerTests {
 		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
 		assertThat(added.getRepository()).isEqualTo("spring-releases");
 		assertThat(added.isCurrent()).isFalse();
-		// FIXME will Contentful compute the current release like Sagan?
-		// sagan.site.projects.Project.computeCurrentRelease()
 	}
 
 	@Test
 	void addWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-						.contentType(MediaType.APPLICATION_JSON).content(from("add.json")))
+				.contentType(MediaType.APPLICATION_JSON).content(from("add.json")))
 				.andExpect(status().isUnauthorized());
 	}
 
@@ -197,7 +195,7 @@ class ReleasesControllerTests {
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-						.contentType(MediaType.APPLICATION_JSON).content(from("add-already-exists.json")))
+				.contentType(MediaType.APPLICATION_JSON).content(from("add-already-exists.json")))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -206,7 +204,7 @@ class ReleasesControllerTests {
 	void deleteDeletesDocumentation() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNoContent()).andDo(document("{method-name}"));
+				.andExpect(status().isNoContent()).andDo(document("delete-release"));
 		verify(this.contentfulService).deleteDocumentation("spring-boot", "2.3.0");
 	}
 

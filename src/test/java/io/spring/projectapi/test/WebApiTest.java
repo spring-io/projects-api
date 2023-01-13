@@ -39,7 +39,8 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @WebMvcTest
 @AutoConfigureWebClient
-@AutoConfigureRestDocs(outputDir = "build/generated-snippets", uriScheme = "https", uriHost = "api.spring.io", uriPort = 443)
+@AutoConfigureRestDocs(outputDir = "build/generated-snippets", uriScheme = "https", uriHost = "api.spring.io",
+		uriPort = 443)
 @Import(SecurityConfiguration.class)
 public @interface WebApiTest {
 

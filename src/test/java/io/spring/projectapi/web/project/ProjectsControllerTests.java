@@ -92,7 +92,7 @@ class ProjectsControllerTests {
 						.value("https://api.spring.io/projects/spring-data/generations"))
 				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/{id}"))
 				.andExpect(jsonPath("$._links.project.templated").value(true))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), indexLinks(),
+				.andDo(document("list-projects", preprocessResponse(prettyPrint()), indexLinks(),
 						responseFields(fieldWithPath("_embedded.projects").description("An array of Projects"))
 								.andWithPrefix("_embedded.projects[]", projectPayload())
 								.and(subsectionWithPath("_links").description("Links to other resources"))));
@@ -114,7 +114,7 @@ class ProjectsControllerTests {
 						jsonPath("$._links.releases.href").value("https://api.spring.io/projects/spring-boot/releases"))
 				.andExpect(jsonPath("$._links.generations.href")
 						.value("https://api.spring.io/projects/spring-boot/generations"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), projectLinks(),
+				.andDo(document("show-project", preprocessResponse(prettyPrint()), projectLinks(),
 						responseFields(projectPayload())));
 	}
 

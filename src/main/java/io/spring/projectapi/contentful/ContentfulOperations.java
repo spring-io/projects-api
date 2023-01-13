@@ -16,8 +16,12 @@
 
 package io.spring.projectapi.contentful;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.contentful.java.cma.CMAClient;
 import com.contentful.java.cma.model.CMAArray;
@@ -33,6 +37,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class ContentfulOperations {
 
 	private static final String LOCALE = "en-US";
+
+	private static Comparator<Map<String, Object>> VERSION_COMPARATOR = (o1, o2) -> {
+		String version1 = (String) o1.get("version");
+		String version2 = (String) o2.get("version");
+		return -version1.compareTo(version2);
+	};
 
 	private final CMAClient client;
 
@@ -58,8 +68,28 @@ class ContentfulOperations {
 	void addProjectDocumentation(String projectSlug, ProjectDocumentation documentation) {
 		CMAEntry projectEntry = getProjectEntry(projectSlug);
 		List<Map<String, Object>> releases = projectEntry.getField("documentation", LOCALE);
-		releases.add(convertToMap(documentation));
+		Map<String, Object> documentationMap = convertToMap(documentation);
+		releases.add(documentationMap);
+		computeCurrentRelease(releases);
 		this.client.entries().publish(projectEntry);
+	}
+
+	private void computeCurrentRelease(List<Map<String, Object>> releases) {
+		List<Map<String, Object>> modifiableReleases = releases.stream().map(initializeToFalse())
+				.collect(Collectors.toList());
+		releases.clear();
+		releases.addAll(modifiableReleases);
+		modifiableReleases.stream().sorted(VERSION_COMPARATOR)
+				.filter((documentation) -> "GENERAL_AVAILABILITY".equals(documentation.get("status"))).findFirst()
+				.ifPresent((documentation) -> documentation.put("current", true));
+	}
+
+	private static Function<Map<String, Object>, LinkedHashMap<String, Object>> initializeToFalse() {
+		return (map) -> {
+			LinkedHashMap<String, Object> modifiableMap = new LinkedHashMap<>(map);
+			modifiableMap.put("current", false);
+			return modifiableMap;
+		};
 	}
 
 	void deleteDocumentation(String projectSlug, String version) {
@@ -67,6 +97,7 @@ class ContentfulOperations {
 		List<Map<String, Object>> documentations = projectEntry.getField("documentation", LOCALE);
 		NoSuchContentfulProjectDocumentationFoundException.throwIfHasNotPresent(documentations, projectSlug, version);
 		documentations.removeIf((documentation) -> documentation.get("version").equals(version));
+		computeCurrentRelease(documentations);
 		this.client.entries().publish(projectEntry);
 	}
 

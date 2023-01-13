@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-public class ProjectDocumentation {
+public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	private final String version;
 
@@ -73,6 +73,15 @@ public class ProjectDocumentation {
 
 	public boolean isCurrent() {
 		return this.current;
+	}
+
+	@Override
+	public int compareTo(ProjectDocumentation other) {
+		if (other == null) {
+			return -1;
+		}
+		// invert Version comparator, to get most recent version first
+		return -this.version.compareTo(other.version);
 	}
 
 	/**

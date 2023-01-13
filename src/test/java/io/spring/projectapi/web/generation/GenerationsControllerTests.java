@@ -86,11 +86,11 @@ class GenerationsControllerTests {
 				.andExpect(jsonPath("$._embedded.generations[1]._links.project.href")
 						.value("https://api.spring.io/projects/spring-boot"))
 				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), generationsLinks(),
+				.andDo(document("list-generations", preprocessResponse(prettyPrint()), generationsLinks(),
 						responseFields(
 								fieldWithPath("_embedded.generations").description("An array of Project Generations"))
-								.andWithPrefix("_embedded.generations[]", generationPayload())
-								.and(subsectionWithPath("_links").description("Links to other resources"))));
+										.andWithPrefix("_embedded.generations[]", generationPayload())
+										.and(subsectionWithPath("_links").description("Links to other resources"))));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ class GenerationsControllerTests {
 				.andExpect(jsonPath("$._links.self.href")
 						.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
 				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), generationLinks(),
+				.andDo(document("show-generation", preprocessResponse(prettyPrint()), generationLinks(),
 						responseFields(generationPayload())));
 	}
 

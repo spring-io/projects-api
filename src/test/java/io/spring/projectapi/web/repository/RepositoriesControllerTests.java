@@ -55,7 +55,7 @@ class RepositoriesControllerTests {
 	void repositoriesReturnsRepositories() throws Exception {
 		this.mvc.perform(get("/repositories").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded.repositories.length()").value("3"))
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()),
+				.andDo(document("list-repositories", preprocessResponse(prettyPrint()),
 						responseFields(fieldWithPath("_embedded.repositories").description("An array of Repositories"))
 								.andWithPrefix("_embedded.repositories[]", repositoryPayload())));
 	}
@@ -63,8 +63,8 @@ class RepositoriesControllerTests {
 	@Test
 	void repositoryReturnsRepository() throws Exception {
 		this.mvc.perform(get("/repositories/spring-releases").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andDo(document("{method-name}", preprocessResponse(prettyPrint()), responseFields(repositoryPayload()),
-						repositoryLinks()));
+				.andDo(document("show-repository", preprocessResponse(prettyPrint()),
+						responseFields(repositoryPayload()), repositoryLinks()));
 	}
 
 	@Test
