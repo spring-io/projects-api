@@ -12,7 +12,7 @@
 Spring projects are https://spring.io/projects[listed and documented on the spring.io website].
 We can find there information about releases, samples, support and more.
 
-Spring.io also exposes a RESTful web service under https://spring.io/api for fetching and
+Spring.io also exposes a RESTful web service under https://api.spring.io/ for fetching and
 updating Spring Projects Metadata. It uses hypermedia to describe the relationships between
 resources and to allow navigation between them.
 
@@ -28,7 +28,7 @@ include::{snippets}/show-index/http-request.adoc[]
 
 [[authentication]]
 === Authentication
-This web service is publicly available here: https://spring.io/api.
+This web service is publicly available here: https://api.spring.io/.
 
 Fetching resources using the HTTP `GET` method is permitted to all clients.
 Other HTTP verbs like `POST`, `PUT`, `PATCH` and `DELETE` require authentication.
