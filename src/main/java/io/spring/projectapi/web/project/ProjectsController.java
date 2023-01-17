@@ -73,7 +73,7 @@ public class ProjectsController {
 	}
 
 	private Project asProject(io.spring.projectapi.contentful.Project project) {
-		Project.Status status = Status.valueOf(project.getStatus().name());
+		Project.Status status = (project.getStatus() != null) ? Status.valueOf(project.getStatus().name()) : null;
 		return new Project(project.getTitle(), project.getSlug(), project.getGithub(), status);
 	}
 
