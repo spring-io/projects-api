@@ -35,6 +35,7 @@ import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -73,6 +74,7 @@ class ContentfulOperationsTests {
 		ProjectDocumentation documentation = getDocumentation("2.0", Status.GENERAL_AVAILABILITY);
 		this.operations.addProjectDocumentation("test-project", documentation);
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -87,6 +89,7 @@ class ContentfulOperationsTests {
 		ProjectDocumentation documentation = getDocumentation("0.7", Status.GENERAL_AVAILABILITY);
 		this.operations.addProjectDocumentation("test-project", documentation);
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -102,6 +105,7 @@ class ContentfulOperationsTests {
 		ProjectDocumentation documentation = getDocumentation("1.0", Status.GENERAL_AVAILABILITY);
 		this.operations.addProjectDocumentation("test-project", documentation);
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -117,6 +121,7 @@ class ContentfulOperationsTests {
 		ProjectDocumentation documentation = getDocumentation("1.0-M1", Status.PRERELEASE);
 		this.operations.addProjectDocumentation("test-project", documentation);
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -148,6 +153,7 @@ class ContentfulOperationsTests {
 		});
 		this.operations.deleteDocumentation("test-project", "1.0");
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -165,6 +171,7 @@ class ContentfulOperationsTests {
 		});
 		this.operations.deleteDocumentation("test-project", "2.0");
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -182,6 +189,7 @@ class ContentfulOperationsTests {
 		});
 		this.operations.deleteDocumentation("test-project", "2.0-M1");
 		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
 		verify(this.client.entries()).publish(captor.capture());
 		CMAEntry value = captor.getValue();
 		List<Map<String, Object>> updatedEntry = value.getField("documentation", "en-US");
@@ -200,6 +208,7 @@ class ContentfulOperationsTests {
 		CMAEntry projectEntry = getProjectEntry(consumer);
 		projects.add(projectEntry);
 		given(cmaArray.getItems()).willReturn(projects);
+		given(this.client.entries().update(projectEntry)).willReturn(projectEntry);
 	}
 
 	private CMAEntry getProjectEntry(Consumer<List<Map<String, Object>>> consumer) {

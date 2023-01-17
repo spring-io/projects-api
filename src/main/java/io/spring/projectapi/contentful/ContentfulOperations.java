@@ -71,7 +71,8 @@ class ContentfulOperations {
 		Map<String, Object> documentationMap = convertToMap(documentation);
 		releases.add(documentationMap);
 		computeCurrentRelease(releases);
-		this.client.entries().publish(projectEntry);
+		CMAEntry updated = this.client.entries().update(projectEntry);
+		this.client.entries().publish(updated);
 	}
 
 	private void computeCurrentRelease(List<Map<String, Object>> releases) {
@@ -98,7 +99,8 @@ class ContentfulOperations {
 		NoSuchContentfulProjectDocumentationFoundException.throwIfHasNotPresent(documentations, projectSlug, version);
 		documentations.removeIf((documentation) -> documentation.get("version").equals(version));
 		computeCurrentRelease(documentations);
-		this.client.entries().publish(projectEntry);
+		CMAEntry updated = this.client.entries().update(projectEntry);
+		this.client.entries().publish(updated);
 	}
 
 	@SuppressWarnings("unchecked")
