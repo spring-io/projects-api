@@ -27,6 +27,7 @@ import com.contentful.java.cma.CMAClient;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
 
 /**
  * Contentful operations performed via the {@link CMAClient REST API}.
@@ -62,6 +63,9 @@ class ContentfulOperations {
 		builder.setAccessToken(accessToken);
 		builder.setSpaceId(spaceId);
 		builder.setEnvironmentId(environmentId);
+		OkHttpClient coreCallFactory = builder.defaultCoreCallFactoryBuilder().addInterceptor(new RetryInterceptor())
+				.build();
+		builder.setCoreCallFactory(coreCallFactory);
 		return builder.build();
 	}
 
