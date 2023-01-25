@@ -16,6 +16,7 @@
 
 package io.spring.projectapi.contentful;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +27,12 @@ import java.util.stream.Collectors;
 import com.contentful.java.cma.CMAClient;
 import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
+import com.contentful.java.cma.model.RateLimits;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 /**
  * Contentful operations performed via the {@link CMAClient REST API}.
@@ -62,6 +68,9 @@ class ContentfulOperations {
 		builder.setAccessToken(accessToken);
 		builder.setSpaceId(spaceId);
 		builder.setEnvironmentId(environmentId);
+		OkHttpClient coreCallFactory = builder.defaultCoreCallFactoryBuilder().addInterceptor(new RetryInterceptor())
+				.build();
+		builder.setCoreCallFactory(coreCallFactory);
 		return builder.build();
 	}
 
@@ -115,6 +124,32 @@ class ContentfulOperations {
 		NoSuchContentfulProjectException.throwIfEmpty(items, projectSlug);
 		NoUniqueContentfulProjectException.throwIfNoUniqueResult(items, projectSlug);
 		return items.get(0);
+	}
+
+	/**
+	 * OkHttp {@link Interceptor} which can retry a request if the rate limit is exceeded.
+	 */
+	private static class RetryInterceptor implements Interceptor {
+
+		@Override
+		public Response intercept(Chain chain) throws IOException {
+			Response response = chain.proceed(chain.request());
+			Headers headers = response.headers();
+			Map<String, List<String>> mappedHeaders = headers.toMultimap();
+			RateLimits limits = new RateLimits.DefaultParser().parse(mappedHeaders);
+			if (limits.getReset() > 0) {
+				try {
+					Thread.sleep(limits.getReset() * 1000L);
+					response.close();
+					response = chain.proceed(chain.request());
+				}
+				catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+			return response;
+		}
+
 	}
 
 }
