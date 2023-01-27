@@ -16,6 +16,7 @@
 
 package io.spring.projectapi.web.generation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import io.spring.projectapi.contentful.ContentfulService;
@@ -74,8 +75,11 @@ public class GenerationsController {
 	}
 
 	private Generation asGeneration(ProjectSupport support) {
-		return new Generation(support.getBranch(), support.getInitialDate(), support.getOssPolicyEnd(),
-				support.getCommercialPolicyEnd());
+		LocalDate ossPolicyEnd = (support.getOssEnforcedEnd() != null) ? support.getOssEnforcedEnd()
+				: support.getOssPolicyEnd();
+		LocalDate commercialPolicyEnd = (support.getCommercialEnforcedEnd() != null)
+				? support.getCommercialEnforcedEnd() : support.getCommercialPolicyEnd();
+		return new Generation(support.getBranch(), support.getInitialDate(), ossPolicyEnd, commercialPolicyEnd);
 	}
 
 	private EntityModel<Generation> asModel(String id, Generation generation) {
