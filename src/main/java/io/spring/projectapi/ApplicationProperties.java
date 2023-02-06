@@ -46,14 +46,35 @@ public class ApplicationProperties {
 		return this.github;
 	}
 
+	/**
+	 * Properties to access Contentful's API.
+	 */
 	public static class Contentful {
 
+		/**
+		 * Access token for Contentful's Content Delivery API.
+		 * @see <a href=
+		 * "https://www.contentful.com/developers/docs/references/content-delivery-api/">Content
+		 * Delivery API</a>
+		 */
 		private String accessToken;
 
+		/**
+		 * Access token for Contentful's Content Management API.
+		 * @see <a href=
+		 * "https://www.contentful.com/developers/docs/references/content-management-api/">Content
+		 * Management API</a>
+		 */
 		private String contentManagementToken;
 
+		/**
+		 * Contentful space id.
+		 */
 		private String spaceId;
 
+		/**
+		 * Contentful environment id.
+		 */
 		private String environmentId;
 
 		@ConstructorBinding
@@ -82,6 +103,9 @@ public class ApplicationProperties {
 
 	}
 
+	/**
+	 * Properties to decide Github team membership.
+	 */
 	public static class Github {
 
 		/**
