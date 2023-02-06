@@ -1,0 +1,31 @@
+# projects-api
+
+Spring projects are listed and documented on the spring.io website. 
+We can find there information about releases, samples, support and more.
+These projects are managed in Contentful.
+
+This project provides a RESTful web layer on top of Contentful's API for fetching and updating Spring Project Metadata. 
+It uses hypermedia to describe the relationships between resources and to allow navigation between them.
+
+## Running the app locally
+
+Configure the application with the following properties:
+
+[source,yaml]
+----
+projects:
+  contentful:
+    access-token: 
+    content-management-token:
+    space-id:
+    environment-id:
+  github:
+    org:
+    team:
+----
+
+Build the application with `./gradlew build`.
+Run the application with `java -jar build/libs/project-api-1.0.0-SNAPSHOT.jar`
+
+
+
