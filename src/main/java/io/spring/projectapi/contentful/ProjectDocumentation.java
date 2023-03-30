@@ -36,18 +36,14 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	private final Status status;
 
-	private final String repository;
-
 	private final boolean current;
 
 	@JsonCreator(mode = Mode.PROPERTIES)
-	public ProjectDocumentation(String version, String api, String ref, Status status, String repository,
-			boolean current) {
+	public ProjectDocumentation(String version, String api, String ref, Status status, boolean current) {
 		this.version = version;
 		this.api = api;
 		this.ref = ref;
 		this.status = status;
-		this.repository = repository;
 		this.current = current;
 	}
 
@@ -65,10 +61,6 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	public Status getStatus() {
 		return this.status;
-	}
-
-	public String getRepository() {
-		return this.repository;
 	}
 
 	public boolean isCurrent() {

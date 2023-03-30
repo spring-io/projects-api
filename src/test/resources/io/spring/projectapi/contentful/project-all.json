@@ -15,12 +15,10 @@
 		"samples": null,
 		"documentation": [
 			{
-				"id": "9dc12dc4-74c5-4f6e-95b0-8a05b1258ac8",
 				"version": "2.0.0",
 				"api": "",
 				"ref": "",
 				"status": "",
-				"repository": "",
 				"current": false
 			},
 			{
@@ -50,7 +48,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -58,7 +55,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -66,7 +62,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -74,7 +69,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -82,7 +76,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -90,7 +83,6 @@
 				"api": "https://docs.spring.io/spring-ws/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ws/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],
@@ -148,7 +140,6 @@
 				"api": "http://docs.spring.io/spring-webflow/docs/2.5.1.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-webflow/docs/2.5.1.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -156,7 +147,6 @@
 				"api": "http://docs.spring.io/spring-webflow/docs/2.4.5.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-webflow/docs/2.4.5.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],
@@ -201,7 +191,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -209,7 +198,6 @@
 				"api": "http://docs.spring.io/spring-vault/docs/2.2.2.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-vault/docs/2.2.2.RELEASE/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -217,7 +205,6 @@
 				"api": "http://docs.spring.io/spring-vault/docs/2.3.1/api/",
 				"ref": "http://docs.spring.io/spring-vault/docs/2.3.1/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -225,7 +212,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -233,7 +219,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -292,7 +277,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/{version}/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/{version}/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -300,7 +284,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/{version}/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/{version}/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -308,7 +291,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/{version}/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/{version}/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -316,7 +298,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/3.0.1/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/3.0.1/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -324,7 +305,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/3.2.0/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/3.2.0/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -332,7 +312,6 @@
 				"api": "http://docs.spring.io/spring-statemachine/docs/3.1.0/api",
 				"ref": "http://docs.spring.io/spring-statemachine/docs/3.1.0/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],
@@ -391,16 +370,14 @@
 				"ref": "http://docs.spring.io/spring-social-twitter/docs/1.1.0.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.1.0.RELEASE",
-				"repository": "RELEASE"
+				"version": "1.1.0.RELEASE"
 			},
 			{
 				"api": "http://docs.spring.io/spring-social-twitter/docs/1.0.5.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-social-twitter/docs/1.0.5.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.0.5.RELEASE",
-				"repository": "RELEASE"
+				"version": "1.0.5.RELEASE"
 			}
 		],
 		"support": []
@@ -425,16 +402,14 @@
 				"ref": "http://docs.spring.io/spring-social-tripit/docs/1.0.0.M3/reference/html",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "1.0.0.M3",
-				"repository": "MILESTONE"
+				"version": "1.0.0.M3"
 			},
 			{
 				"api": "http://docs.spring.io/spring-social-tripit/docs/1.0.0.BUILD-SNAPSHOT/api/",
 				"ref": "http://docs.spring.io/spring-social-tripit/docs/1.0.0.BUILD-SNAPSHOT/reference/html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.0.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "1.0.0.BUILD-SNAPSHOT"
 			}
 		],
 		"support": []
@@ -459,8 +434,7 @@
 				"ref": "http://docs.spring.io/spring-social-linkedin/docs/1.0.0.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.0.0.RELEASE",
-				"repository": "RELEASE"
+				"version": "1.0.0.RELEASE"
 			}
 		],
 		"support": []
@@ -485,16 +459,14 @@
 				"ref": "http://docs.spring.io/spring-social-github/docs/1.0.0.M4/reference/html",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "1.0.0.M4",
-				"repository": "MILESTONE"
+				"version": "1.0.0.M4"
 			},
 			{
 				"api": "http://docs.spring.io/spring-social-github/docs/1.0.0.BUILD-SNAPSHOT/api/",
 				"ref": "http://docs.spring.io/spring-social-github/docs/1.0.0.BUILD-SNAPSHOT/reference/html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.0.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "1.0.0.BUILD-SNAPSHOT"
 			}
 		],
 		"support": []
@@ -519,16 +491,14 @@
 				"ref": "http://docs.spring.io/spring-social-facebook/docs/2.0.3.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.0.3.RELEASE",
-				"repository": "RELEASE"
+				"version": "2.0.3.RELEASE"
 			},
 			{
 				"api": "http://docs.spring.io/spring-social-facebook/docs/1.1.0.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-social-facebook/docs/1.1.0.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.1.0.RELEASE",
-				"repository": "RELEASE"
+				"version": "1.1.0.RELEASE"
 			}
 		],
 		"support": []
@@ -553,7 +523,6 @@
 				"api": "http://docs.spring.io/spring-social/docs/2.0.0.M4/apidocs/",
 				"ref": "http://docs.spring.io/spring-social/docs/2.0.0.M4/reference/htmlsingle/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -561,7 +530,6 @@
 				"api": "http://docs.spring.io/spring-social/docs/1.1.6.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-social/docs/1.1.6.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -569,7 +537,6 @@
 				"api": "http://docs.spring.io/spring-social/docs/1.0.3.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-social/docs/1.0.3.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],
@@ -595,7 +562,6 @@
 				"api": "http://docs.spring.io/spring-shell/docs/2.0.1.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-shell/docs/2.0.1.RELEASE/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -603,7 +569,6 @@
 				"api": "https://docs.spring.io/spring-shell/docs/3.0.0-SNAPSHOT/api/index.html",
 				"ref": "https://docs.spring.io/spring-shell/docs/3.0.0-SNAPSHOT/docs/index.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -611,7 +576,6 @@
 				"api": "https://docs.spring.io/spring-shell/docs/2.1.3-SNAPSHOT/api",
 				"ref": "https://docs.spring.io/spring-shell/docs/2.1.3-SNAPSHOT/site/reference/htmlsingle",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -619,7 +583,6 @@
 				"api": "https://docs.spring.io/spring-shell/docs/3.0.0-M2/api/index.html",
 				"ref": "https://docs.spring.io/spring-shell/docs/3.0.0-M2/docs/index.html",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -627,7 +590,6 @@
 				"api": "https://docs.spring.io/spring-shell/docs/2.1.3/api",
 				"ref": "https://docs.spring.io/spring-shell/docs/2.1.3/site/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -699,48 +661,42 @@
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "3.0.0-SNAPSHOT"
 			},
 			{
 				"api": "https://docs.spring.io/spring-session-data-geode/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.6.1",
-				"repository": "RELEASE"
+				"version": "2.6.1"
 			},
 			{
 				"api": "https://docs.spring.io/spring-session-data-geode/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.6.2-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "2.6.2-SNAPSHOT"
 			},
 			{
 				"api": "https://docs.spring.io/spring-session-data-geode/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.0",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.0"
+      },
 			{
 				"api": "https://docs.spring.io/spring-session-data-geode/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.1-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "2.7.1-SNAPSHOT"
 			},
 			{
 				"api": "https://docs.spring.io/spring-session-data-geode/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session-data-geode/docs/{version}/reference/html5/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-M3",
-				"repository": "MILESTONE"
+				"version": "3.0.0-M3"
 			}
 		],
 		"support": []
@@ -790,7 +746,6 @@
 				"api": "https://docs.spring.io/spring-session/docs/2.4.6/api/",
 				"ref": "https://docs.spring.io/spring-session/docs/2.4.6/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -798,7 +753,6 @@
 				"api": "https://docs.spring.io/spring-session/docs/2.6.3/api/",
 				"ref": "https://docs.spring.io/spring-session/reference/2.6.3/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -806,7 +760,6 @@
 				"api": "https://docs.spring.io/spring-session/docs/2.5.6/api/",
 				"ref": "https://docs.spring.io/spring-session/docs/2.5.6/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -814,7 +767,6 @@
 				"api": "https://docs.spring.io/spring-session/docs/2.7.0/api/",
 				"ref": "https://docs.spring.io/spring-session/reference/2.7.0/index.html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -822,7 +774,6 @@
 				"api": "https://docs.spring.io/spring-session/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-session/reference/{version}/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -889,7 +840,6 @@
 				"api": "http://docs.spring.io/spring-security-saml/docs/1.0.x/api/",
 				"ref": "http://docs.spring.io/spring-security-saml/docs/1.0.x/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -897,7 +847,6 @@
 				"api": "http://docs.spring.io/spring-security-saml/docs/1.0.x/api/",
 				"ref": "http://docs.spring.io/spring-security-saml/docs/1.0.x/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -932,7 +881,6 @@
 				"api": "",
 				"ref": "",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -967,16 +915,14 @@
 				"ref": "http://docs.spring.io/spring-security-kerberos/docs/1.0.2.BUILD-SNAPSHOT/reference/htmlsingle",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.2.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.0.2.BUILD-SNASHOT"
+      },
 			{
 				"api": "http://docs.spring.io/spring-security-kerberos/docs/1.0.1.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-security-kerberos/docs/1.0.1.RELEASE/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.0.1.RELEASE",
-				"repository": "RELEASE"
+				"version": "1.0.1.RELEASE"
 			}
 		],
 		"support": []
@@ -1001,7 +947,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/5.2.15.RELEASE/api/",
 				"ref": "https://docs.spring.io/spring-security/site/docs/5.2.15.RELEASE/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1009,7 +954,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/site/docs/{version}/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1017,7 +961,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/5.3.13.RELEASE/api/",
 				"ref": "https://docs.spring.io/spring-security/site/docs/5.3.13.RELEASE/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1025,7 +968,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/6.0/index.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1033,7 +975,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/site/docs/{version}/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1041,7 +982,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/5.8/index.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1049,7 +989,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -1057,7 +996,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -1065,7 +1003,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1073,7 +1010,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1081,7 +1017,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1089,7 +1024,6 @@
 				"api": "https://docs.spring.io/spring-security/site/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-security/reference/{version}/index.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -1164,7 +1098,6 @@
 				"api": "",
 				"ref": "",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1190,7 +1123,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-roo/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -1253,7 +1185,6 @@
 				"api": "https://docs.spring.io/spring-restdocs/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-restdocs/docs/{version}/reference/html5/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1261,7 +1192,6 @@
 				"api": "https://docs.spring.io/spring-restdocs/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-restdocs/docs/{version}/reference/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1269,7 +1199,6 @@
 				"api": "https://docs.spring.io/spring-restdocs/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-restdocs/docs/{version}/reference/htmlsingle/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1277,7 +1206,6 @@
 				"api": "https://docs.spring.io/spring-restdocs/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-restdocs/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1328,7 +1256,6 @@
 				"api": "",
 				"ref": "http://github.com/spring-projects/spring-plugin/blob/master/README.markdown",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -1354,7 +1281,6 @@
 				"api": "https://docs.spring.io/spring-modulith/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-modulith/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1362,7 +1288,6 @@
 				"api": "https://docs.spring.io/spring-modulith/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-modulith/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1388,7 +1313,6 @@
 				"api": "http://docs.spring.io/spring-mobile/docs/2.0.0.M3/api/",
 				"ref": "http://docs.spring.io/spring-mobile/docs/2.0.0.M3/reference/html",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1414,7 +1338,6 @@
 				"api": "https://docs.spring.io/spring-ldap/docs/{version}/apidocs/",
 				"ref": "https://docs.spring.io/spring-ldap/docs/{version}/reference/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1422,7 +1345,6 @@
 				"api": "https://docs.spring.io/spring-ldap/docs/{version}/apidocs/",
 				"ref": "https://docs.spring.io/spring-ldap/docs/{version}/reference/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1430,7 +1352,6 @@
 				"api": "https://docs.spring.io/spring-ldap/docs/2.4.0/api/",
 				"ref": "https://docs.spring.io/spring-ldap/docs/2.4.0/reference/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1438,7 +1359,6 @@
 				"api": "https://docs.spring.io/spring-ldap/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-ldap/docs/{version}/reference/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -1488,7 +1408,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1496,7 +1415,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1504,7 +1422,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1512,7 +1429,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1520,7 +1436,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1528,7 +1443,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1536,7 +1450,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1544,7 +1457,6 @@
 				"api": "https://docs.spring.io/spring-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-kafka/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1643,7 +1555,6 @@
 				"api": "",
 				"ref": "",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1669,7 +1580,6 @@
 				"api": "",
 				"ref": "",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1708,7 +1618,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1716,7 +1625,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1724,7 +1632,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1732,7 +1639,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1740,7 +1646,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1748,7 +1653,6 @@
 				"api": "https://docs.spring.io/spring-integration/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-integration/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -1826,7 +1730,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1834,7 +1737,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1842,7 +1744,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1850,7 +1751,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1858,7 +1758,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1866,7 +1765,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -1874,7 +1772,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -1882,7 +1779,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -1890,7 +1786,6 @@
 				"api": "https://docs.spring.io/spring-hateoas/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-hateoas/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -1964,16 +1859,14 @@
 				"ref": "http://docs.spring.io/spring-hadoop/docs/2.5.1.BUILD-SNAPSHOT/reference/html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.1.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
+				"version": "2.5.1.BUILD-SNAPSHOT"
 			},
 			{
 				"api": "http://docs.spring.io/spring-hadoop/docs/2.5.0.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-hadoop/docs/2.5.0.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.5.0.RELEASE",
-				"repository": "RELEASE"
+				"version": "2.5.0.RELEASE"
 			}
 		],
 		"support": []
@@ -1998,7 +1891,6 @@
 				"api": "https://docs.spring.io/spring-graphql/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-graphql/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -2006,7 +1898,6 @@
 				"api": "https://docs.spring.io/spring-graphql/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-graphql/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -2014,7 +1905,6 @@
 				"api": "https://docs.spring.io/spring-graphql/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-graphql/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -2057,7 +1947,6 @@
 				"api": "https://docs.spring.io/spring-framework/docs/{version}/javadoc-api/",
 				"ref": "https://docs.spring.io/spring-framework/docs/{version}/spring-framework-reference/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -2065,7 +1954,6 @@
 				"api": "https://docs.spring.io/spring-framework/docs/{version}/javadoc-api/",
 				"ref": "https://docs.spring.io/spring-framework/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -2073,7 +1961,6 @@
 				"api": "https://docs.spring.io/spring-framework/docs/{version}/javadoc-api/",
 				"ref": "https://docs.spring.io/spring-framework/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -2081,7 +1968,6 @@
 				"api": "https://docs.spring.io/spring-framework/docs/{version}/javadoc-api/",
 				"ref": "https://docs.spring.io/spring-framework/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -2089,7 +1975,6 @@
 				"api": "https://docs.spring.io/spring-framework/docs/{version}/javadoc-api/",
 				"ref": "https://docs.spring.io/spring-framework/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -2156,7 +2041,6 @@
 				"api": "",
 				"ref": "https://github.com/spring-projects/spring-flo/wiki",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -2182,7 +2066,6 @@
 				"api": "http://docs.spring.io/spring-flex/docs/1.5.2.RELEASE/javadoc-api/",
 				"ref": "http://docs.spring.io/spring-flex/docs/1.5.2.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			}
 		],
@@ -2215,17 +2098,15 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.3.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.3.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/solr/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/solr/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "4.3.15",
-				"repository": "RELEASE"
-			}
+				"version": "4.3.15"
+      }
 		],
 		"support": [
 			{
@@ -2299,65 +2180,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/rest/docs/3.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/rest/docs/3.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "3.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/rest/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/rest/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "3.7.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/rest/docs/4.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/rest/docs/4.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/rest/docs/3.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/rest/docs/3.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "3.4.15"
+      }
 		],
 		"support": [
 			{
@@ -2438,65 +2311,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/redis/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/redis/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/redis/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/redis/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/redis/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/redis/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/redis/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/redis/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.15"
+      }
 		],
 		"support": [
 			{
@@ -2584,65 +2449,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.3.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.3.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/r2dbc/docs/1.3.12/api/",
 				"ref": "https://docs.spring.io/spring-data/r2dbc/docs/1.3.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.3.12",
-				"repository": "RELEASE"
-			},
+				"version": "1.3.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.5.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.5.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/r2dbc/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/r2dbc/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.5.5",
-				"repository": "RELEASE"
-			},
+				"version": "1.5.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/r2dbc/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/r2dbc/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.2.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.2.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/r2dbc/docs/1.2.15/api/",
 				"ref": "https://docs.spring.io/spring-data/r2dbc/docs/1.2.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.2.15",
-				"repository": "RELEASE"
-			}
+				"version": "1.2.15"
+      }
 		],
 		"support": [
 			{
@@ -2707,65 +2564,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "7.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "7.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "6.1.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "6.1.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/neo4j/docs/6.1.12/api/",
 				"ref": "https://docs.spring.io/spring-data/neo4j/docs/6.1.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "6.1.12",
-				"repository": "RELEASE"
-			},
+				"version": "6.1.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "6.3.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "6.3.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/neo4j/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/neo4j/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "6.3.5",
-				"repository": "RELEASE"
-			},
+				"version": "6.3.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/neo4j/docs/7.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/neo4j/docs/7.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "7.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "7.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "6.0.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "6.0.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/neo4j/docs/6.0.15/api/",
 				"ref": "https://docs.spring.io/spring-data/neo4j/docs/6.0.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "6.0.15",
-				"repository": "RELEASE"
-			}
+				"version": "6.0.15"
+      }
 		],
 		"support": []
 	},
@@ -2796,65 +2645,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.2.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/mongodb/docs/3.2.12/api/",
 				"ref": "https://docs.spring.io/spring-data/mongodb/docs/3.2.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.2.12",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.4.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.4.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/mongodb/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.4.5",
-				"repository": "RELEASE"
-			},
+				"version": "3.4.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/mongodb/docs/4.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/mongodb/docs/4.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/mongodb/docs/3.1.15/api/",
 				"ref": "https://docs.spring.io/spring-data/mongodb/docs/3.1.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.1.15",
-				"repository": "RELEASE"
-			}
+				"version": "3.1.15"
+      }
 		],
 		"support": [
 			{
@@ -2935,65 +2776,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/ldap/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/ldap/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/ldap/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/ldap/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/ldap/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/ldap/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/ldap/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/ldap/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.15"
+      }
 		],
 		"support": [
 			{
@@ -3087,65 +2920,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jpa/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/jpa/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jpa/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/jpa/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jpa/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/jpa/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jpa/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/jpa/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.15"
+      }
 		],
 		"support": [
 			{
@@ -3225,25 +3050,22 @@
 				"ref": "http://docs.spring.io/spring-data/jdbc/old-docs/2.0.0.M1/reference/html",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "2.0.0.M1",
-				"repository": "MILESTONE"
-			},
+				"version": "2.0.0.M1"
+      },
 			{
 				"api": "http://docs.spring.io/spring-data/jdbc/old-docs/2.0.0.BUILD-SNAPSHOT/api/",
 				"ref": "http://docs.spring.io/spring-data/jdbc/old-docs/2.0.0.BUILD-SNAPSHOT/reference/html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.0.0.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.0.0.BUILD-SNASHOT"
+      },
 			{
 				"api": "http://docs.spring.io/spring-data/jdbc/old-docs/1.2.1.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-data/jdbc/old-docs/1.2.1.RELEASE/reference/html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.2.1.RELEASE",
-				"repository": "RELEASE"
-			}
+				"version": "1.2.1.RELEASE"
+      }
 		],
 		"support": []
 	},
@@ -3267,65 +3089,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jdbc/docs/2.2.12/api/",
 				"ref": "https://docs.spring.io/spring-data/jdbc/docs/2.2.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jdbc/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.4.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.4.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jdbc/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/jdbc/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.1.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.1.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/jdbc/docs/2.1.15/api/",
 				"ref": "https://docs.spring.io/spring-data/jdbc/docs/2.1.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.1.15"
+      }
 		],
 		"support": [
 			{
@@ -3398,49 +3212,43 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/geode/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/geode/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/geode/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/geode/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.5"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/geode/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/geode/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.15"
+      }
 		],
 		"support": [
 			{
@@ -3521,9 +3329,8 @@
 				"ref": "https://docs.spring.io/spring-data/geode/docs/2.3.9.RELEASE/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.3.9.RELEASE",
-				"repository": "RELEASE"
-			}
+				"version": "2.3.9.RELEASE"
+      }
 		],
 		"support": [
 			{
@@ -3580,49 +3387,43 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.5.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.5.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/envers/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/envers/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.12",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.7.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.7.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/envers/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/envers/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.7.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.5"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.4.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.4.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/envers/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/envers/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.15",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.15"
+      }
 		],
 		"support": [
 			{
@@ -3695,65 +3496,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "5.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "5.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.2.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.2.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/elasticsearch/docs/4.2.12/api/",
 				"ref": "https://docs.spring.io/spring-data/elasticsearch/docs/4.2.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.2.12",
-				"repository": "RELEASE"
-			},
+				"version": "4.2.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.4.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.4.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/elasticsearch/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "4.4.5",
-				"repository": "RELEASE"
-			},
+				"version": "4.4.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/elasticsearch/docs/5.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/elasticsearch/docs/5.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "5.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "5.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.1.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.1.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/elasticsearch/docs/4.1.15/api/",
 				"ref": "https://docs.spring.io/spring-data/elasticsearch/docs/4.1.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.1.15",
-				"repository": "RELEASE"
-			}
+				"version": "4.1.15"
+      }
 		],
 		"support": []
 	},
@@ -3777,65 +3570,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "5.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "5.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.2.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.2.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/couchbase/docs/4.2.12/api/",
 				"ref": "https://docs.spring.io/spring-data/couchbase/docs/4.2.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.2.12",
-				"repository": "RELEASE"
-			},
+				"version": "4.2.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.4.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.4.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/couchbase/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/couchbase/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "4.4.5",
-				"repository": "RELEASE"
-			},
+				"version": "4.4.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/couchbase/docs/5.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/couchbase/docs/5.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "5.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "5.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.1.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.1.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/couchbase/docs/4.1.15/api/",
 				"ref": "https://docs.spring.io/spring-data/couchbase/docs/4.1.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.1.15",
-				"repository": "RELEASE"
-			}
+				"version": "4.1.15"
+      }
 		],
 		"support": []
 	},
@@ -3859,65 +3644,57 @@
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.13-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.2.13-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/cassandra/docs/3.2.12/api/",
 				"ref": "https://docs.spring.io/spring-data/cassandra/docs/3.2.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.2.12",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.12"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.4.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.4.6-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/cassandra/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/cassandra/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.4.5",
-				"repository": "RELEASE"
-			},
+				"version": "3.4.5"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/cassandra/docs/4.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/cassandra/docs/4.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC2",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-RC2"
+      },
 			{
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.16-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.16-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-data/cassandra/docs/3.1.15/api/",
 				"ref": "https://docs.spring.io/spring-data/cassandra/docs/3.1.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.1.15",
-				"repository": "RELEASE"
-			}
+				"version": "3.1.15"
+      }
 		],
 		"support": [
 			{
@@ -3998,7 +3775,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -4006,7 +3782,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -4014,7 +3789,6 @@
 				"api": "https://docs.spring.io/spring-data/commons/docs/2.5.12/api/",
 				"ref": "https://docs.spring.io/spring-data/commons/docs/2.5.12/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -4022,7 +3796,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -4030,7 +3803,6 @@
 				"api": "https://docs.spring.io/spring-data/commons/docs/current/api/",
 				"ref": "https://docs.spring.io/spring-data/commons/docs/current/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -4038,7 +3810,6 @@
 				"api": "https://docs.spring.io/spring-data/commons/docs/3.0.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-data/commons/docs/3.0.0-RC2/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			},
 			{
@@ -4046,7 +3817,6 @@
 				"api": "",
 				"ref": "",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -4054,7 +3824,6 @@
 				"api": "https://docs.spring.io/spring-data/commons/docs/2.4.15/api/",
 				"ref": "https://docs.spring.io/spring-data/commons/docs/2.4.15/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],
@@ -4080,7 +3849,6 @@
 				"api": "https://docs.spring.io/spring-credhub/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-credhub/docs/{version}/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -4088,7 +3856,6 @@
 				"api": "https://docs.spring.io/spring-credhub/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-credhub/docs/{version}/reference",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -4096,7 +3863,6 @@
 				"api": "https://docs.spring.io/spring-credhub/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-credhub/docs/{version}/reference",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -4104,7 +3870,6 @@
 				"api": "https://docs.spring.io/spring-credhub/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-credhub/docs/{version}/reference",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -4178,65 +3943,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.5.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.5.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.6.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.6.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.3-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-zookeeper/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -4298,65 +4055,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.7.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.7.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.8.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.8.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.1",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.1"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.2-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.2-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-vault/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -4405,33 +4154,29 @@
 				"ref": "http://docs.spring.io/spring-cloud-task-app-starters/docs/Elston.BUILD-SNAPSHOT/reference/htmlsingle",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "Elston.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "Elston.BUILD-SNPSHOT"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task-app-starters/docs/Dearborn.SR1/api/",
 				"ref": "http://docs.spring.io/spring-cloud-task-app-starters/docs/Dearborn.SR1/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "Dearborn.SR1",
-				"repository": "RELEASE"
-			},
+				"version": "Dearborn.SR1"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task-app-starters/docs/Clark.RELEASE/api/",
 				"ref": "http://docs.spring.io/spring-cloud-task-app-starters/docs/Clark.RELEASE/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "Clark.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "Clark.RELEASE"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-task-app-starters/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-task-app-starters/docs/Elston.SR3/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "Elston.SR3",
-				"repository": "RELEASE"
-			}
+				"version": "Elston.SR3"
+      }
 		],
 		"support": []
 	},
@@ -4455,73 +4200,64 @@
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/2.1.4.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.4.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.4.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task/docs/2.0.0.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/2.0.0.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.0.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.0.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task/docs/1.3.1.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/1.3.1.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.3.1.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.3.1.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task/docs/1.2.3.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/1.2.3.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.2.3.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.2.3.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task/docs/1.1.2.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/1.1.2.RELEASE/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.1.2.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.1.2.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-task/docs/2.2.5.RELEASE/apidocs/",
 				"ref": "http://docs.spring.io/spring-cloud-task/docs/2.2.5.RELEASE/reference/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.5.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.5.RELEASE"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-task/docs/{version}/apidocs/",
 				"ref": "https://docs.spring.io/spring-cloud-task/docs/{version}/reference/htmlsingle",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.3.2",
-				"repository": "RELEASE"
-			},
+				"version": "2.3.2"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-task/docs/{version}/apidocs/",
 				"ref": "https://docs.spring.io/spring-cloud-task/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC1",
-				"repository": "MILESTONE"
-			},
+				"version": "3.0.0-RC1"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-task/docs/{version}/apidocs/",
 				"ref": "https://docs.spring.io/spring-cloud-task/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.4.5",
-				"repository": "RELEASE"
-			}
+				"version": "2.4.5"
+      }
 		],
 		"support": [
 			{
@@ -4586,49 +4322,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-rabbit/docs/3.1.0.M1/reference/html/index.html",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.1.0-M2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.1.0-M2"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-stream-binder-rabbit/3.0.x/reference/html/",
 				"ref": "https://cloud.spring.io/spring-cloud-stream-binder-rabbit/3.0.x/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.9.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.9.BUILD-SNASHOT"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream-binder-rabbit/3.0.8.RELEASE/reference/html/",
 				"ref": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream-binder-rabbit/3.0.8.RELEASE/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.8.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.8.RELEASE"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.2.1.RELEASE/home.html",
 				"ref": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.2.1.RELEASE/home.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.1.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.1.RELEASE"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream-binder-rabbit/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-rabbit/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.2.3",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.3"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream-binder-rabbit/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-rabbit/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.2.4-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -4677,49 +4407,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/3.1.0.M1/reference/html/index.html",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.1.0-M2",
-				"repository": "MILESTONE"
-			},
+				"version": "3.1.0-M2"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-stream-binder-kafka/3.0.x/reference/html/",
 				"ref": "https://cloud.spring.io/spring-cloud-stream-binder-kafka/3.0.x/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.9.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.9.BUILD-SNASHOT"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream-binder-kafka/3.0.8.RELEASE/reference/html/",
 				"ref": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream-binder-kafka/3.0.8.RELEASE/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.8.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.8.RELEASE"
+      },
 			{
 				"api": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.2.1.RELEASE/home.html",
 				"ref": "https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/2.2.1.RELEASE/home.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.1.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.1.RELEASE"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.2.3",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.3"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.2.4-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -4768,33 +4492,29 @@
 				"ref": "https://docs.spring.io/stream-applications/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2020.0.2",
-				"repository": "RELEASE"
-			},
+				"version": "2020.0.2"
+      },
 			{
 				"api": "https://docs.spring.io/stream-applications/docs/{version}/api/",
 				"ref": "https://docs.spring.io/stream-applications/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2021.0.1",
-				"repository": "RELEASE"
-			},
+				"version": "2021.0.1"
+      },
 			{
 				"api": "https://docs.spring.io/stream-applications/docs/{version}/api/",
 				"ref": "https://docs.spring.io/stream-applications/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2021.1.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2021.1.3-SNAPSHT"
+      },
 			{
 				"api": "https://docs.spring.io/stream-applications/docs/{version}/api/",
 				"ref": "https://docs.spring.io/stream-applications/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2021.1.2",
-				"repository": "RELEASE"
-			}
+				"version": "2021.1.2"
+      }
 		],
 		"support": [
 			{
@@ -4850,41 +4570,36 @@
 				"ref": "https://docs.spring.io/spring-cloud-stream/docs/3.1.6/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.1.6",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.6"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.2.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.4"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.2.5-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M3",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M3"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-stream/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-stream/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -4940,49 +4655,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.8.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.8.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.9.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.9.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.3",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-sleuth/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.1.4-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -5031,129 +4740,113 @@
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.1.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.1.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.2.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.2.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.3.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.3.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.5.2/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.5.2/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.5.2",
-				"repository": "RELEASE"
-			},
+				"version": "2.5.2"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.4.3.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.4.3.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/{version}/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.3.2.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.3.2.RELEASE"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.6.2/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.6.2/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.6.2",
-				"repository": "RELEASE"
-			},
+				"version": "2.6.2"
+      },
 			{
 				"api": "https://docs.spring.io/springhttp://docs.spring.io/spring-cloud-skipper/docs/2.7.3/api/-cloud-skipper/docs/{version}/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.7.3/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.7.3",
-				"repository": "RELEASE"
-			},
+				"version": "2.7.3"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.2/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.2/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.8.2",
-				"repository": "RELEASE"
-			},
+				"version": "2.8.2"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.3/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.3/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.8.3",
-				"repository": "RELEASE"
-			},
+				"version": "2.8.3"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.4/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.4/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.8.4",
-				"repository": "RELEASE"
-			},
+				"version": "2.8.4"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.5/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.5/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.8.5",
-				"repository": "RELEASE"
-			},
+				"version": "2.8.5"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.6/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.6/reference/htmlsingle/#getting-started",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.8.6",
-				"repository": "RELEASE"
-			},
+				"version": "2.8.6"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.7-SNAPSHOT/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.8.7-SNAPSHOT/reference/htmlsingle/#getting-started",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.8.7-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.8.7-SNAPSHOT"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.9.0-SNAPSHOT/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.9.0-SNAPSHOT/reference/htmlsingle/#getting-started",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.9.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.9.0-SNAPSHOT"
+      },
 			{
 				"api": "http://docs.spring.io/spring-cloud-skipper/docs/2.9.0-RC2/api/",
 				"ref": "http://docs.spring.io/spring-cloud-skipper/docs/2.9.0-RC2/reference/htmlsingle/#getting-started",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "2.9.0-RC2",
-				"repository": "MILESTONE"
-			}
+				"version": "2.9.0-RC2"
+      }
 		],
 		"support": []
 	},
@@ -5202,17 +4895,15 @@
 				"ref": "https://docs.spring.io/spring-cloud-security/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.2.5.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.5.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-security/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.6.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "2.2.6.BUILD-SNASHOT"
+      }
 		],
 		"support": [
 			{
@@ -5252,9 +4943,8 @@
 				"ref": "https://docs.spring.io/spring-cloud-schema-registry/docs/1.1.3-SNAPSHOT/reference/html/spring-cloud-schema-registry.html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.1.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "1.1.3-SNAPSHOT"
+      }
 		],
 		"support": []
 	},
@@ -5321,17 +5011,15 @@
 				"ref": "http://cloud.spring.io/spring-cloud-static/spring-cloud-pipelines/1.0.0.M8/",
 				"status": "PRERELEASE",
 				"current": true,
-				"version": "1.0.0.M8",
-				"repository": "MILESTONE"
-			},
+				"version": "1.0.0.M8"
+      },
 			{
 				"api": "http://cloud.spring.io/spring-cloud-pipelines/spring-cloud-pipelines.html",
 				"ref": "http://cloud.spring.io/spring-cloud-pipelines/spring-cloud-pipelines.html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.0.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "1.0.0.BUILD-SNASHOT"
+      }
 		],
 		"support": []
 	},
@@ -5362,33 +5050,29 @@
 				"ref": "https://docs.spring.io/spring-cloud-openfeign/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-openfeign/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-openfeign/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-openfeign/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "4.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -5444,25 +5128,22 @@
 				"ref": "https://docs.spring.io/spring-cloud-open-service-broker/docs/2.1.3.RELEASE/reference/html5",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.3.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.3.RELEASE"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-open-service-broker/docs/3.3.0/apidocs/",
 				"ref": "https://docs.spring.io/spring-cloud-open-service-broker/docs/3.3.0/reference",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.3.0",
-				"repository": "RELEASE"
-			},
+				"version": "3.3.0"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-open-service-broker/docs/3.4.1-SNAPSHOT/apidocs/",
 				"ref": "https://docs.spring.io/spring-cloud-open-service-broker/docs/3.4.1-SNAPSHOT/reference",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.4.1-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.4.1-SNAPSHOT"
+      }
 		],
 		"support": []
 	},
@@ -5499,33 +5180,29 @@
 				"ref": "https://docs.spring.io/spring-cloud-netflix/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-netflix/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-netflix/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-netflix/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "4.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -5581,65 +5258,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.1.10.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.1.10.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.1.11.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.1.11.BUILD-SNPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.1.3",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.1.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.1.4-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-kubernetes/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "3.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -5695,17 +5364,15 @@
 				"ref": "https://googlecloudplatform.github.io/spring-cloud-gcp/2.0.11/reference/html/index.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.11",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.11"
+      },
 			{
 				"api": "https://googleapis.dev/java/spring-cloud-gcp/3.4.0/index.html",
 				"ref": "https://googlecloudplatform.github.io/spring-cloud-gcp/3.4.0/reference/html/index.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.4.0",
-				"repository": "RELEASE"
-			}
+				"version": "3.4.0"
+      }
 		],
 		"support": []
 	},
@@ -5742,33 +5409,29 @@
 				"ref": "https://docs.spring.io/spring-cloud-gateway/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-gateway/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-gateway/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-gateway/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.1.5-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -5817,25 +5480,22 @@
 				"ref": "https://docs.spring.io/spring-cloud-function/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.2.8",
-				"repository": "RELEASE"
-			},
+				"version": "3.2.8"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-function/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-function/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.2.9-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.2.9-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-function/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-function/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "4.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -5933,7 +5593,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.5.3.RELEASE/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.5.3.RELEASE/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5941,7 +5600,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.4.2.RELEASE/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.4.2.RELEASE/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5949,7 +5607,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.3.1.RELEASE/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.3.1.RELEASE/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5957,7 +5614,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/{version}/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5965,7 +5621,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.7.2/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.7.2/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5973,7 +5628,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.8.3/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.8.3/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5981,7 +5635,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.2/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.2/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -5989,7 +5642,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/{version}/reference/htmlsingle/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -5997,7 +5649,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.3/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.3/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -6005,7 +5656,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.4/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.4/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -6013,7 +5663,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.5/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.5/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -6021,7 +5670,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.6/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.6/reference/htmlsingle#getting-started",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -6029,7 +5677,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.7-SNAPSHOT/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.9.7-SNAPSHOT/reference/htmlsingle#getting-started",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -6037,7 +5684,6 @@
 				"api": "https://docs.spring.io/spring-cloud-dataflow/docs/2.10.0-RC2/api/",
 				"ref": "https://docs.spring.io/spring-cloud-dataflow/docs/2.10.0-RC2/reference/htmlsingle#getting-started",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -6088,7 +5734,6 @@
 				"api": "http://github.com/spring-cloud-data/spring-cloud-data",
 				"ref": "http://cloud.spring.io/spring-cloud-data/spring-cloud-data.html",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			}
 		],
@@ -6139,65 +5784,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.8.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.8.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.9.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.9.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.3",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.4-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-contract/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -6253,65 +5890,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.7.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.7.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.8.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.8.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.1",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.1"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.2-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.2-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-consul/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -6367,9 +5996,8 @@
 				"ref": "http://cloud.spring.io/spring-cloud-connectors/spring-cloud-connectors.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.0.9.RELEASE",
-				"repository": "RELEASE"
-			}
+				"version": "2.0.9.RELEASE"
+      }
 		],
 		"support": [
 			{
@@ -6421,65 +6049,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.8.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.8.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.9.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.9.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.5",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.6-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.6-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.3",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.4-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-config/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "4.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -6528,33 +6148,29 @@
 				"ref": "https://docs.spring.io/spring-cloud-commons/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.4",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.4"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-commons/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.5-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.5-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-commons/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "4.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-commons/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "4.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -6603,17 +6219,15 @@
 				"ref": "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/tree/1.0.x",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.4.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.0.4.BUILD-SNASHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-cloudfoundry-service-broker/docs/1.0.3.RELEASE/apidocs/",
 				"ref": "https://github.com/spring-cloud/spring-cloud-cloudfoundry-service-broker/tree/1.0.x",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.0.3.RELEASE",
-				"repository": "RELEASE"
-			}
+				"version": "1.0.3.RELEASE"
+      }
 		],
 		"support": []
 	},
@@ -6637,49 +6251,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.4.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.4.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.3.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.3.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.3-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cloudfoundry/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.1.3-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -6728,49 +6336,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.4.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.4.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.5.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.5.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.3-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.1",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.1"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-cli/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.2-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "3.1.2-SNAPSHOT"
+      }
 		],
 		"support": []
 	},
@@ -6801,65 +6403,57 @@
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.0.6.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.0.6.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.7.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.0.7.BUILD-SNASHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.3",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.0.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.0.4-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.1.3",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.3"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.1.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.1.4-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.0-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-circuitbreaker/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "3.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "3.0.0-RC1"
+      }
 		],
 		"support": [
 			{
@@ -6915,49 +6509,43 @@
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "3.0.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.0.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.0.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.0.3-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "3.1.2",
-				"repository": "RELEASE"
-			},
+				"version": "3.1.2"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "3.1.3-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "3.1.3-SNAPSHOT"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "4.0.0-M5",
-				"repository": "MILESTONE"
-			},
+				"version": "4.0.0-M5"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-bus/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "4.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "4.0.0-SNAPSHOT"
+      }
 		],
 		"support": [
 			{
@@ -7013,65 +6601,57 @@
 				"ref": "https://docs.microsoft.com/azure/java/spring-framework",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.0",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.0"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.microsoft.com/en-us/azure/java/spring-framework",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.7",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.7"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.microsoft.com/azure/java/spring-framework",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.7",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.7"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.microsoft.com/azure/java/spring-framework",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.0.0",
-				"repository": "RELEASE"
-			},
+				"version": "1.0.0"
+      },
 			{
 				"api": "",
 				"ref": "https://aka.ms/spring/docs/4.2.0",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.2",
-				"repository": "RELEASE"
-			},
+				"version": "4.2"
+      },
 			{
 				"api": "",
 				"ref": "https://aka.ms/spring/docs/4.3.0",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.3",
-				"repository": "RELEASE"
-			},
+				"version": "4.3"
+      },
 			{
 				"api": "",
 				"ref": "https://aka.ms/spring/docs/4.4.0",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "4.4",
-				"repository": "RELEASE"
-			},
+				"version": "4.4"
+      },
 			{
 				"api": "",
 				"ref": "https://aka.ms/spring/docs/4.4.1",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "4.4.1",
-				"repository": "RELEASE"
-			}
+				"version": "4.4.1"
+      }
 		],
 		"support": []
 	},
@@ -7102,33 +6682,29 @@
 				"ref": "https://docs.spring.io/spring-cloud-aws/docs/{version}/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.6.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.6.RELEASE"
+      },
 			{
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud-aws/docs/{version}/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.2.7.BUILD-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "2.2.7.BUILD-SNASHOT"
+      },
 			{
 				"api": "https://docs.awspring.io/spring-cloud-aws/docs/{version}/apidocs/index.html",
 				"ref": "https://docs.awspring.io/spring-cloud-aws/docs/{version}/reference/html/index.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2.3.0",
-				"repository": "RELEASE"
-			},
+				"version": "2.3.0"
+      },
 			{
 				"api": "https://docs.awspring.io/spring-cloud-aws/docs/{version}/apidocs/index.html",
 				"ref": "https://docs.awspring.io/spring-cloud-aws/docs/{version}/reference/html/index.html",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "2.3.1-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "2.3.1-SNAPSHOT"
+      }
 		],
 		"support": []
 	},
@@ -7159,25 +6735,22 @@
 				"ref": "https://docs.spring.io/spring-cloud-app-broker/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.4.2",
-				"repository": "RELEASE"
-			},
+				"version": "1.4.2"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-app-broker/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-app-broker/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "1.5.3",
-				"repository": "RELEASE"
-			},
+				"version": "1.5.3"
+      },
 			{
 				"api": "https://docs.spring.io/spring-cloud-app-broker/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-cloud-app-broker/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.5.4-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			}
+				"version": "1.5.4-SNAPSHOT"
+      }
 		],
 		"support": []
 	},
@@ -7220,41 +6793,36 @@
 				"ref": "https://spring-cloud-alibaba-group.github.io/github-pages/greenwich/spring-cloud-alibaba.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.1.2.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.1.2.RELEASE"
+      },
 			{
 				"api": "https://spring-cloud-alibaba-group.github.io/github-pages/finchley/spring-cloud-alibaba.html",
 				"ref": "https://spring-cloud-alibaba-group.github.io/github-pages/finchley/spring-cloud-alibaba.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.0.2.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.0.2.RELEASE"
+      },
 			{
 				"api": "https://spring-cloud-alibaba-group.github.io/github-pages/edgware/spring-cloud-alibaba.html",
 				"ref": "https://spring-cloud-alibaba-group.github.io/github-pages/edgware/spring-cloud-alibaba.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "1.5.1.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "1.5.1.RELEASE"
+      },
 			{
 				"api": "https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html",
 				"ref": "https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": false,
-				"version": "2.2.9.RELEASE",
-				"repository": "RELEASE"
-			},
+				"version": "2.2.9.RELEASE"
+      },
 			{
 				"api": "https://spring-cloud-alibaba-group.github.io/github-pages/2021/en-us/index.html",
 				"ref": "https://spring-cloud-alibaba-group.github.io/github-pages/2021/en-us/index.html",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "2021.0.4.0",
-				"repository": "RELEASE"
-			}
+				"version": "2021.0.4.0"
+      }
 		],
 		"support": []
 	},
@@ -7327,7 +6895,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/Hoxton.BUILD-SNAPSHOT/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7335,7 +6902,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7343,7 +6909,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7351,7 +6916,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7359,7 +6923,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7367,7 +6930,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -7375,7 +6937,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7383,7 +6944,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/spring-cloud/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -7422,7 +6982,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7430,7 +6989,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7438,7 +6996,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7446,7 +7003,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7454,7 +7010,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7462,7 +7017,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7470,7 +7024,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -7478,7 +7031,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7486,7 +7038,6 @@
 				"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -7600,7 +7151,6 @@
 				"api": "https://docs.spring.io/spring-batch/4.2.x/api/index.html",
 				"ref": "http://docs.spring.io/spring-batch/4.2.x/reference/html/index.html",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7608,7 +7158,6 @@
 				"api": "https://docs.spring.io/spring-batch/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-batch/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -7616,7 +7165,6 @@
 				"api": "https://docs.spring.io/spring-batch/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-batch/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -7667,41 +7215,36 @@
 				"ref": "https://docs.spring.io/spring-authorization-server/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
 				"current": true,
-				"version": "0.3.1",
-				"repository": "RELEASE"
-			},
+				"version": "0.3.1"
+      },
 			{
 				"api": "https://docs.spring.io/spring-authorization-server/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-authorization-server/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "0.4.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "0.4.0-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-authorization-server/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-authorization-server/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
 				"current": false,
-				"version": "1.0.0-SNAPSHOT",
-				"repository": "SNAPSHOT"
-			},
+				"version": "1.0.0-SNAPSHOT"
+      },
 			{
 				"api": "https://docs.spring.io/spring-authorization-server/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-authorization-server/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "0.4.0-RC1",
-				"repository": "MILESTONE"
-			},
+				"version": "0.4.0-RC1"
+      },
 			{
 				"api": "https://docs.spring.io/spring-authorization-server/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-authorization-server/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
 				"current": false,
-				"version": "1.0.0-RC1",
-				"repository": "MILESTONE"
-			}
+				"version": "1.0.0-RC1"
+      }
 		],
 		"support": []
 	},
@@ -7725,7 +7268,6 @@
 				"api": "http://docs.spring.io/spring-android/docs/2.0.0.M3/api/",
 				"ref": "http://docs.spring.io/spring-android/docs/2.0.0.M3/reference/html",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -7758,7 +7300,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7766,7 +7307,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7774,7 +7314,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			},
 			{
@@ -7782,7 +7321,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7790,7 +7328,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -7798,7 +7335,6 @@
 				"api": "https://docs.spring.io/spring-amqp/docs/{version}/api/",
 				"ref": "https://docs.spring.io/spring-amqp/docs/{version}/reference/html/",
 				"status": "PRERELEASE",
-				"repository": "MILESTONE",
 				"current": false
 			}
 		],
@@ -7865,7 +7401,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/platform/docs/Brussels-BUILD-SNAPSHOT/reference/htmlsingle/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7873,7 +7408,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/platform/docs/Cairo-SR7/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": true
 			},
 			{
@@ -7881,7 +7415,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/platform/docs/Cairo-BUILD-SNAPSHOT/reference/htmlsingle/",
 				"status": "SNAPSHOT",
-				"repository": "SNAPSHOT",
 				"current": false
 			},
 			{
@@ -7889,7 +7422,6 @@
 				"api": "",
 				"ref": "https://docs.spring.io/platform/docs/Brussels-SR17/reference/htmlsingle/",
 				"status": "GENERAL_AVAILABILITY",
-				"repository": "RELEASE",
 				"current": false
 			}
 		],

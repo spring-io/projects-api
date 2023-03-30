@@ -28,7 +28,6 @@ import com.contentful.java.cma.model.CMAArray;
 import com.contentful.java.cma.model.CMAEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.contentful.ProjectDocumentation.Status;
-import io.spring.projectapi.web.repository.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -238,8 +237,7 @@ class ContentfulOperationsTests {
 	}
 
 	private ProjectDocumentation getDocumentation(String version, Status status) {
-		return new ProjectDocumentation(version, "http://api.com", "http://ref.com", status,
-				Repository.RELEASE.getName(), false);
+		return new ProjectDocumentation(version, "http://api.com", "http://ref.com", status, false);
 	}
 
 }

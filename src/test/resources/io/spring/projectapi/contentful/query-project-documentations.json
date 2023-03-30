@@ -9,7 +9,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "SNAPSHOT",
-              "repository": "SNAPSHOT",
               "current": false
             },
             {
@@ -17,7 +16,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "GENERAL_AVAILABILITY",
-              "repository": "RELEASE",
               "current": false
             },
             {
@@ -25,7 +23,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "SNAPSHOT",
-              "repository": "SNAPSHOT",
               "current": false
             },
             {
@@ -33,7 +30,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "GENERAL_AVAILABILITY",
-              "repository": "RELEASE",
               "current": true
             },
             {
@@ -41,7 +37,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "SNAPSHOT",
-              "repository": "SNAPSHOT",
               "current": false
             },
             {
@@ -49,7 +44,6 @@
               "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
               "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
               "status": "PRERELEASE",
-              "repository": "MILESTONE",
               "current": false
             }
           ]

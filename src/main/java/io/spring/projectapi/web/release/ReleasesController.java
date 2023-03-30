@@ -105,10 +105,9 @@ public class ReleasesController {
 			return ResponseEntity.badRequest().body(message);
 		}
 		Release.Status status = Release.Status.fromVersion(version);
-		Repository repository = getRepository(status);
 		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(),
 				release.getApiDocUrl(), release.getReferenceDocUrl(),
-				ProjectDocumentation.Status.valueOf(status.name()), repository.getIdentifier(), false);
+				ProjectDocumentation.Status.valueOf(status.name()), false);
 		this.contentfulService.addProjectDocumentation(id, projectDocumentation);
 		URI linkToRelease = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).toUri();
 		return ResponseEntity.created(linkToRelease).build();

@@ -3,6 +3,5 @@
 	"api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
 	"ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
 	"status": "SNAPSHOT",
-	"repository": "SNAPSHOT",
 	"current": true
 }

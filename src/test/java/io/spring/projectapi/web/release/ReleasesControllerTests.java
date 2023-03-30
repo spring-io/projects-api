@@ -170,7 +170,6 @@ class ReleasesControllerTests {
 		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
 		assertThat(added.getRef()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
 		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
-		assertThat(added.getRepository()).isEqualTo("spring-releases");
 		assertThat(added.isCurrent()).isFalse();
 	}
 
@@ -235,10 +234,10 @@ class ReleasesControllerTests {
 		String docsRoot;
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.0/";
 		result.add(new ProjectDocumentation("2.3.0", docsRoot + "api/", docsRoot + "reference/html/",
-				Status.GENERAL_AVAILABILITY, null, true));
+				Status.GENERAL_AVAILABILITY, true));
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/";
 		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
-				Status.SNAPSHOT, null, false));
+				Status.SNAPSHOT, false));
 		return result;
 	}
 
