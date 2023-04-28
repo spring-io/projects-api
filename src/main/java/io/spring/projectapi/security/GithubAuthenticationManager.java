@@ -37,6 +37,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -67,6 +68,8 @@ class GithubAuthenticationManager implements AuthenticationManager {
 	private final String team;
 
 	GithubAuthenticationManager(RestTemplateBuilder restTemplateBuilder, String org, String team) {
+		Assert.hasText(org, "Org must not be empty");
+		Assert.hasText(team, "Team must not be empty");
 		this.restTemplate = restTemplateBuilder.build();
 		this.org = org;
 		this.team = team;
