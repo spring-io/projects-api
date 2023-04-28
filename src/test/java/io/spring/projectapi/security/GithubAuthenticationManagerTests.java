@@ -25,11 +25,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -89,6 +92,18 @@ class GithubAuthenticationManagerTests {
 		Authentication authentication = new TestingAuthenticationToken("user", "password");
 		Authentication adminAuthentication = this.authenticationManager.authenticate(authentication);
 		assertThat(adminAuthentication.getAuthorities()).extracting(GrantedAuthority::getAuthority).isEmpty();
+		this.server.verify();
+	}
+
+	@Test
+	void authenticateWhenUnauthorizedThrowsAuthenticationException() {
+		this.server.expect(requestTo(MEMBER_PATH_TEMPLATE))
+				.andExpect(header("Authorization", "Basic " + Base64Utils.encodeToString("user:password".getBytes())))
+				.andRespond(withStatus(HttpStatus.UNAUTHORIZED));
+		Authentication authentication = new TestingAuthenticationToken("user", "password");
+		assertThatExceptionOfType(AuthenticationException.class)
+				.isThrownBy(() -> this.authenticationManager.authenticate(authentication))
+				.withCauseInstanceOf(HttpClientErrorException.Unauthorized.class).withMessage("Invalid credentials");
 		this.server.verify();
 	}
 

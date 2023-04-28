@@ -30,6 +30,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -81,9 +82,15 @@ class GithubAuthenticationManager implements AuthenticationManager {
 		}
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		User user = new User(username, token, authorities);
-		if (isAdmin(username, token)) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		try {
+			if (isAdmin(username, token)) {
+				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			}
 		}
+		catch (HttpClientErrorException.Unauthorized unauthorized) {
+			throw new BadCredentialsException("Invalid credentials", unauthorized);
+		}
+
 		return new UsernamePasswordAuthenticationToken(user, null, authorities);
 	}
 
