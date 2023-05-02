@@ -87,6 +87,24 @@ Active:: actively and officially supported by the Spring team.
 Community:: actively supported by the Spring community with limited involvement from the Spring team.
 End Of Life:: not supported anymore; there won't be new releases for this project.
 
+[[project-details]]
+== Project Details
+
+[[patch-project-details]]
+=== Patching project details
+Projects can have a body and spring boot configuration which are displayed on the Project Overview page.
+This endpoint can be used to update either or both of those.
+
+include::{snippets}/patch-project-details/http-request.adoc[]
+
+include::{snippets}/patch-project-details/http-response.adoc[]
+
+NOTE: This request requires <<authentication>>.
+
+==== Request structure
+
+include::{snippets}/patch-project-details/request-fields.adoc[]
+
 
 [[release]]
 == Releases
