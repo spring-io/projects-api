@@ -69,4 +69,8 @@ public class ContentfulService {
 		this.operations.deleteDocumentation(projectSlug, version);
 	}
 
+	public void patchProjectDetails(String projectSlug, ProjectDetails details) {
+		this.operations.patchProjectDetails(projectSlug, details);
+	}
+
 }

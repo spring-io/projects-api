@@ -99,4 +99,11 @@ class ContentfulServiceTests {
 		verify(this.operations).deleteDocumentation("test-project", "1.0");
 	}
 
+	@Test
+	void patchProjectDetails() {
+		ProjectDetails details = new ProjectDetails("spring-boot-config", "my-project");
+		this.service.patchProjectDetails("test-project", details);
+		verify(this.operations).patchProjectDetails("test-project", details);
+	}
+
 }

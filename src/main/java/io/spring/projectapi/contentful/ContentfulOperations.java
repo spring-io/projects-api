@@ -79,6 +79,20 @@ class ContentfulOperations {
 		this.client.entries().publish(updated);
 	}
 
+	void patchProjectDetails(String projectSlug, ProjectDetails projectDetails) {
+		CMAEntry projectEntry = getProjectEntry(projectSlug);
+		updateIfPresent(projectDetails.getSpringBootConfig(), projectEntry, "springBootConfig");
+		updateIfPresent(projectDetails.getBody(), projectEntry, "body");
+		CMAEntry updated = this.client.entries().update(projectEntry);
+		this.client.entries().publish(updated);
+	}
+
+	private static void updateIfPresent(String value, CMAEntry projectEntry, String field) {
+		if (value != null) {
+			projectEntry.setField(field, LOCALE, value);
+		}
+	}
+
 	private void computeCurrentRelease(List<Map<String, Object>> releases) {
 		List<Map<String, Object>> modifiableReleases = releases.stream().map(initializeToFalse())
 				.collect(Collectors.toList());

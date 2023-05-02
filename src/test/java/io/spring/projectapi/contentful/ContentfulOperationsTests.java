@@ -197,6 +197,67 @@ class ContentfulOperationsTests {
 		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(true);
 	}
 
+	@Test
+	void patchProjectWhenProjectDoesNotExistThrowsException() {
+		setupNonExistentProject();
+		assertThatExceptionOfType(NoSuchContentfulProjectException.class).isThrownBy(
+				() -> this.operations.patchProjectDetails("does-not-exist", new ProjectDetails(null, null)));
+	}
+
+	@Test
+	void patchProjectWhenSpringBootConfigNullDoesNotUpdate() {
+		setupProject((maps) -> {
+			maps.add(getRelease(false));
+			maps.add(Map.of("version", "2.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		});
+		this.operations.patchProjectDetails("test-project", new ProjectDetails(null, "new body"));
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		String updatedBody = value.getField("body", "en-US");
+		String springBootConfig = value.getField("springBootConfig", "en-US");
+		assertThat(updatedBody).isEqualTo("new body");
+		assertThat(springBootConfig).isEqualTo("sbc");
+	}
+
+	@Test
+	void patchProjectWhenBodyNullDoesNotUpdate() {
+		setupProject((maps) -> {
+			maps.add(getRelease(false));
+			maps.add(Map.of("version", "2.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		});
+		this.operations.patchProjectDetails("test-project", new ProjectDetails("new sbc", null));
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		String updatedBody = value.getField("body", "en-US");
+		String springBootConfig = value.getField("springBootConfig", "en-US");
+		assertThat(updatedBody).isEqualTo("existing body");
+		assertThat(springBootConfig).isEqualTo("new sbc");
+	}
+
+	@Test
+	void patchProjectUpdatesBodyAndDescription() {
+		setupProject((maps) -> {
+			maps.add(getRelease(false));
+			maps.add(Map.of("version", "2.0", "api", "http://api.com", "ref", "http://ref.com", "status",
+					"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", true));
+		});
+		this.operations.patchProjectDetails("test-project", new ProjectDetails("new sbc", "new body"));
+		ArgumentCaptor<CMAEntry> captor = ArgumentCaptor.forClass(CMAEntry.class);
+		verify(this.client.entries()).update(any());
+		verify(this.client.entries()).publish(captor.capture());
+		CMAEntry value = captor.getValue();
+		String updatedBody = value.getField("body", "en-US");
+		String springBootConfig = value.getField("springBootConfig", "en-US");
+		assertThat(updatedBody).isEqualTo("new body");
+		assertThat(springBootConfig).isEqualTo("new sbc");
+	}
+
 	@SuppressWarnings("unchecked")
 	private void setupProject(Consumer<List<Map<String, Object>>> consumer) {
 		ModuleEntries entries = mock(ModuleEntries.class);
@@ -215,6 +276,8 @@ class ContentfulOperationsTests {
 		List<Map<String, Object>> documentation = new ArrayList<>();
 		consumer.accept(documentation);
 		projectEntry.setField("documentation", "en-US", documentation);
+		projectEntry.setField("springBootConfig", "en-US", "sbc");
+		projectEntry.setField("body", "en-US", "existing body");
 		return projectEntry;
 	}
 
