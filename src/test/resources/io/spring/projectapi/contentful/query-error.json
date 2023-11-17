@@ -1,4 +1,15 @@
 {
   "data": {
-  }
+  },
+  "errors": [
+    {
+      "message": "Cannot query field \"a\" on type \"Project\".",
+      "locations": [
+        {
+          "line": 4,
+          "column": 4
+        }
+      ]
+    }
+  ]
 }

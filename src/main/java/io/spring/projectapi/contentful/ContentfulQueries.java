@@ -17,6 +17,7 @@
 package io.spring.projectapi.contentful;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -76,7 +77,13 @@ class ContentfulQueries {
 	}
 
 	private <T> List<T> fieldToEntityList(ClientGraphQlResponse response, String path, Class<T> type) {
-		return field(response, path, (field) -> field.toEntityList(type));
+		return field(response, path, (field) -> getList(type, response, path));
+	}
+
+	private static <T> List<T> getList(Class<T> type, ClientGraphQlResponse response, String path) {
+		ClientResponseField field = response.field(path);
+		return (!field.hasValue() && response.getErrors().isEmpty()) ? Collections.emptyList()
+				: field.toEntityList(type);
 	}
 
 	private <T> T fieldToEntity(ClientGraphQlResponse response, String path, Class<T> type) {

@@ -133,6 +133,13 @@ class ContentfulQueriesTests {
 				.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
 	}
 
+	@Test
+	void getProjectSupportsWhenNullReturnsEmptyList() throws IOException {
+		setupResponse("query-null-support.json");
+		List<ProjectSupport> supports = this.contentfulQueries.getProjectSupports("spring-xd");
+		assertThat(supports).isEmpty();
+	}
+
 	private void setupResponse(String name) throws IOException {
 		setupResponse(new ClassPathResource(name, getClass()));
 	}
