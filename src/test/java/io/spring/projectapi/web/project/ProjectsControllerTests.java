@@ -22,7 +22,7 @@ import java.util.List;
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.Project.Status;
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTest
+@WebApiTests
 class ProjectsControllerTests {
 
 	@Autowired
@@ -66,36 +66,37 @@ class ProjectsControllerTests {
 	@Test
 	void projectsReturnsProjects() throws Exception {
 		given(this.contentfulService.getProjects()).willReturn(getProjects());
-		this.mvc.perform(get("/projects").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$._embedded.projects.length()").value("2"))
-				.andExpect(jsonPath("$._embedded.projects[0].name").value("Spring Boot"))
-				.andExpect(jsonPath("$._embedded.projects[0].slug").value("spring-boot"))
-				.andExpect(jsonPath("$._embedded.projects[0].repositoryUrl")
-						.value("https://github.com/spring-projects/spring-boot"))
-				.andExpect(jsonPath("$._embedded.projects[0].status").value("ACTIVE"))
-				.andExpect(jsonPath("$._embedded.projects[0]._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot"))
-				.andExpect(jsonPath("$._embedded.projects[0]._links.releases.href")
-						.value("https://api.spring.io/projects/spring-boot/releases"))
-				.andExpect(jsonPath("$._embedded.projects[0]._links.generations.href")
-						.value("https://api.spring.io/projects/spring-boot/generations"))
-				.andExpect(jsonPath("$._embedded.projects[1].name").value("Spring Data"))
-				.andExpect(jsonPath("$._embedded.projects[1].slug").value("spring-data"))
-				.andExpect(jsonPath("$._embedded.projects[1].repositoryUrl")
-						.value("https://github.com/spring-projects/spring-data"))
-				.andExpect(jsonPath("$._embedded.projects[1].status").value("ACTIVE"))
-				.andExpect(jsonPath("$._embedded.projects[1]._links.self.href")
-						.value("https://api.spring.io/projects/spring-data"))
-				.andExpect(jsonPath("$._embedded.projects[1]._links.releases.href")
-						.value("https://api.spring.io/projects/spring-data/releases"))
-				.andExpect(jsonPath("$._embedded.projects[1]._links.generations.href")
-						.value("https://api.spring.io/projects/spring-data/generations"))
-				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/{id}"))
-				.andExpect(jsonPath("$._links.project.templated").value(true))
-				.andDo(document("list-projects", preprocessResponse(prettyPrint()), indexLinks(),
-						responseFields(fieldWithPath("_embedded.projects").description("An array of Projects"))
-								.andWithPrefix("_embedded.projects[]", projectPayload())
-								.and(subsectionWithPath("_links").description("Links to other resources"))));
+		this.mvc.perform(get("/projects").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$._embedded.projects.length()").value("2"))
+			.andExpect(jsonPath("$._embedded.projects[0].name").value("Spring Boot"))
+			.andExpect(jsonPath("$._embedded.projects[0].slug").value("spring-boot"))
+			.andExpect(jsonPath("$._embedded.projects[0].repositoryUrl")
+				.value("https://github.com/spring-projects/spring-boot"))
+			.andExpect(jsonPath("$._embedded.projects[0].status").value("ACTIVE"))
+			.andExpect(jsonPath("$._embedded.projects[0]._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot"))
+			.andExpect(jsonPath("$._embedded.projects[0]._links.releases.href")
+				.value("https://api.spring.io/projects/spring-boot/releases"))
+			.andExpect(jsonPath("$._embedded.projects[0]._links.generations.href")
+				.value("https://api.spring.io/projects/spring-boot/generations"))
+			.andExpect(jsonPath("$._embedded.projects[1].name").value("Spring Data"))
+			.andExpect(jsonPath("$._embedded.projects[1].slug").value("spring-data"))
+			.andExpect(jsonPath("$._embedded.projects[1].repositoryUrl")
+				.value("https://github.com/spring-projects/spring-data"))
+			.andExpect(jsonPath("$._embedded.projects[1].status").value("ACTIVE"))
+			.andExpect(jsonPath("$._embedded.projects[1]._links.self.href")
+				.value("https://api.spring.io/projects/spring-data"))
+			.andExpect(jsonPath("$._embedded.projects[1]._links.releases.href")
+				.value("https://api.spring.io/projects/spring-data/releases"))
+			.andExpect(jsonPath("$._embedded.projects[1]._links.generations.href")
+				.value("https://api.spring.io/projects/spring-data/generations"))
+			.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/{id}"))
+			.andExpect(jsonPath("$._links.project.templated").value(true))
+			.andDo(document("list-projects", preprocessResponse(prettyPrint()), indexLinks(),
+					responseFields(fieldWithPath("_embedded.projects").description("An array of Projects"))
+						.andWithPrefix("_embedded.projects[]", projectPayload())
+						.and(subsectionWithPath("_links").description("Links to other resources"))));
 	}
 
 	@Test
@@ -107,15 +108,15 @@ class ProjectsControllerTests {
 	@Test
 	void projectReturnsProject() throws Exception {
 		given(this.contentfulService.getProject("spring-boot")).willReturn(getProjects().get(0));
-		this.mvc.perform(get("/projects/spring-boot").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.name").value("Spring Boot"))
-				.andExpect(jsonPath("$._links.self.href").value("https://api.spring.io/projects/spring-boot"))
-				.andExpect(
-						jsonPath("$._links.releases.href").value("https://api.spring.io/projects/spring-boot/releases"))
-				.andExpect(jsonPath("$._links.generations.href")
-						.value("https://api.spring.io/projects/spring-boot/generations"))
-				.andDo(document("show-project", preprocessResponse(prettyPrint()), projectLinks(),
-						responseFields(projectPayload())));
+		this.mvc.perform(get("/projects/spring-boot").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.name").value("Spring Boot"))
+			.andExpect(jsonPath("$._links.self.href").value("https://api.spring.io/projects/spring-boot"))
+			.andExpect(jsonPath("$._links.releases.href").value("https://api.spring.io/projects/spring-boot/releases"))
+			.andExpect(jsonPath("$._links.generations.href")
+				.value("https://api.spring.io/projects/spring-boot/generations"))
+			.andDo(document("show-project", preprocessResponse(prettyPrint()), projectLinks(),
+					responseFields(projectPayload())));
 	}
 
 	private List<io.spring.projectapi.contentful.Project> getProjects() {
@@ -132,7 +133,7 @@ class ProjectsControllerTests {
 				fieldWithPath("slug").type(JsonFieldType.STRING).description("URL-friendly name of the project"),
 				fieldWithPath("repositoryUrl").type(JsonFieldType.STRING).description("URL for the source repository"),
 				fieldWithPath("status").type(JsonFieldType.STRING)
-						.description("<<project-status, Support status>> of the project"),
+					.description("<<project-status, Support status>> of the project"),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 

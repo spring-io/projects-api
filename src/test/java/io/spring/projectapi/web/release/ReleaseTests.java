@@ -36,7 +36,7 @@ class ReleaseTests {
 		@Test
 		void fromVersionWhenVersionIsNullThrowsException() {
 			assertThatIllegalArgumentException().isThrownBy(() -> Status.fromVersion(null))
-					.withMessage("'version' must not be null");
+				.withMessage("'version' must not be null");
 		}
 
 		@Test

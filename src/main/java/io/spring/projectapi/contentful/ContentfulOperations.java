@@ -63,8 +63,9 @@ class ContentfulOperations {
 		builder.setAccessToken(accessToken);
 		builder.setSpaceId(spaceId);
 		builder.setEnvironmentId(environmentId);
-		OkHttpClient coreCallFactory = builder.defaultCoreCallFactoryBuilder().addInterceptor(new RetryInterceptor())
-				.build();
+		OkHttpClient coreCallFactory = builder.defaultCoreCallFactoryBuilder()
+			.addInterceptor(new RetryInterceptor())
+			.build();
 		builder.setCoreCallFactory(coreCallFactory);
 		return builder.build();
 	}
@@ -94,13 +95,16 @@ class ContentfulOperations {
 	}
 
 	private void computeCurrentRelease(List<Map<String, Object>> releases) {
-		List<Map<String, Object>> modifiableReleases = releases.stream().map(initializeToFalse())
-				.collect(Collectors.toList());
+		List<Map<String, Object>> modifiableReleases = releases.stream()
+			.map(initializeToFalse())
+			.collect(Collectors.toList());
 		releases.clear();
 		releases.addAll(modifiableReleases);
-		modifiableReleases.stream().sorted(VERSION_COMPARATOR)
-				.filter((documentation) -> "GENERAL_AVAILABILITY".equals(documentation.get("status"))).findFirst()
-				.ifPresent((documentation) -> documentation.put("current", true));
+		modifiableReleases.stream()
+			.sorted(VERSION_COMPARATOR)
+			.filter((documentation) -> "GENERAL_AVAILABILITY".equals(documentation.get("status")))
+			.findFirst()
+			.ifPresent((documentation) -> documentation.put("current", true));
 	}
 
 	private static Function<Map<String, Object>, LinkedHashMap<String, Object>> initializeToFalse() {

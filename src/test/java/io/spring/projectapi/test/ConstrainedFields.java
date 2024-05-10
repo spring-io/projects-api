@@ -42,7 +42,7 @@ public class ConstrainedFields {
 
 	public FieldDescriptor withPath(String path) {
 		return fieldWithPath(path).attributes(key("constraints").value(StringUtils
-				.collectionToDelimitedString(this.constraintDescriptions.descriptionsForProperty(path), ". ")));
+			.collectionToDelimitedString(this.constraintDescriptions.descriptionsForProperty(path), ". ")));
 	}
 
 }

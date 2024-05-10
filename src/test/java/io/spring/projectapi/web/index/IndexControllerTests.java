@@ -16,7 +16,7 @@
 
 package io.spring.projectapi.web.index;
 
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests for {@link IndexController}
  */
-@WebApiTest(IndexController.class)
+@WebApiTests(IndexController.class)
 public class IndexControllerTests {
 
 	@Autowired
@@ -44,8 +44,10 @@ public class IndexControllerTests {
 
 	@Test
 	public void indexReturnProjectsAndRepositories() throws Exception {
-		this.mvc.perform(get("/").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk()).andDo(document("show-index",
-				preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()), links(indexLinks())));
+		this.mvc.perform(get("/").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andDo(document("show-index", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+					links(indexLinks())));
 	}
 
 	LinkDescriptor[] indexLinks() {

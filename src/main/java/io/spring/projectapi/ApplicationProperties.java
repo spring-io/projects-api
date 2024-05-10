@@ -17,7 +17,7 @@
 package io.spring.projectapi;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 /**
@@ -53,6 +53,7 @@ public class ApplicationProperties {
 
 		/**
 		 * Access token for Contentful's Content Delivery API.
+		 *
 		 * @see <a href=
 		 * "https://www.contentful.com/developers/docs/references/content-delivery-api/">Content
 		 * Delivery API</a>
@@ -61,6 +62,7 @@ public class ApplicationProperties {
 
 		/**
 		 * Access token for Contentful's Content Management API.
+		 *
 		 * @see <a href=
 		 * "https://www.contentful.com/developers/docs/references/content-management-api/">Content
 		 * Management API</a>
@@ -115,6 +117,7 @@ public class ApplicationProperties {
 
 		/**
 		 * GitHub team admin users should belong to.
+		 *
 		 * @see <a href=
 		 * "https://developer.github.com/v3/teams/members/#get-team-membership-for-a-user">GitHub
 		 * API team membership</a>

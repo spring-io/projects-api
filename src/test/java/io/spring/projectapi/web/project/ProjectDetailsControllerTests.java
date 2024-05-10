@@ -25,7 +25,7 @@ import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.Project;
 import io.spring.projectapi.contentful.Project.Status;
 import io.spring.projectapi.test.ConstrainedFields;
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -56,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Madhura Bhave
  */
-@WebApiTest
+@WebApiTests
 class ProjectDetailsControllerTests {
 
 	@Autowired
@@ -72,21 +72,25 @@ class ProjectDetailsControllerTests {
 	@WithMockUser(roles = "ADMIN")
 	void patchProjectDetailsWhenNotFoundReturns404() throws Exception {
 		willThrow(NoSuchContentfulProjectException.class).given(this.contentfulService)
-				.patchProjectDetails(eq("does-not-exist"), any());
-		this.mvc.perform(patch("/projects/does-not-exist/details").contentType(MediaType.APPLICATION_JSON)
-				.content(from("patch.json"))).andExpect(status().isNotFound());
+			.patchProjectDetails(eq("does-not-exist"), any());
+		this.mvc
+			.perform(patch("/projects/does-not-exist/details").contentType(MediaType.APPLICATION_JSON)
+				.content(from("patch.json")))
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void patchProjectDetails() throws Exception {
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(ProjectDetails.class);
-		this.mvc.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
-				.content(from("patch.json"))).andExpect(status().isNoContent())
-				.andDo(document("patch-project-details", preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						requestFields(fields.withPath("bootConfig").description("Spring Boot Config"),
-								fields.withPath("body").description("Project Body"))));
+		this.mvc
+			.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
+				.content(from("patch.json")))
+			.andExpect(status().isNoContent())
+			.andDo(document("patch-project-details", preprocessRequest(prettyPrint()),
+					preprocessResponse(prettyPrint()),
+					requestFields(fields.withPath("bootConfig").description("Spring Boot Config"),
+							fields.withPath("body").description("Project Body"))));
 	}
 
 	@Test
@@ -95,10 +99,12 @@ class ProjectDetailsControllerTests {
 		Project project = new Project("Spring Boot", "spring-boot", "https://github.com/spring-projects/spring-boot",
 				Status.ACTIVE);
 		given(this.contentfulService.getProject("spring-boot")).willReturn(project);
-		this.mvc.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
-				.content(from("patch-field-missing.json"))).andExpect(status().isNoContent());
+		this.mvc
+			.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
+				.content(from("patch-field-missing.json")))
+			.andExpect(status().isNoContent());
 		ArgumentCaptor<io.spring.projectapi.contentful.ProjectDetails> captor = ArgumentCaptor
-				.forClass(io.spring.projectapi.contentful.ProjectDetails.class);
+			.forClass(io.spring.projectapi.contentful.ProjectDetails.class);
 		verify(this.contentfulService).patchProjectDetails(eq("spring-boot"), captor.capture());
 		io.spring.projectapi.contentful.ProjectDetails value = captor.getValue();
 		assertThat(value.getBody()).isNull();
@@ -107,8 +113,10 @@ class ProjectDetailsControllerTests {
 
 	@Test
 	void patchWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
-		this.mvc.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
-				.content(from("patch.json"))).andExpect(status().isUnauthorized());
+		this.mvc
+			.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
+				.content(from("patch.json")))
+			.andExpect(status().isUnauthorized());
 	}
 
 	private byte[] from(String path) throws IOException {

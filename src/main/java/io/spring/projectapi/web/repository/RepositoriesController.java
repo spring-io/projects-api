@@ -62,7 +62,7 @@ public class RepositoriesController {
 	private EntityModel<Repository> asModel(Repository repository) {
 		EntityModel<Repository> model = EntityModel.of(repository);
 		Link linkToSelf = linkTo(methodOn(RepositoriesController.class).repository(repository.getIdentifier()))
-				.withSelfRel();
+			.withSelfRel();
 		model.add(linkToSelf);
 		return model;
 	}

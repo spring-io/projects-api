@@ -16,6 +16,8 @@
 
 package io.spring.projectapi.security;
 
+import java.util.Base64;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +30,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,20 +65,22 @@ class GithubAuthenticationManagerTests {
 	@Test
 	void authenticateWhenUserIsActiveInTeamHasAdminAuthority() {
 		this.server.expect(requestTo(MEMBER_PATH_TEMPLATE))
-				.andExpect(header("Authorization", "Basic " + Base64Utils.encodeToString("user:password".getBytes())))
-				.andRespond(withSuccess(getResponse("active"), MediaType.APPLICATION_JSON));
+			.andExpect(header("Authorization",
+					"Basic " + Base64.getUrlEncoder().encodeToString("user:password".getBytes())))
+			.andRespond(withSuccess(getResponse("active"), MediaType.APPLICATION_JSON));
 		Authentication authentication = new TestingAuthenticationToken("user", "password");
 		Authentication adminAuthentication = this.authenticationManager.authenticate(authentication);
 		assertThat(adminAuthentication.getAuthorities()).extracting(GrantedAuthority::getAuthority)
-				.containsExactly("ROLE_ADMIN");
+			.containsExactly("ROLE_ADMIN");
 		this.server.verify();
 	}
 
 	@Test
 	void authenticateWhenUserIsNotActiveInTeamHasNoAuthority() {
 		this.server.expect(requestTo(MEMBER_PATH_TEMPLATE))
-				.andExpect(header("Authorization", "Basic " + Base64Utils.encodeToString("user:password".getBytes())))
-				.andRespond(withSuccess(getResponse("pending"), MediaType.APPLICATION_JSON));
+			.andExpect(header("Authorization",
+					"Basic " + Base64.getUrlEncoder().encodeToString("user:password".getBytes())))
+			.andRespond(withSuccess(getResponse("pending"), MediaType.APPLICATION_JSON));
 		Authentication authentication = new TestingAuthenticationToken("user", "password");
 		Authentication adminAuthentication = this.authenticationManager.authenticate(authentication);
 		assertThat(adminAuthentication.getAuthorities()).extracting(GrantedAuthority::getAuthority).isEmpty();
@@ -87,8 +90,9 @@ class GithubAuthenticationManagerTests {
 	@Test
 	void authenticateWhenNotFoundHasNoAuthority() {
 		this.server.expect(requestTo(MEMBER_PATH_TEMPLATE))
-				.andExpect(header("Authorization", "Basic " + Base64Utils.encodeToString("user:password".getBytes())))
-				.andRespond(withStatus(HttpStatus.NOT_FOUND));
+			.andExpect(header("Authorization",
+					"Basic " + Base64.getUrlEncoder().encodeToString("user:password".getBytes())))
+			.andRespond(withStatus(HttpStatus.NOT_FOUND));
 		Authentication authentication = new TestingAuthenticationToken("user", "password");
 		Authentication adminAuthentication = this.authenticationManager.authenticate(authentication);
 		assertThat(adminAuthentication.getAuthorities()).extracting(GrantedAuthority::getAuthority).isEmpty();
@@ -98,12 +102,14 @@ class GithubAuthenticationManagerTests {
 	@Test
 	void authenticateWhenUnauthorizedThrowsAuthenticationException() {
 		this.server.expect(requestTo(MEMBER_PATH_TEMPLATE))
-				.andExpect(header("Authorization", "Basic " + Base64Utils.encodeToString("user:password".getBytes())))
-				.andRespond(withStatus(HttpStatus.UNAUTHORIZED));
+			.andExpect(header("Authorization",
+					"Basic " + Base64.getUrlEncoder().encodeToString("user:password".getBytes())))
+			.andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 		Authentication authentication = new TestingAuthenticationToken("user", "password");
 		assertThatExceptionOfType(AuthenticationException.class)
-				.isThrownBy(() -> this.authenticationManager.authenticate(authentication))
-				.withCauseInstanceOf(HttpClientErrorException.Unauthorized.class).withMessage("Invalid credentials");
+			.isThrownBy(() -> this.authenticationManager.authenticate(authentication))
+			.withCauseInstanceOf(HttpClientErrorException.Unauthorized.class)
+			.withMessage("Invalid credentials");
 		this.server.verify();
 	}
 

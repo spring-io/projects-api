@@ -23,7 +23,7 @@ import java.util.List;
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.ProjectSupport;
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTest
+@WebApiTests
 class GenerationsControllerTests {
 
 	@Autowired
@@ -67,50 +67,53 @@ class GenerationsControllerTests {
 	@Test
 	void generationsReturnsGenerations() throws Exception {
 		given(this.contentfulService.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
-		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON)).andDo(print())
-				.andExpect(status().isOk()).andExpect(jsonPath("$._embedded.generations.length()").value("2"))
-				.andExpect(jsonPath("$._embedded.generations[0].name").value("2.2.x"))
-				.andExpect(jsonPath("$._embedded.generations[0].initialReleaseDate").value("2020-02-01"))
-				.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2020-02-03"))
-				.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2020-02-05"))
-				.andExpect(jsonPath("$._embedded.generations[0]._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
-				.andExpect(jsonPath("$._embedded.generations[0]._links.project.href")
-						.value("https://api.spring.io/projects/spring-boot"))
-				.andExpect(jsonPath("$._embedded.generations[1].name").value("2.1.x"))
-				.andExpect(jsonPath("$._embedded.generations[1].initialReleaseDate").value("2020-01-01"))
-				.andExpect(jsonPath("$._embedded.generations[1].ossSupportEndDate").value("2021-03-01"))
-				.andExpect(jsonPath("$._embedded.generations[1].commercialSupportEndDate").value("2022-03-01"))
-				.andExpect(jsonPath("$._embedded.generations[1]._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/generations/2.1.x"))
-				.andExpect(jsonPath("$._embedded.generations[1]._links.project.href")
-						.value("https://api.spring.io/projects/spring-boot"))
-				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("list-generations", preprocessResponse(prettyPrint()), generationsLinks(),
-						responseFields(
-								fieldWithPath("_embedded.generations").description("An array of Project Generations"))
-										.andWithPrefix("_embedded.generations[]", generationPayload())
-										.and(subsectionWithPath("_links").description("Links to other resources"))));
+		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$._embedded.generations.length()").value("2"))
+			.andExpect(jsonPath("$._embedded.generations[0].name").value("2.2.x"))
+			.andExpect(jsonPath("$._embedded.generations[0].initialReleaseDate").value("2020-02-01"))
+			.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2020-02-03"))
+			.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2020-02-05"))
+			.andExpect(jsonPath("$._embedded.generations[0]._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
+			.andExpect(jsonPath("$._embedded.generations[0]._links.project.href")
+				.value("https://api.spring.io/projects/spring-boot"))
+			.andExpect(jsonPath("$._embedded.generations[1].name").value("2.1.x"))
+			.andExpect(jsonPath("$._embedded.generations[1].initialReleaseDate").value("2020-01-01"))
+			.andExpect(jsonPath("$._embedded.generations[1].ossSupportEndDate").value("2021-03-01"))
+			.andExpect(jsonPath("$._embedded.generations[1].commercialSupportEndDate").value("2022-03-01"))
+			.andExpect(jsonPath("$._embedded.generations[1]._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot/generations/2.1.x"))
+			.andExpect(jsonPath("$._embedded.generations[1]._links.project.href")
+				.value("https://api.spring.io/projects/spring-boot"))
+			.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
+			.andDo(document("list-generations", preprocessResponse(prettyPrint()), generationsLinks(),
+					responseFields(
+							fieldWithPath("_embedded.generations").description("An array of Project Generations"))
+						.andWithPrefix("_embedded.generations[]", generationPayload())
+						.and(subsectionWithPath("_links").description("Links to other resources"))));
 	}
 
 	@Test
 	void generationReturnsGeneration() throws Exception {
 		given(this.contentfulService.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
 		this.mvc.perform(get("/projects/spring-boot/generations/2.2.x").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.name").value("2.2.x"))
-				.andExpect(jsonPath("$._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
-				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("show-generation", preprocessResponse(prettyPrint()), generationLinks(),
-						responseFields(generationPayload())));
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.name").value("2.2.x"))
+			.andExpect(jsonPath("$._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
+			.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
+			.andDo(document("show-generation", preprocessResponse(prettyPrint()), generationLinks(),
+					responseFields(generationPayload())));
 	}
 
 	@Test
 	void generationWhenNotFoundReturns404() throws Exception {
 		given(this.contentfulService.getProjectSupports("spring-boot"))
-				.willThrow(NoSuchContentfulProjectException.class);
+			.willThrow(NoSuchContentfulProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	private List<ProjectSupport> getProjectSupports() {
@@ -125,11 +128,11 @@ class GenerationsControllerTests {
 	FieldDescriptor[] generationPayload() {
 		return new FieldDescriptor[] { fieldWithPath("name").type(JsonFieldType.STRING).description("Generation Name"),
 				fieldWithPath("initialReleaseDate").type(JsonFieldType.STRING)
-						.description("Date of the first release for this Generation"),
+					.description("Date of the first release for this Generation"),
 				fieldWithPath("ossSupportEndDate").type(JsonFieldType.STRING)
-						.description("End date of the OSS support"),
+					.description("End date of the OSS support"),
 				fieldWithPath("commercialSupportEndDate").type(JsonFieldType.STRING)
-						.description("End date of the Commercial support"),
+					.description("End date of the Commercial support"),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 

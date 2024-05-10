@@ -16,17 +16,18 @@
 
 package io.spring.projectapi.security;
 
-import javax.servlet.http.HttpServletRequest;
-
 import io.spring.projectapi.ApplicationProperties;
 import io.spring.projectapi.ApplicationProperties.Github;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -44,16 +45,16 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http, RestTemplateBuilder restTemplateBuilder,
 			ApplicationProperties properties) throws Exception {
-		http.csrf().disable();
+		http.csrf(AbstractHttpConfigurer::disable);
 		http.requiresChannel((channel) -> channel.requestMatchers(this::hasXForwardedPortHeader).requiresSecure());
 		http.authorizeHttpRequests((requests) -> {
-			requests.mvcMatchers(HttpMethod.GET, "/**").permitAll();
+			requests.requestMatchers(HttpMethod.GET, "/**").permitAll();
 			requests.anyRequest().hasRole("ADMIN");
 		});
 		Github github = properties.getGithub();
 		http.authenticationManager(
 				new GithubAuthenticationManager(restTemplateBuilder, github.getOrg(), github.getTeam()));
-		http.httpBasic();
+		http.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
 

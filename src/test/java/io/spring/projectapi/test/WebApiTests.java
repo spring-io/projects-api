@@ -42,7 +42,7 @@ import org.springframework.core.annotation.AliasFor;
 @AutoConfigureRestDocs(outputDir = "build/generated-snippets", uriScheme = "https", uriHost = "api.spring.io",
 		uriPort = 443)
 @Import(SecurityConfiguration.class)
-public @interface WebApiTest {
+public @interface WebApiTests {
 
 	@AliasFor(annotation = WebMvcTest.class)
 	Class<?>[] value() default {};

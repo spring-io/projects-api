@@ -50,6 +50,8 @@ public class GenerationsController {
 
 	private final ContentfulService contentfulService;
 
+	private final String a = "";
+
 	public GenerationsController(ContentfulService contentfulService) {
 		this.contentfulService = contentfulService;
 	}
@@ -59,7 +61,7 @@ public class GenerationsController {
 		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
 		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
 		CollectionModel<EntityModel<Generation>> model = CollectionModel
-				.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
+			.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
 		model.add(linkToProject(id));
 		return model;
 	}
@@ -68,9 +70,11 @@ public class GenerationsController {
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
 		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
 		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
-		Generation generation = generations.stream().filter((candidate) -> candidate.getName().equals(name)).findFirst()
-				.orElseThrow(() -> new ResourceNotFoundException(
-						"Generation '%s' cannot be found for project '%s'".formatted(name, id)));
+		Generation generation = generations.stream()
+			.filter((candidate) -> candidate.getName().equals(name))
+			.findFirst()
+			.orElseThrow(() -> new ResourceNotFoundException(
+					"Generation '%s' cannot be found for project '%s'".formatted(name, id)));
 		return asModel(id, generation);
 	}
 
@@ -85,7 +89,7 @@ public class GenerationsController {
 	private EntityModel<Generation> asModel(String id, Generation generation) {
 		EntityModel<Generation> model = EntityModel.of(generation);
 		Link linkToSelf = linkTo(methodOn(GenerationsController.class).generation(id, generation.getName()))
-				.withSelfRel();
+			.withSelfRel();
 		model.add(linkToSelf);
 		model.add(linkToProject(id));
 		return model;

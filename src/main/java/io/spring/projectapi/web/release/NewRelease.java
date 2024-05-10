@@ -16,9 +16,8 @@
 
 package io.spring.projectapi.web.release;
 
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 /**

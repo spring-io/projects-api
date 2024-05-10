@@ -61,7 +61,7 @@ public class ProjectsController {
 	public CollectionModel<EntityModel<Project>> projects() {
 		List<Project> projects = this.contentfulService.getProjects().stream().map(this::asProject).toList();
 		CollectionModel<EntityModel<Project>> collection = CollectionModel
-				.of(projects.stream().map(this::asModel).toList());
+			.of(projects.stream().map(this::asModel).toList());
 		collection.add(linkTo(methodOn(ProjectsController.class).project(null)).withRel("project"));
 		return collection;
 	}

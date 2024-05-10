@@ -42,8 +42,9 @@ class ContentfulQueries {
 	private final GraphQlClient client;
 
 	ContentfulQueries(WebClient webClient, String accessToken) {
-		this.client = HttpGraphQlClient.builder(webClient).headers((headers) -> headers.setBearerAuth(accessToken))
-				.build();
+		this.client = HttpGraphQlClient.builder(webClient)
+			.headers((headers) -> headers.setBearerAuth(accessToken))
+			.build();
 	}
 
 	List<Project> getProjects() {

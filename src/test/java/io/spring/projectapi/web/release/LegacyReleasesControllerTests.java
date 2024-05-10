@@ -22,7 +22,7 @@ import java.util.List;
 import io.spring.projectapi.contentful.ContentfulService;
 import io.spring.projectapi.contentful.ProjectDocumentation;
 import io.spring.projectapi.contentful.ProjectDocumentation.Status;
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Brian Clozel
  */
-@WebApiTest
+@WebApiTests
 class LegacyReleasesControllerTests {
 
 	@Autowired
@@ -53,19 +53,20 @@ class LegacyReleasesControllerTests {
 	void legacyReleasesReturnsReleases() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/project_metadata/spring-boot").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.id").value("spring-boot"))
-				.andExpect(jsonPath("$.name").value("Spring Boot"))
-				.andExpect(jsonPath("$.projectReleases.length()").value("2"))
-				.andExpect(jsonPath("$.projectReleases[0].version").value("2.3.0"))
-				.andExpect(jsonPath("$.projectReleases[0].versionDisplayName").value("2.3.0"))
-				.andExpect(jsonPath("$.projectReleases[0].current").value(true))
-				.andExpect(jsonPath("$.projectReleases[0].releaseStatus").value("GENERAL_AVAILABILITY"))
-				.andExpect(jsonPath("$.projectReleases[0].snapshot").value(false))
-				.andExpect(jsonPath("$.projectReleases[1].version").value("2.3.1-SNAPSHOT"))
-				.andExpect(jsonPath("$.projectReleases[1].versionDisplayName").value("2.3.1-SNAPSHOT"))
-				.andExpect(jsonPath("$.projectReleases[1].current").value(false))
-				.andExpect(jsonPath("$.projectReleases[1].releaseStatus").value("SNAPSHOT"))
-				.andExpect(jsonPath("$.projectReleases[1].snapshot").value(true));
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value("spring-boot"))
+			.andExpect(jsonPath("$.name").value("Spring Boot"))
+			.andExpect(jsonPath("$.projectReleases.length()").value("2"))
+			.andExpect(jsonPath("$.projectReleases[0].version").value("2.3.0"))
+			.andExpect(jsonPath("$.projectReleases[0].versionDisplayName").value("2.3.0"))
+			.andExpect(jsonPath("$.projectReleases[0].current").value(true))
+			.andExpect(jsonPath("$.projectReleases[0].releaseStatus").value("GENERAL_AVAILABILITY"))
+			.andExpect(jsonPath("$.projectReleases[0].snapshot").value(false))
+			.andExpect(jsonPath("$.projectReleases[1].version").value("2.3.1-SNAPSHOT"))
+			.andExpect(jsonPath("$.projectReleases[1].versionDisplayName").value("2.3.1-SNAPSHOT"))
+			.andExpect(jsonPath("$.projectReleases[1].current").value(false))
+			.andExpect(jsonPath("$.projectReleases[1].releaseStatus").value("SNAPSHOT"))
+			.andExpect(jsonPath("$.projectReleases[1].snapshot").value(true));
 	}
 
 	private List<ProjectDocumentation> getProjectDocumentations() {

@@ -68,9 +68,9 @@ public class ReleasesController {
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
-				.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
+			.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
 		Link linkToProject = WebMvcLinkBuilder.linkTo(methodOn(ProjectsController.class).project(id))
-				.withRel("project");
+			.withRel("project");
 		Link linkToCurrent = linkTo(methodOn(ReleasesController.class).current(id)).withRel("current");
 		model.add(linkToProject, linkToCurrent);
 		return model;
@@ -80,9 +80,11 @@ public class ReleasesController {
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
-		Release release = releases.stream().filter((candididate) -> candididate.getVersion().equals(version))
-				.findFirst().orElseThrow(() -> new ResourceNotFoundException(
-						"Version '%s' cannot be found for project '%s'".formatted(version, id)));
+		Release release = releases.stream()
+			.filter((candididate) -> candididate.getVersion().equals(version))
+			.findFirst()
+			.orElseThrow(() -> new ResourceNotFoundException(
+					"Version '%s' cannot be found for project '%s'".formatted(version, id)));
 		return asModel(id, release);
 	}
 
@@ -91,8 +93,11 @@ public class ReleasesController {
 		this.contentfulService.getProjectDocumentations(id);
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
-		Release release = releases.stream().filter(Release::isCurrent).findFirst().orElseThrow(
-				() -> new ResourceNotFoundException("Could not find current release for project '%s'".formatted(id)));
+		Release release = releases.stream()
+			.filter(Release::isCurrent)
+			.findFirst()
+			.orElseThrow(() -> new ResourceNotFoundException(
+					"Could not find current release for project '%s'".formatted(id)));
 		return asModel(id, release);
 	}
 
@@ -130,7 +135,7 @@ public class ReleasesController {
 		Repository repository = getRepository(release.getStatus());
 		Link linkToSelf = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).withSelfRel();
 		Link linkToRepository = linkTo(methodOn(RepositoriesController.class).repository(repository.getIdentifier()))
-				.withRel("repository");
+			.withRel("repository");
 		model.add(linkToRepository, linkToSelf);
 		return model;
 	}

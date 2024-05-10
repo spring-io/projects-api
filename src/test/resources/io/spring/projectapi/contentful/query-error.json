@@ -1,6 +1,4 @@
 {
-  "data": {
-  },
   "errors": [
     {
       "message": "Cannot query field \"a\" on type \"Project\".",

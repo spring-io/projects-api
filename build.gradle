@@ -8,9 +8,9 @@ buildscript {
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.asciidoctor.jvm.convert' version '4.0.2'
 	id 'java'
 }
 
@@ -41,7 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
-	implementation 'com.contentful.java:cma-sdk:3.4.5'
+	implementation 'com.contentful.java:cma-sdk:3.4.12'
 	testImplementation 'com.squareup.okhttp3:mockwebserver'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.graphql:spring-graphql-test'

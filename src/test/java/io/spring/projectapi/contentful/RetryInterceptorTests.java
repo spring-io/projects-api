@@ -101,8 +101,11 @@ class RetryInterceptorTests {
 	}
 
 	private static Response getResponse(Request request, int code, boolean addLimitReset) {
-		Builder builder = new Builder().request(request).protocol(Protocol.HTTP_2).message("").code(429)
-				.body(ResponseBody.create(MediaType.get("application/json; charset=utf-8"), "{}"));
+		Builder builder = new Builder().request(request)
+			.protocol(Protocol.HTTP_2)
+			.message("")
+			.code(429)
+			.body(ResponseBody.create("{}", MediaType.get("application/json; charset=utf-8")));
 		if (addLimitReset) {
 			builder.addHeader("X-Contentful-RateLimit-Reset", "1");
 		}

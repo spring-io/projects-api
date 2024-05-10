@@ -38,8 +38,10 @@ public final class NoSuchContentfulProjectDocumentationFoundException extends Co
 	}
 
 	static void throwIfHasNotPresent(List<Map<String, Object>> documentations, String projectSlug, String version) {
-		documentations.stream().filter((m) -> m.get("version").equals(version)).findFirst()
-				.orElseThrow((() -> new NoSuchContentfulProjectDocumentationFoundException(projectSlug, version)));
+		documentations.stream()
+			.filter((m) -> m.get("version").equals(version))
+			.findFirst()
+			.orElseThrow((() -> new NoSuchContentfulProjectDocumentationFoundException(projectSlug, version)));
 	}
 
 	public String getProjectSlug() {

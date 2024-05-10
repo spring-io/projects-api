@@ -39,9 +39,9 @@ public class IndexController {
 
 	@GetMapping
 	public RepresentationModel index() {
-		return RepresentationModel.of(null).add(
-				linkTo(methodOn(ProjectsController.class).projects()).withRel("projects"),
-				linkTo(methodOn(RepositoriesController.class).repositories()).withRel("repositories"));
+		return RepresentationModel.of(null)
+			.add(linkTo(methodOn(ProjectsController.class).projects()).withRel("projects"),
+					linkTo(methodOn(RepositoriesController.class).repositories()).withRel("repositories"));
 	}
 
 }

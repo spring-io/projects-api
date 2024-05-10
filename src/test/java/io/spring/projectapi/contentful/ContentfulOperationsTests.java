@@ -64,7 +64,7 @@ class ContentfulOperationsTests {
 	void addProjectDocumentationWhenProjectDoesNotExistThrowsException() {
 		setupNonExistentProject();
 		assertThatExceptionOfType(NoSuchContentfulProjectException.class).isThrownBy(() -> this.operations
-				.addProjectDocumentation("does-not-exist", getDocumentation("1.0", Status.GENERAL_AVAILABILITY)));
+			.addProjectDocumentation("does-not-exist", getDocumentation("1.0", Status.GENERAL_AVAILABILITY)));
 	}
 
 	@Test
@@ -133,14 +133,14 @@ class ContentfulOperationsTests {
 	void deleteProjectDocumentationWhenProjectDoesNotExistThrowsException() {
 		setupNonExistentProject();
 		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
-				.isThrownBy(() -> this.operations.deleteDocumentation("does-not-exist", "1.0"));
+			.isThrownBy(() -> this.operations.deleteDocumentation("does-not-exist", "1.0"));
 	}
 
 	@Test
 	void deleteProjectDocumentationWhenProjectDocumentationDoesNotExistThrowsException() {
 		setupProject(addRelease());
 		assertThatExceptionOfType(NoSuchContentfulProjectDocumentationFoundException.class)
-				.isThrownBy(() -> this.operations.deleteDocumentation("test-project", "2.0"));
+			.isThrownBy(() -> this.operations.deleteDocumentation("test-project", "2.0"));
 	}
 
 	@Test
@@ -200,8 +200,8 @@ class ContentfulOperationsTests {
 	@Test
 	void patchProjectWhenProjectDoesNotExistThrowsException() {
 		setupNonExistentProject();
-		assertThatExceptionOfType(NoSuchContentfulProjectException.class).isThrownBy(
-				() -> this.operations.patchProjectDetails("does-not-exist", new ProjectDetails(null, null)));
+		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
+			.isThrownBy(() -> this.operations.patchProjectDetails("does-not-exist", new ProjectDetails(null, null)));
 	}
 
 	@Test

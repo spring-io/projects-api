@@ -26,7 +26,7 @@ import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
 import io.spring.projectapi.contentful.ProjectDocumentation;
 import io.spring.projectapi.contentful.ProjectDocumentation.Status;
 import io.spring.projectapi.test.ConstrainedFields;
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -70,7 +70,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTest(ReleasesController.class)
+@WebApiTests(ReleasesController.class)
 class ReleasesControllerTests {
 
 	@Autowired
@@ -82,70 +82,72 @@ class ReleasesControllerTests {
 	@Test
 	void releasesReturnsReleases() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
-		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$._embedded.releases.length()").value("2"))
-				.andExpect(jsonPath("$._embedded.releases[0].version").value("2.3.0"))
-				.andExpect(jsonPath("$._embedded.releases[0].status").value("GENERAL_AVAILABILITY"))
-				.andExpect(jsonPath("$._embedded.releases[0].current").value(true))
-				.andExpect(jsonPath("$._embedded.releases[0].referenceDocUrl")
-						.value("https://docs.spring.io/spring-boot/docs/2.3.0/reference/html/"))
-				.andExpect(jsonPath("$._embedded.releases[0].apiDocUrl")
-						.value("https://docs.spring.io/spring-boot/docs/2.3.0/api/"))
-				.andExpect(jsonPath("$._embedded.releases[0]._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
-				.andExpect(jsonPath("$._embedded.releases[0]._links.repository.href")
-						.value("https://api.spring.io/repositories/spring-releases"))
-				.andExpect(jsonPath("$._embedded.releases[1].version").value("2.3.1-SNAPSHOT"))
-				.andExpect(jsonPath("$._embedded.releases[1].status").value("SNAPSHOT"))
-				.andExpect(jsonPath("$._embedded.releases[1].current").value(false))
-				.andExpect(jsonPath("$._embedded.releases[1].referenceDocUrl")
-						.value("https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/reference/html/"))
-				.andExpect(jsonPath("$._embedded.releases[1].apiDocUrl")
-						.value("https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/api/"))
-				.andExpect(jsonPath("$._embedded.releases[1]._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/releases/2.3.1-SNAPSHOT"))
-				.andExpect(jsonPath("$._embedded.releases[1]._links.repository.href")
-						.value("https://api.spring.io/repositories/spring-snapshots"))
-				.andExpect(jsonPath("$._links.current.href")
-						.value("https://api.spring.io/projects/spring-boot/releases/current"))
-				.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
-				.andDo(document("list-releases", preprocessResponse(prettyPrint()),
-						responseFields(fieldWithPath("_embedded.releases").description("An array of Project Releases"))
-								.andWithPrefix("_embedded.releases[]", releasePayload())
-								.and(subsectionWithPath("_links").description("Links to other resources")),
-						links(releasesLinks())));
+		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$._embedded.releases.length()").value("2"))
+			.andExpect(jsonPath("$._embedded.releases[0].version").value("2.3.0"))
+			.andExpect(jsonPath("$._embedded.releases[0].status").value("GENERAL_AVAILABILITY"))
+			.andExpect(jsonPath("$._embedded.releases[0].current").value(true))
+			.andExpect(jsonPath("$._embedded.releases[0].referenceDocUrl")
+				.value("https://docs.spring.io/spring-boot/docs/2.3.0/reference/html/"))
+			.andExpect(jsonPath("$._embedded.releases[0].apiDocUrl")
+				.value("https://docs.spring.io/spring-boot/docs/2.3.0/api/"))
+			.andExpect(jsonPath("$._embedded.releases[0]._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
+			.andExpect(jsonPath("$._embedded.releases[0]._links.repository.href")
+				.value("https://api.spring.io/repositories/spring-releases"))
+			.andExpect(jsonPath("$._embedded.releases[1].version").value("2.3.1-SNAPSHOT"))
+			.andExpect(jsonPath("$._embedded.releases[1].status").value("SNAPSHOT"))
+			.andExpect(jsonPath("$._embedded.releases[1].current").value(false))
+			.andExpect(jsonPath("$._embedded.releases[1].referenceDocUrl")
+				.value("https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/reference/html/"))
+			.andExpect(jsonPath("$._embedded.releases[1].apiDocUrl")
+				.value("https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/api/"))
+			.andExpect(jsonPath("$._embedded.releases[1]._links.self.href")
+				.value("https://api.spring.io/projects/spring-boot/releases/2.3.1-SNAPSHOT"))
+			.andExpect(jsonPath("$._embedded.releases[1]._links.repository.href")
+				.value("https://api.spring.io/repositories/spring-snapshots"))
+			.andExpect(jsonPath("$._links.current.href")
+				.value("https://api.spring.io/projects/spring-boot/releases/current"))
+			.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
+			.andDo(document("list-releases", preprocessResponse(prettyPrint()),
+					responseFields(fieldWithPath("_embedded.releases").description("An array of Project Releases"))
+						.andWithPrefix("_embedded.releases[]", releasePayload())
+						.and(subsectionWithPath("_links").description("Links to other resources")),
+					links(releasesLinks())));
 	}
 
 	@Test
 	void releasesWhenNotFoundReturns404() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot"))
-				.willThrow(NoSuchContentfulProjectException.class);
+			.willThrow(NoSuchContentfulProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
 	void releaseReturnsRelease() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.version").value("2.3.0"))
-				.andExpect(jsonPath("$._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
-				.andExpect(jsonPath("$._links.repository.href")
-						.value("https://api.spring.io/repositories/spring-releases"))
-				.andDo(document("show-release", preprocessResponse(prettyPrint()), responseFields(releasePayload()),
-						links(releaseLinks())));
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.version").value("2.3.0"))
+			.andExpect(
+					jsonPath("$._links.self.href").value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
+			.andExpect(jsonPath("$._links.repository.href").value("https://api.spring.io/repositories/spring-releases"))
+			.andDo(document("show-release", preprocessResponse(prettyPrint()), responseFields(releasePayload()),
+					links(releaseLinks())));
 	}
 
 	@Test
 	void currentReturnsCurrentRelease() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/current").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.version").value("2.3.0"))
-				.andExpect(jsonPath("$._links.self.href")
-						.value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
-				.andExpect(jsonPath("$._links.repository.href")
-						.value("https://api.spring.io/repositories/spring-releases"));
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.version").value("2.3.0"))
+			.andExpect(
+					jsonPath("$._links.self.href").value("https://api.spring.io/projects/spring-boot/releases/2.3.0"))
+			.andExpect(
+					jsonPath("$._links.repository.href").value("https://api.spring.io/repositories/spring-releases"));
 	}
 
 	@Test
@@ -154,14 +156,19 @@ class ReleasesControllerTests {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
-		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isCreated())
-				.andExpect(header().string("Location", expectedLocation))
-				.andDo(document("create-release", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-						requestFields(fields.withPath("version").description("The Release version"),
-								fields.withPath("referenceDocUrl").description(
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(from("add.json")))
+			.andExpect(status().isCreated())
+			.andExpect(header().string("Location", expectedLocation))
+			.andDo(document("create-release", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+					requestFields(fields.withPath("version").description("The Release version"),
+							fields.withPath("referenceDocUrl")
+								.description(
 										"URL of the reference documentation, {version} template variable is supported"),
-								fields.withPath("apiDocUrl").description(
+							fields.withPath("apiDocUrl")
+								.description(
 										"URL of the API documentation, {version} template variable is supported"))));
 		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
 		verify(this.contentfulService).addProjectDocumentation(eq("spring-boot"), captor.capture());
@@ -175,27 +182,34 @@ class ReleasesControllerTests {
 
 	@Test
 	void addWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
-		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add.json")))
-				.andExpect(status().isUnauthorized());
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(from("add.json")))
+			.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenProjectDoesNotExistReturnsNotFound() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot"))
-				.willThrow(NoSuchContentfulProjectException.class);
-		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add.json"))).andExpect(status().isNotFound());
+			.willThrow(NoSuchContentfulProjectException.class);
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(from("add.json")))
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
-		this.mvc.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content(from("add-already-exists.json")))
-				.andExpect(status().isBadRequest());
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(from("add-already-exists.json")))
+			.andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -203,23 +217,24 @@ class ReleasesControllerTests {
 	void deleteDeletesDocumentation() throws Exception {
 		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNoContent()).andDo(document("delete-release"));
+			.andExpect(status().isNoContent())
+			.andDo(document("delete-release"));
 		verify(this.contentfulService).deleteDocumentation("spring-boot", "2.3.0");
 	}
 
 	@Test
 	void deleteWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isUnauthorized());
+			.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteWhenProjectDoesNotExistReturnsNotFound() throws Exception {
 		willThrow(NoSuchContentfulProjectException.class).given(this.contentfulService)
-				.deleteDocumentation("spring-boot", "2.3.0");
+			.deleteDocumentation("spring-boot", "2.3.0");
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	private byte[] from(String path) throws IOException {
@@ -245,12 +260,12 @@ class ReleasesControllerTests {
 		return new FieldDescriptor[] {
 				fieldWithPath("version").type(JsonFieldType.STRING).description("Release Version string"),
 				fieldWithPath("status").type(JsonFieldType.STRING)
-						.description("<<release-status, Status of this Release>>"),
+					.description("<<release-status, Status of this Release>>"),
 				fieldWithPath("referenceDocUrl").type(JsonFieldType.STRING)
-						.description("URL for the reference documentation"),
+					.description("URL for the reference documentation"),
 				fieldWithPath("apiDocUrl").type(JsonFieldType.STRING).description("URL for the API documentation"),
 				fieldWithPath("current").type(JsonFieldType.BOOLEAN)
-						.description("Whether this release is the most recent, officially supported"),
+					.description("Whether this release is the most recent, officially supported"),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 

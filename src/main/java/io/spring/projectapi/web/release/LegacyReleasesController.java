@@ -51,8 +51,9 @@ public class LegacyReleasesController {
 		private final List<SpringBootRelease> projectReleases;
 
 		SpringBootMetadata(List<ProjectDocumentation> documentations) {
-			this.projectReleases = documentations.stream().map(SpringBootRelease::fromDocumentation)
-					.collect(Collectors.toList());
+			this.projectReleases = documentations.stream()
+				.map(SpringBootRelease::fromDocumentation)
+				.collect(Collectors.toList());
 		}
 
 		public String getId() {

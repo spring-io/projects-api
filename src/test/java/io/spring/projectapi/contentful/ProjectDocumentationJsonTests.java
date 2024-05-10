@@ -66,7 +66,7 @@ class ProjectDocumentationJsonTests {
 		assertThat(projectDocumentation.getVersion()).isEqualTo("3.0.0-SNAPSHOT");
 		assertThat(projectDocumentation.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
 		assertThat(projectDocumentation.getRef())
-				.isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
+			.isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
 		assertThat(projectDocumentation.getStatus()).isEqualTo(Status.SNAPSHOT);
 		assertThat(projectDocumentation.isCurrent()).isEqualTo(true);
 	}

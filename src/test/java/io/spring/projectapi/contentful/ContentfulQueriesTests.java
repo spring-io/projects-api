@@ -90,15 +90,15 @@ class ContentfulQueriesTests {
 	void getProjectWhenNoNoProjectMatchThrowsException() throws IOException {
 		setupResponse("query-no-project.json");
 		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
-				.isThrownBy(() -> this.contentfulQueries.getProject("spring-xd"))
-				.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
+			.isThrownBy(() -> this.contentfulQueries.getProject("spring-xd"))
+			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
 	}
 
 	@Test
 	void getProjectWhenErrorThrowsException() throws IOException {
 		setupResponse("query-error.json");
 		assertThatExceptionOfType(ContentfulException.class)
-				.isThrownBy(() -> this.contentfulQueries.getProject("spring-xd"));
+			.isThrownBy(() -> this.contentfulQueries.getProject("spring-xd"));
 	}
 
 	@Test
@@ -113,8 +113,8 @@ class ContentfulQueriesTests {
 	void getProjectDocumentationsWhenNoProjectMatchThrowsException() throws IOException {
 		setupResponse("query-no-project.json");
 		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
-				.isThrownBy(() -> this.contentfulQueries.getProjectDocumentations("spring-xd"))
-				.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
+			.isThrownBy(() -> this.contentfulQueries.getProjectDocumentations("spring-xd"))
+			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
 	}
 
 	@Test
@@ -129,8 +129,8 @@ class ContentfulQueriesTests {
 	void getProjectSupportsWhenNoProjectMatchThrowsException() throws IOException {
 		setupResponse("query-no-project.json");
 		assertThatExceptionOfType(NoSuchContentfulProjectException.class)
-				.isThrownBy(() -> this.contentfulQueries.getProjectSupports("spring-xd"))
-				.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
+			.isThrownBy(() -> this.contentfulQueries.getProjectSupports("spring-xd"))
+			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("spring-xd"));
 	}
 
 	@Test

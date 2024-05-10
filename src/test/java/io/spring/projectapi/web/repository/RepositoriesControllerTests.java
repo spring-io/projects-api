@@ -16,7 +16,7 @@
 
 package io.spring.projectapi.web.repository;
 
-import io.spring.projectapi.test.WebApiTest;
+import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTest(RepositoriesController.class)
+@WebApiTests(RepositoriesController.class)
 class RepositoriesControllerTests {
 
 	@Autowired
@@ -53,24 +53,26 @@ class RepositoriesControllerTests {
 
 	@Test
 	void repositoriesReturnsRepositories() throws Exception {
-		this.mvc.perform(get("/repositories").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$._embedded.repositories.length()").value("3"))
-				.andDo(document("list-repositories", preprocessResponse(prettyPrint()),
-						responseFields(fieldWithPath("_embedded.repositories").description("An array of Repositories"))
-								.andWithPrefix("_embedded.repositories[]", repositoryPayload())));
+		this.mvc.perform(get("/repositories").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$._embedded.repositories.length()").value("3"))
+			.andDo(document("list-repositories", preprocessResponse(prettyPrint()),
+					responseFields(fieldWithPath("_embedded.repositories").description("An array of Repositories"))
+						.andWithPrefix("_embedded.repositories[]", repositoryPayload())));
 	}
 
 	@Test
 	void repositoryReturnsRepository() throws Exception {
-		this.mvc.perform(get("/repositories/spring-releases").accept(MediaTypes.HAL_JSON)).andExpect(status().isOk())
-				.andDo(document("show-repository", preprocessResponse(prettyPrint()),
-						responseFields(repositoryPayload()), repositoryLinks()));
+		this.mvc.perform(get("/repositories/spring-releases").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andDo(document("show-repository", preprocessResponse(prettyPrint()), responseFields(repositoryPayload()),
+					repositoryLinks()));
 	}
 
 	@Test
 	void repositoryWhenNotFoundReturns404() throws Exception {
 		this.mvc.perform(get("/repositories/does-not-exist").accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
 
 	FieldDescriptor[] repositoryPayload() {
@@ -79,7 +81,7 @@ class RepositoriesControllerTests {
 				fieldWithPath("name").type(JsonFieldType.STRING).description("Name of the Repository"),
 				fieldWithPath("url").type(JsonFieldType.STRING).description("URL of the Repository"),
 				fieldWithPath("snapshotsEnabled").type(JsonFieldType.BOOLEAN)
-						.description("Whether SNAPSHOT artifacts are hosted on this Repository"),
+					.description("Whether SNAPSHOT artifacts are hosted on this Repository"),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 
