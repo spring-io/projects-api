@@ -110,7 +110,7 @@ public class ReleasesController {
 			return ResponseEntity.badRequest().body(message);
 		}
 		Release.Status status = Release.Status.fromVersion(version);
-		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(),
+		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(), release.isAntora(),
 				release.getApiDocUrl(), release.getReferenceDocUrl(),
 				ProjectDocumentation.Status.valueOf(status.name()), false);
 		this.contentfulService.addProjectDocumentation(id, projectDocumentation);

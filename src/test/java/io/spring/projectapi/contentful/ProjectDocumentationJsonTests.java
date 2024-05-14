@@ -48,7 +48,7 @@ class ProjectDocumentationJsonTests {
 
 	@Test
 	void convertValueToMapReturnsMap() {
-		ProjectDocumentation documentation = new ProjectDocumentation("ver", "api", "ref",
+		ProjectDocumentation documentation = new ProjectDocumentation("ver", false, "api", "ref",
 				ProjectDocumentation.Status.PRERELEASE, true);
 		Map<?, ?> converted = this.objectMapper.convertValue(documentation, Map.class);
 		Map<String, Object> expected = new HashMap<>();
@@ -57,6 +57,7 @@ class ProjectDocumentationJsonTests {
 		expected.put("ref", documentation.getRef());
 		expected.put("status", documentation.getStatus().name());
 		expected.put("current", documentation.isCurrent());
+		expected.put("antora", documentation.isAntora());
 		assertThat(converted).isEqualTo(expected);
 	}
 
@@ -69,6 +70,7 @@ class ProjectDocumentationJsonTests {
 			.isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
 		assertThat(projectDocumentation.getStatus()).isEqualTo(Status.SNAPSHOT);
 		assertThat(projectDocumentation.isCurrent()).isEqualTo(true);
+		assertThat(projectDocumentation.isAntora()).isEqualTo(false);
 	}
 
 }

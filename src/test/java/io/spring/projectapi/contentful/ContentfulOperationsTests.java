@@ -80,6 +80,7 @@ class ContentfulOperationsTests {
 		assertThat(updatedEntry.size()).isEqualTo(2);
 		assertThat(updatedEntry).extracting((map) -> map.get("version")).containsExactly("1.0", "2.0");
 		assertThat(updatedEntry).extracting((map) -> map.get("current")).containsExactly(false, true);
+		assertThat(updatedEntry).extracting((map) -> map.get("antora")).containsExactly(false, true);
 	}
 
 	@Test
@@ -287,7 +288,7 @@ class ContentfulOperationsTests {
 
 	private static Map<String, Object> getRelease(boolean current) {
 		return Map.of("version", "1.0", "api", "http://api.com", "ref", "http://ref.com", "status",
-				"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", current);
+				"GENERAL_AVAILABILITY", "repository", "RELEASE", "current", current, "antora", false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -300,7 +301,7 @@ class ContentfulOperationsTests {
 	}
 
 	private ProjectDocumentation getDocumentation(String version, Status status) {
-		return new ProjectDocumentation(version, "http://api.com", "http://ref.com", status, false);
+		return new ProjectDocumentation(version, true, "http://api.com", "http://ref.com", status, false);
 	}
 
 }

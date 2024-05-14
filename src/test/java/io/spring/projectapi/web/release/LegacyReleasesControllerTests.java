@@ -73,10 +73,10 @@ class LegacyReleasesControllerTests {
 		List<ProjectDocumentation> result = new ArrayList<>();
 		String docsRoot;
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.0/";
-		result.add(new ProjectDocumentation("2.3.0", docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.0", false, docsRoot + "api/", docsRoot + "reference/html/",
 				Status.GENERAL_AVAILABILITY, true));
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/";
-		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", false, docsRoot + "api/", docsRoot + "reference/html/",
 				Status.SNAPSHOT, false));
 		return result;
 	}

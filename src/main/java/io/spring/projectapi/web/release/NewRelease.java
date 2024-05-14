@@ -36,11 +36,14 @@ public class NewRelease {
 	@URL
 	private final String apiDocUrl;
 
+	private final boolean isAntora;
+
 	@JsonCreator
-	public NewRelease(String version, String referenceDocUrl, String apiDocUrl) {
+	public NewRelease(String version, String referenceDocUrl, String apiDocUrl, boolean isAntora) {
 		this.version = version;
 		this.referenceDocUrl = referenceDocUrl;
 		this.apiDocUrl = apiDocUrl;
+		this.isAntora = isAntora;
 	}
 
 	public String getVersion() {
@@ -53,6 +56,10 @@ public class NewRelease {
 
 	public String getApiDocUrl() {
 		return this.apiDocUrl;
+	}
+
+	public boolean isAntora() {
+		return this.isAntora;
 	}
 
 }

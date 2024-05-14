@@ -161,9 +161,37 @@ class ReleasesControllerTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(from("add.json")))
 			.andExpect(status().isCreated())
+			.andExpect(header().string("Location", expectedLocation));
+		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
+		verify(this.contentfulService).addProjectDocumentation(eq("spring-boot"), captor.capture());
+		ProjectDocumentation added = captor.getValue();
+		assertThat(added.getVersion()).isEqualTo("2.8.0");
+		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
+		assertThat(added.getRef()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
+		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
+		assertThat(added.isCurrent()).isFalse();
+		assertThat(added.isAntora()).isFalse();
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void addWithAntoraVersionAddsRelease() throws Exception {
+		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
+		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(from("add-with-antora.json")))
+			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", expectedLocation))
 			.andDo(document("create-release", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-					requestFields(fields.withPath("version").description("The Release version"),
+					requestFields(fields.withPath("version").description("The Release version"), fields
+						.withPath("isAntora")
+						.type(JsonFieldType.BOOLEAN)
+						.optional()
+						.description(
+								"Indicates if the documentation for this release is on Antora. Defaults to false if not specified."),
 							fields.withPath("referenceDocUrl")
 								.description(
 										"URL of the reference documentation, {version} template variable is supported"),
@@ -178,6 +206,7 @@ class ReleasesControllerTests {
 		assertThat(added.getRef()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
 		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
 		assertThat(added.isCurrent()).isFalse();
+		assertThat(added.isAntora()).isTrue();
 	}
 
 	@Test
@@ -248,10 +277,10 @@ class ReleasesControllerTests {
 		List<ProjectDocumentation> result = new ArrayList<>();
 		String docsRoot;
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.0/";
-		result.add(new ProjectDocumentation("2.3.0", docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.0", false, docsRoot + "api/", docsRoot + "reference/html/",
 				Status.GENERAL_AVAILABILITY, true));
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/";
-		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", false, docsRoot + "api/", docsRoot + "reference/html/",
 				Status.SNAPSHOT, false));
 		return result;
 	}

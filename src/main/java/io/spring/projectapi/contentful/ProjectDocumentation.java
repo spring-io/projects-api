@@ -30,6 +30,8 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	private final String version;
 
+	private final boolean antora;
+
 	private final String api;
 
 	private final String ref;
@@ -39,8 +41,10 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 	private final boolean current;
 
 	@JsonCreator(mode = Mode.PROPERTIES)
-	public ProjectDocumentation(String version, String api, String ref, Status status, boolean current) {
+	public ProjectDocumentation(String version, boolean antora, String api, String ref, Status status,
+			boolean current) {
 		this.version = version;
+		this.antora = antora;
 		this.api = api;
 		this.ref = ref;
 		this.status = status;
@@ -74,6 +78,10 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 		}
 		// invert Version comparator, to get most recent version first
 		return -this.version.compareTo(other.version);
+	}
+
+	public boolean isAntora() {
+		return this.antora;
 	}
 
 	/**

@@ -43,8 +43,8 @@ class ContentfulServiceTests {
 
 	private static final Project PROJECT = new Project("Test Project", "test-project", "github", Status.ACTIVE);
 
-	private static final ProjectDocumentation PROJECT_DOCUMENTATION = new ProjectDocumentation("2.0", "http://api.com",
-			"http://ref.com", ProjectDocumentation.Status.GENERAL_AVAILABILITY, false);
+	private static final ProjectDocumentation PROJECT_DOCUMENTATION = new ProjectDocumentation("2.0", false,
+			"http://api.com", "http://ref.com", ProjectDocumentation.Status.GENERAL_AVAILABILITY, false);
 
 	private static final ProjectSupport PROJECT_SUPPORT = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"),
 			LocalDate.parse("2020-02-02"), LocalDate.parse("2020-02-03"), LocalDate.parse("2020-02-04"),
