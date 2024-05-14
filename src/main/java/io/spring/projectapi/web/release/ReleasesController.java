@@ -81,7 +81,7 @@ public class ReleasesController {
 		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
-			.filter((candididate) -> candididate.getVersion().equals(version))
+			.filter((candidate) -> candidate.getVersion().equals(version))
 			.findFirst()
 			.orElseThrow(() -> new ResourceNotFoundException(
 					"Version '%s' cannot be found for project '%s'".formatted(version, id)));
