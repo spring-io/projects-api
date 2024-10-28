@@ -1,0 +1,74 @@
+[
+  {
+    "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "antora": false,
+    "status": "GENERAL_AVAILABILITY",
+    "current": false,
+    "version": "3.1.12"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "antora": false,
+    "status": "GENERAL_AVAILABILITY",
+    "current": false,
+    "version": "3.0.13"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "antora": false,
+    "status": "GENERAL_AVAILABILITY",
+    "current": false,
+    "version": "2.7.18"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref": "https://docs.spring.io/spring-boot/{version}/index.html",
+    "antora": true,
+    "status": "SNAPSHOT",
+    "current": false,
+    "version": "3.3.5-SNAPSHOT"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref": "https://docs.spring.io/spring-boot/{version}/index.html",
+    "antora": true,
+    "status": "GENERAL_AVAILABILITY",
+    "current": true,
+    "version": "3.3.4"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "antora": false,
+    "status": "SNAPSHOT",
+    "current": false,
+    "version": "3.2.11-SNAPSHOT"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref": "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "antora": false,
+    "status": "GENERAL_AVAILABILITY",
+    "current": false,
+    "version": "3.2.10"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref": "https://docs.spring.io/spring-boot/{version}/index.html",
+    "antora": true,
+    "status": "PRERELEASE",
+    "current": false,
+    "version": "3.4.0-M3"
+  },
+  {
+    "api": "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref": "https://docs.spring.io/spring-boot/{version}/index.html",
+    "antora": true,
+    "status": "SNAPSHOT",
+    "current": false,
+    "version": "3.4.0-SNAPSHOT"
+  }
+]

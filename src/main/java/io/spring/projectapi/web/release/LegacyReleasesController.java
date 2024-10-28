@@ -19,8 +19,8 @@ package io.spring.projectapi.web.release;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.ProjectDocumentation;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.ProjectDocumentation;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,15 +34,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LegacyReleasesController {
 
-	private final ContentfulService contentfulService;
+	private final GithubOperations githubOperations;
 
-	public LegacyReleasesController(ContentfulService contentfulService) {
-		this.contentfulService = contentfulService;
+	public LegacyReleasesController(GithubOperations githubOperations) {
+		this.githubOperations = githubOperations;
 	}
 
 	@GetMapping(value = "/project_metadata/spring-boot", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SpringBootMetadata springBootMetadata() {
-		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations("spring-boot");
+		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations("spring-boot");
 		return new SpringBootMetadata(documentations);
 	}
 

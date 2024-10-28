@@ -38,7 +38,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class IndexController {
 
 	@GetMapping
-	public RepresentationModel index() {
+	public RepresentationModel index() throws Exception {
 		return RepresentationModel.of(null)
 			.add(linkTo(methodOn(ProjectsController.class).projects()).withRel("projects"),
 					linkTo(methodOn(RepositoriesController.class).repositories()).withRel("repositories"));

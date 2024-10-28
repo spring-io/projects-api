@@ -1,0 +1,10 @@
+[
+  {
+    "version" : "1.0",
+    "antora" : true,
+    "api" : "http://api.com",
+    "ref" : "http://ref.com",
+    "status" : "GENERAL_AVAILABILITY",
+    "current" : true
+  }
+]

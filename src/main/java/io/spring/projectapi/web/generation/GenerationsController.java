@@ -19,8 +19,8 @@ package io.spring.projectapi.web.generation;
 import java.time.LocalDate;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.ProjectSupport;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.ProjectSupport;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 import io.spring.projectapi.web.project.ProjectsController;
 
@@ -48,18 +48,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExposesResourceFor(Generation.class)
 public class GenerationsController {
 
-	private final ContentfulService contentfulService;
+	private final GithubOperations githubOperations;
 
-	private final String a = "";
-
-	public GenerationsController(ContentfulService contentfulService) {
-		this.contentfulService = contentfulService;
+	public GenerationsController(GithubOperations githubOperations) {
+		this.githubOperations = githubOperations;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
-		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
-		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
+		List<ProjectSupport> supports = this.githubOperations.getProjectSupports(id);
+		String supportPolicy = this.githubOperations.getProjectSupportPolicy(id);
+		List<Generation> generations = supports.stream()
+			.map((support) -> asGeneration(support, supportPolicy))
+			.toList();
 		CollectionModel<EntityModel<Generation>> model = CollectionModel
 			.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
 		model.add(linkToProject(id));
@@ -68,8 +69,11 @@ public class GenerationsController {
 
 	@GetMapping("/{name}")
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
-		List<ProjectSupport> supports = this.contentfulService.getProjectSupports(id);
-		List<Generation> generations = supports.stream().map(this::asGeneration).toList();
+		List<ProjectSupport> supports = this.githubOperations.getProjectSupports(id);
+		String supportPolicy = this.githubOperations.getProjectSupportPolicy(id);
+		List<Generation> generations = supports.stream()
+			.map((support) -> asGeneration(support, supportPolicy))
+			.toList();
 		Generation generation = generations.stream()
 			.filter((candidate) -> candidate.getName().equals(name))
 			.findFirst()
@@ -78,11 +82,11 @@ public class GenerationsController {
 		return asModel(id, generation);
 	}
 
-	private Generation asGeneration(ProjectSupport support) {
-		LocalDate ossPolicyEnd = (support.getOssEnforcedEnd() != null) ? support.getOssEnforcedEnd()
-				: support.getOssPolicyEnd();
-		LocalDate commercialPolicyEnd = (support.getCommercialEnforcedEnd() != null)
-				? support.getCommercialEnforcedEnd() : support.getCommercialPolicyEnd();
+	private Generation asGeneration(ProjectSupport support, String supportPolicy) {
+		LocalDate ossPolicyEnd = SupportPolicyCalculator.getOSSPolicyEnd(support.getInitialDate(),
+				support.getOssPolicyEnd(), supportPolicy);
+		LocalDate commercialPolicyEnd = SupportPolicyCalculator.getEnterprisePolicyEnd(support.getInitialDate(),
+				support.getCommercialPolicyEnd(), supportPolicy);
 		return new Generation(support.getBranch(), support.getInitialDate(), ossPolicyEnd, commercialPolicyEnd);
 	}
 

@@ -16,7 +16,7 @@
 
 package io.spring.projectapi.web.project;
 
-import io.spring.projectapi.contentful.ContentfulService;
+import io.spring.projectapi.github.GithubOperations;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,17 +35,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/projects/{id}/details")
 class ProjectDetailsController {
 
-	private final ContentfulService contentfulService;
+	private final GithubOperations githubOperations;
 
-	ProjectDetailsController(ContentfulService contentfulService) {
-		this.contentfulService = contentfulService;
+	ProjectDetailsController(GithubOperations githubOperations) {
+		this.githubOperations = githubOperations;
 	}
 
 	@PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> patchProjectDetails(@PathVariable String id, @RequestBody ProjectDetails projectDetails) {
-		io.spring.projectapi.contentful.ProjectDetails details = new io.spring.projectapi.contentful.ProjectDetails(
+		io.spring.projectapi.github.ProjectDetails details = new io.spring.projectapi.github.ProjectDetails(
 				projectDetails.getBootConfig(), projectDetails.getBody());
-		this.contentfulService.patchProjectDetails(id, details);
+		this.githubOperations.patchProjectDetails(id, details);
 		return ResponseEntity.noContent().build();
 	}
 

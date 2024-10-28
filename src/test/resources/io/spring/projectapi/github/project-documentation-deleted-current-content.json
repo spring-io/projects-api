@@ -1,0 +1,66 @@
+[
+  {
+    "version" : "3.3.5-SNAPSHOT",
+    "antora" : true,
+    "api" : "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref" : "https://docs.spring.io/spring-boot/{version}/index.html",
+    "status" : "SNAPSHOT",
+    "current" : false
+  },
+  {
+    "version" : "3.2.11-SNAPSHOT",
+    "antora" : false,
+    "api" : "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref" : "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "status" : "SNAPSHOT",
+    "current" : false
+  },
+  {
+    "version" : "3.4.0-M3",
+    "antora" : true,
+    "api" : "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref" : "https://docs.spring.io/spring-boot/{version}/index.html",
+    "status" : "PRERELEASE",
+    "current" : false
+  },
+  {
+    "version" : "3.4.0-SNAPSHOT",
+    "antora" : true,
+    "api" : "https://docs.spring.io/spring-boot/{version}/api/java/index.html",
+    "ref" : "https://docs.spring.io/spring-boot/{version}/index.html",
+    "status" : "SNAPSHOT",
+    "current" : false
+  },
+  {
+    "version" : "2.7.18",
+    "antora" : false,
+    "api" : "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref" : "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "status" : "GENERAL_AVAILABILITY",
+    "current" : false
+  },
+  {
+    "version" : "3.0.13",
+    "antora" : false,
+    "api" : "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref" : "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "status" : "GENERAL_AVAILABILITY",
+    "current" : false
+  },
+  {
+    "version" : "3.1.12",
+    "antora" : false,
+    "api" : "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref" : "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "status" : "GENERAL_AVAILABILITY",
+    "current" : false
+  },
+  {
+    "version" : "3.2.10",
+    "antora" : false,
+    "api" : "https://docs.spring.io/spring-boot/docs/{version}/api/",
+    "ref" : "https://docs.spring.io/spring-boot/docs/{version}/reference/html/",
+    "status" : "GENERAL_AVAILABILITY",
+    "current" : true
+  }
+]

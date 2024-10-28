@@ -20,9 +20,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
-import io.spring.projectapi.contentful.ProjectSupport;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.NoSuchGithubProjectException;
+import io.spring.projectapi.github.ProjectSupport;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
@@ -62,19 +62,20 @@ class GenerationsControllerTests {
 	private MockMvc mvc;
 
 	@MockBean
-	private ContentfulService contentfulService;
+	private GithubOperations githubOperations;
 
 	@Test
 	void generationsReturnsGenerations() throws Exception {
-		given(this.contentfulService.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.githubOperations.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.githubOperations.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.generations.length()").value("2"))
 			.andExpect(jsonPath("$._embedded.generations[0].name").value("2.2.x"))
 			.andExpect(jsonPath("$._embedded.generations[0].initialReleaseDate").value("2020-02-01"))
-			.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2020-02-03"))
-			.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2020-02-05"))
+			.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2021-02-01"))
+			.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2021-05-01"))
 			.andExpect(jsonPath("$._embedded.generations[0]._links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
 			.andExpect(jsonPath("$._embedded.generations[0]._links.project.href")
@@ -97,7 +98,8 @@ class GenerationsControllerTests {
 
 	@Test
 	void generationReturnsGeneration() throws Exception {
-		given(this.contentfulService.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.githubOperations.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.githubOperations.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
 		this.mvc.perform(get("/projects/spring-boot/generations/2.2.x").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("2.2.x"))
@@ -110,18 +112,16 @@ class GenerationsControllerTests {
 
 	@Test
 	void generationWhenNotFoundReturns404() throws Exception {
-		given(this.contentfulService.getProjectSupports("spring-boot"))
-			.willThrow(NoSuchContentfulProjectException.class);
+		given(this.githubOperations.getProjectSupports("spring-boot")).willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());
 	}
 
 	private List<ProjectSupport> getProjectSupports() {
 		List<ProjectSupport> result = new ArrayList<>();
-		result.add(new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, LocalDate.parse("2020-02-03"), null,
-				LocalDate.parse("2020-02-05")));
+		result.add(new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null));
 		result.add(new ProjectSupport("2.1.x", LocalDate.parse("2020-01-01"), LocalDate.parse("2021-03-01"),
-				LocalDate.parse("2021-01-01"), LocalDate.parse("2022-03-01"), LocalDate.parse("2022-01-01")));
+				LocalDate.parse("2022-03-01")));
 		return result;
 	}
 

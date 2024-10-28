@@ -1,0 +1,1 @@
+[Spring Boot auto-configuration for Spring AMQP (RabbitMQ)](https://docs.spring.io/spring-boot/docs/current/reference/html/messaging.html#messaging.amqp)

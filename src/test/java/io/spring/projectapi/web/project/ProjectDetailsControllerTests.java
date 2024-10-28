@@ -20,10 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
-import io.spring.projectapi.contentful.Project;
-import io.spring.projectapi.contentful.Project.Status;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.NoSuchGithubProjectException;
+import io.spring.projectapi.github.Project.Status;
 import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
@@ -63,7 +62,7 @@ class ProjectDetailsControllerTests {
 	private MockMvc mvc;
 
 	@MockBean
-	private ContentfulService contentfulService;
+	private GithubOperations githubOperations;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -71,7 +70,7 @@ class ProjectDetailsControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void patchProjectDetailsWhenNotFoundReturns404() throws Exception {
-		willThrow(NoSuchContentfulProjectException.class).given(this.contentfulService)
+		willThrow(NoSuchGithubProjectException.class).given(this.githubOperations)
 			.patchProjectDetails(eq("does-not-exist"), any());
 		this.mvc
 			.perform(patch("/projects/does-not-exist/details").contentType(MediaType.APPLICATION_JSON)
@@ -96,17 +95,17 @@ class ProjectDetailsControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void patchProjectDetailsWithMissingField() throws Exception {
-		Project project = new Project("Spring Boot", "spring-boot", "https://github.com/spring-projects/spring-boot",
-				Status.ACTIVE);
-		given(this.contentfulService.getProject("spring-boot")).willReturn(project);
+		io.spring.projectapi.github.Project project = new io.spring.projectapi.github.Project("Spring Boot",
+				"spring-boot", "https://github.com/spring-projects/spring-boot", Status.ACTIVE);
+		given(this.githubOperations.getProject("spring-boot")).willReturn(project);
 		this.mvc
 			.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
 				.content(from("patch-field-missing.json")))
 			.andExpect(status().isNoContent());
-		ArgumentCaptor<io.spring.projectapi.contentful.ProjectDetails> captor = ArgumentCaptor
-			.forClass(io.spring.projectapi.contentful.ProjectDetails.class);
-		verify(this.contentfulService).patchProjectDetails(eq("spring-boot"), captor.capture());
-		io.spring.projectapi.contentful.ProjectDetails value = captor.getValue();
+		ArgumentCaptor<io.spring.projectapi.github.ProjectDetails> captor = ArgumentCaptor
+			.forClass(io.spring.projectapi.github.ProjectDetails.class);
+		verify(this.githubOperations).patchProjectDetails(eq("spring-boot"), captor.capture());
+		io.spring.projectapi.github.ProjectDetails value = captor.getValue();
 		assertThat(value.getBody()).isNull();
 		assertThat(value.getSpringBootConfig()).isEqualTo("new sbc");
 	}

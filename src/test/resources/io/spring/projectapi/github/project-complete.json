@@ -1,0 +1,84 @@
+[
+	{
+		"title": "title",
+		"body": "",
+		"springBootConfig": "sbc",
+		"status": "ACTIVE",
+		"description": "description",
+		"image": "image",
+		"featured": true,
+		"stackOverflow": null,
+		"github": "gh",
+		"site": "site",
+		"slug": "test",
+		"order": 123,
+		"samples": [
+			{
+				"title": "Samples",
+				"description": "Spring Vault and Spring Cloud Vault samples",
+				"url": "https://github.com/mp911de/spring-cloud-vault-config-samples",
+				"order": 1
+			},
+			{
+				"title": "Guide: Retrieve sensitive configuration from Vault",
+				"description": "This guide walks you through the process of using Spring Cloud Vault to build an application that retrieves its configuration properties from HashiCorp Vault.",
+				"url": "https://spring.io/guides/gs/vault-config/",
+				"order": 2
+			},
+			{
+				"title": "Accessing Vault",
+				"description": "This guide walks you through the process of using Spring Vault to build an application that loads secrets from HashiCorp Vault, a secrets management tool.",
+				"url": "https://spring.io/guides/gs/accessing-vault/",
+				"order": 3
+			}
+		],
+		"support": [
+			{
+				"branch": "2.0.x",
+				"initialDate": "2018-02-20",
+				"ossEnforcedEnd": "",
+				"ossPolicyEnd": "2019-02-20",
+				"commercialEnforcedEnd": "",
+				"commercialPolicyEnd": "2020-06-20"
+			},
+			{
+				"branch": "2.1.x",
+				"initialDate": "2018-10-02",
+				"ossEnforcedEnd": "",
+				"ossPolicyEnd": "2019-10-02",
+				"commercialEnforcedEnd": "",
+				"commercialPolicyEnd": "2021-02-02"
+			},
+			{
+				"branch": "2.2.x",
+				"initialDate": "2019-11-06",
+				"ossEnforcedEnd": "",
+				"ossPolicyEnd": "2020-11-06",
+				"commercialEnforcedEnd": "",
+				"commercialPolicyEnd": "2022-03-06"
+			},
+			{
+				"branch": "2.3.x",
+				"initialDate": "2020-12-22",
+				"ossEnforcedEnd": "",
+				"ossPolicyEnd": "2021-12-22",
+				"commercialEnforcedEnd": "",
+				"commercialPolicyEnd": "2023-04-22"
+			}
+		],
+		"documentation": [
+			{
+				"id": "9dc12dc4-74c5-4f6e-95b0-8a05b1258ac8",
+				"version": "2.0.0",
+				"api": "",
+				"ref": "",
+				"status": "",
+				"current": false
+			},
+			{
+				"current": false,
+				"version": "3.0.0"
+			}
+		]
+	}
+]

@@ -19,9 +19,9 @@ package io.spring.projectapi.web.release;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.ProjectDocumentation;
-import io.spring.projectapi.contentful.ProjectDocumentation.Status;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.ProjectDocumentation;
+import io.spring.projectapi.github.ProjectDocumentation.Status;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
@@ -47,11 +47,11 @@ class LegacyReleasesControllerTests {
 	private MockMvc mvc;
 
 	@MockBean
-	private ContentfulService contentfulService;
+	private GithubOperations githubOperations;
 
 	@Test
 	void legacyReleasesReturnsReleases() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/project_metadata/spring-boot").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value("spring-boot"))

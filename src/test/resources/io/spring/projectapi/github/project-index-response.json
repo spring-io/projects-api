@@ -1,0 +1,18 @@
+{
+  "name": "index.md",
+  "path": "project/spring-amqp/index.md",
+  "sha": "8be3885df06f9b66581589b6447a4d49cfb1be32",
+  "size": 1296,
+  "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-amqp/index.md?ref=main",
+  "html_url": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-amqp/index.md",
+  "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/8be3885df06f9b66581589b6447a4d49cfb1be32",
+  "download_url": "https://raw.githubusercontent.com/spring-io/spring-website-content/main/project/spring-amqp/index.md?token=AANOBAHVXETW7D3QIKRFB2LHDKKEM",
+  "type": "file",
+  "content": "LS0tCnRpdGxlOiBTcHJpbmcgQU1RUApzdGF0dXM6IEFDVElWRQpkZXNjcmlw\ndGlvbjogQXBwbGllcyBjb3JlIFNwcmluZyBjb25jZXB0cyB0byB0aGUgZGV2\nZWxvcG1lbnQgb2YgQU1RUC1iYXNlZCBtZXNzYWdpbmcgc29sdXRpb25zLgpp\nbWFnZTogc3ByaW5nLWFtcXAuc3ZnP3Y9MgpmZWF0dXJlZDogdHJ1ZQpzdGFj\na092ZXJmbG93OiBodHRwczovL3N0YWNrb3ZlcmZsb3cuY29tL3F1ZXN0aW9u\ncy90YWdnZWQvc3ByaW5nLWFtcXAlMjBzcHJpbmctcmFiYml0JTIwc3ByaW5n\nLXJhYmJpdG1xCmdpdGh1YjogaHR0cDovL2dpdGh1Yi5jb20vc3ByaW5nLXBy\nb2plY3RzL3NwcmluZy1hbXFwCnNpdGU6IGh0dHA6Ly9zcHJpbmcuaW8vcHJv\namVjdHMvc3ByaW5nLWFtcXAKb3JkZXI6IDI1NQpzdXBwb3J0UG9saWN5OiBV\nUFNUUkVBTQotLS0KClRoZSBTcHJpbmcgQU1RUCBwcm9qZWN0IGFwcGxpZXMg\nY29yZSBTcHJpbmcgY29uY2VwdHMgdG8gdGhlIGRldmVsb3BtZW50IG9mIEFN\nUVAtYmFzZWQgbWVzc2FnaW5nIHNvbHV0aW9ucy4gSXQgcHJvdmlkZXMgYSAi\ndGVtcGxhdGUiIGFzIGEgaGlnaC1sZXZlbCBhYnN0cmFjdGlvbiBmb3Igc2Vu\nZGluZyBhbmQgcmVjZWl2aW5nIG1lc3NhZ2VzLiBJdCBhbHNvIHByb3ZpZGVz\nIHN1cHBvcnQgZm9yIE1lc3NhZ2UtZHJpdmVuIFBPSk9zIHdpdGggYSAibGlz\ndGVuZXIgY29udGFpbmVyIi4gVGhlc2UgbGlicmFyaWVzIGZhY2lsaXRhdGUg\nbWFuYWdlbWVudCBvZiBBTVFQIHJlc291cmNlcyB3aGlsZSBwcm9tb3Rpbmcg\ndGhlIHVzZSBvZiBkZXBlbmRlbmN5IGluamVjdGlvbiBhbmQgZGVjbGFyYXRp\ndmUgY29uZmlndXJhdGlvbi4gSW4gYWxsIG9mIHRoZXNlIGNhc2VzLCB5b3Ug\nd2lsbCBzZWUgc2ltaWxhcml0aWVzIHRvIHRoZSBKTVMgc3VwcG9ydCBpbiB0\naGUgU3ByaW5nIEZyYW1ld29yay4KClRoZSBwcm9qZWN0IGNvbnNpc3RzIG9m\nIHR3byBwYXJ0czsgc3ByaW5nLWFtcXAgaXMgdGhlIGJhc2UgYWJzdHJhY3Rp\nb24sIGFuZCBzcHJpbmctcmFiYml0IGlzIHRoZSBSYWJiaXRNUSBpbXBsZW1l\nbnRhdGlvbi4KCltdKCNmZWF0dXJlcylGZWF0dXJlcwotLS0tLS0tLS0tLS0t\nLS0tLS0tLS0KCiogICBMaXN0ZW5lciBjb250YWluZXIgZm9yIGFzeW5jaHJv\nbm91cyBwcm9jZXNzaW5nIG9mIGluYm91bmQgbWVzc2FnZXMKCiogICBgUmFi\nYml0VGVtcGxhdGVgIGZvciBzZW5kaW5nIGFuZCByZWNlaXZpbmcgbWVzc2Fn\nZXMKCiogICBgUmFiYml0QWRtaW5gIGZvciBhdXRvbWF0aWNhbGx5IGRlY2xh\ncmluZyBxdWV1ZXMsIGV4Y2hhbmdlcyBhbmQgYmluZGluZ3MK\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-amqp/index.md?ref=main",
+    "git": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/8be3885df06f9b66581589b6447a4d49cfb1be32",
+    "html": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-amqp/index.md"
+  }
+}

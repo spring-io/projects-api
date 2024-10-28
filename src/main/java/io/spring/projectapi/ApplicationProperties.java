@@ -124,10 +124,22 @@ public class ApplicationProperties {
 		 */
 		private String team;
 
+		/**
+		 * Github access token for accessing the API.
+		 */
+		private String accesstoken;
+
+		/**
+		 * Github branch to use for fetching and updating content.
+		 */
+		private String branch;
+
 		@ConstructorBinding
-		Github(String org, String team) {
+		Github(String org, String team, String accesstoken, @DefaultValue("main") String branch) {
 			this.org = org;
 			this.team = team;
+			this.accesstoken = accesstoken;
+			this.branch = branch;
 		}
 
 		public String getOrg() {
@@ -136,6 +148,14 @@ public class ApplicationProperties {
 
 		public String getTeam() {
 			return this.team;
+		}
+
+		public String getBranch() {
+			return this.branch;
+		}
+
+		public String getAccesstoken() {
+			return this.accesstoken;
 		}
 
 	}

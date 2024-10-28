@@ -1,0 +1,18 @@
+{
+  "name": "springBootConfig.md",
+  "path": "project/spring-amqp/springBootConfig.md",
+  "sha": "8c41ae6d6cfb58fd5d59291432b3d2b7b8106890",
+  "size": 153,
+  "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-amqp/springBootConfig.md?ref=main",
+  "html_url": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-amqp/springBootConfig.md",
+  "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/8c41ae6d6cfb58fd5d59291432b3d2b7b8106890",
+  "download_url": "https://raw.githubusercontent.com/spring-io/spring-website-content/main/project/spring-amqp/springBootConfig.md?token=AANOBAD6PXRGQXWGFRJBWCLHDKKAC",
+  "type": "file",
+  "content": "W1NwcmluZyBCb290IGF1dG8tY29uZmlndXJhdGlvbiBmb3IgU3ByaW5nIEFN\nUVAgKFJhYmJpdE1RKV0oaHR0cHM6Ly9kb2NzLnNwcmluZy5pby9zcHJpbmct\nYm9vdC9kb2NzL2N1cnJlbnQvcmVmZXJlbmNlL2h0bWwvbWVzc2FnaW5nLmh0\nbWwjbWVzc2FnaW5nLmFtcXAp\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-amqp/springBootConfig.md?ref=main",
+    "git": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/8c41ae6d6cfb58fd5d59291432b3d2b7b8106890",
+    "html": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-amqp/springBootConfig.md"
+  }
+}

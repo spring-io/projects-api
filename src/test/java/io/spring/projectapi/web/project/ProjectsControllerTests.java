@@ -19,9 +19,9 @@ package io.spring.projectapi.web.project;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
-import io.spring.projectapi.contentful.Project.Status;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.NoSuchGithubProjectException;
+import io.spring.projectapi.github.Project.Status;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
@@ -61,11 +61,11 @@ class ProjectsControllerTests {
 	private MockMvc mvc;
 
 	@MockBean
-	private ContentfulService contentfulService;
+	private GithubOperations githubOperations;
 
 	@Test
 	void projectsReturnsProjects() throws Exception {
-		given(this.contentfulService.getProjects()).willReturn(getProjects());
+		given(this.githubOperations.getProjects()).willReturn(getProjects());
 		this.mvc.perform(get("/projects").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.projects.length()").value("2"))
@@ -101,13 +101,13 @@ class ProjectsControllerTests {
 
 	@Test
 	void projectWhenNotFoundReturns404() throws Exception {
-		given(this.contentfulService.getProject("does-not-exist")).willThrow(NoSuchContentfulProjectException.class);
+		given(this.githubOperations.getProject("does-not-exist")).willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/does-not-exist").accept(MediaTypes.HAL_JSON)).andExpect(status().isNotFound());
 	}
 
 	@Test
 	void projectReturnsProject() throws Exception {
-		given(this.contentfulService.getProject("spring-boot")).willReturn(getProjects().get(0));
+		given(this.githubOperations.getProject("spring-boot")).willReturn(getProjects().get(0));
 		this.mvc.perform(get("/projects/spring-boot").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("Spring Boot"))
@@ -119,11 +119,11 @@ class ProjectsControllerTests {
 					responseFields(projectPayload())));
 	}
 
-	private List<io.spring.projectapi.contentful.Project> getProjects() {
-		List<io.spring.projectapi.contentful.Project> projects = new ArrayList<>();
-		projects.add(new io.spring.projectapi.contentful.Project("Spring Boot", "spring-boot",
+	private List<io.spring.projectapi.github.Project> getProjects() {
+		List<io.spring.projectapi.github.Project> projects = new ArrayList<>();
+		projects.add(new io.spring.projectapi.github.Project("Spring Boot", "spring-boot",
 				"https://github.com/spring-projects/spring-boot", Status.ACTIVE));
-		projects.add(new io.spring.projectapi.contentful.Project("Spring Data", "spring-data",
+		projects.add(new io.spring.projectapi.github.Project("Spring Data", "spring-data",
 				"https://github.com/spring-projects/spring-data", Status.ACTIVE));
 		return projects;
 	}

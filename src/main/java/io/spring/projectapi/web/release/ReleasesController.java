@@ -19,8 +19,8 @@ package io.spring.projectapi.web.release;
 import java.net.URI;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.ProjectDocumentation;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 import io.spring.projectapi.web.project.ProjectsController;
 import io.spring.projectapi.web.release.Release.Status;
@@ -57,15 +57,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExposesResourceFor(Release.class)
 public class ReleasesController {
 
-	private final ContentfulService contentfulService;
+	private final GithubOperations githubOperations;
 
-	public ReleasesController(ContentfulService contentfulService) {
-		this.contentfulService = contentfulService;
+	public ReleasesController(GithubOperations githubOperations) {
+		this.githubOperations = githubOperations;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Release>> releases(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
 			.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
@@ -78,7 +78,7 @@ public class ReleasesController {
 
 	@GetMapping("/{version}")
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
-		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter((candidate) -> candidate.getVersion().equals(version))
@@ -90,8 +90,7 @@ public class ReleasesController {
 
 	@GetMapping("/current")
 	public EntityModel<Release> current(@PathVariable String id) {
-		this.contentfulService.getProjectDocumentations(id);
-		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter(Release::isCurrent)
@@ -102,9 +101,9 @@ public class ReleasesController {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> add(@PathVariable String id, @RequestBody NewRelease release) {
+	public ResponseEntity<String> add(@PathVariable String id, @RequestBody NewRelease release) throws Exception {
 		String version = release.getVersion();
-		List<ProjectDocumentation> documentations = this.contentfulService.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
 		if (documentations.stream().anyMatch((candidate) -> candidate.getVersion().equals(version))) {
 			String message = "Release '%s' already present for project '%s'".formatted(version, id);
 			return ResponseEntity.badRequest().body(message);
@@ -113,14 +112,14 @@ public class ReleasesController {
 		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(), release.isAntora(),
 				release.getApiDocUrl(), release.getReferenceDocUrl(),
 				ProjectDocumentation.Status.valueOf(status.name()), false);
-		this.contentfulService.addProjectDocumentation(id, projectDocumentation);
+		this.githubOperations.addProjectDocumentation(id, projectDocumentation);
 		URI linkToRelease = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).toUri();
 		return ResponseEntity.created(linkToRelease).build();
 	}
 
 	@DeleteMapping("/{version}")
-	public ResponseEntity<String> delete(@PathVariable String id, @PathVariable String version) {
-		this.contentfulService.deleteDocumentation(id, version);
+	public ResponseEntity<String> delete(@PathVariable String id, @PathVariable String version) throws Exception {
+		this.githubOperations.deleteDocumentation(id, version);
 		return ResponseEntity.noContent().build();
 	}
 

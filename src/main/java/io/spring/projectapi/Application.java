@@ -18,11 +18,14 @@ package io.spring.projectapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.ApplicationProperties.Contentful;
+import io.spring.projectapi.ApplicationProperties.Github;
 import io.spring.projectapi.contentful.ContentfulService;
+import io.spring.projectapi.github.GithubOperations;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -44,6 +47,15 @@ public class Application {
 		WebClient webClient = webClientBuilder.baseUrl(baseUrl).build();
 		return new ContentfulService(objectMapper, webClient, accessToken, contentManagementToken, spaceId,
 				environmentId);
+	}
+
+	@Bean
+	public GithubOperations githubOperations(RestTemplateBuilder builder, ObjectMapper objectMapper,
+			ApplicationProperties properties) {
+		Github github = properties.getGithub();
+		String accessToken = github.getAccesstoken();
+		String branch = github.getBranch();
+		return new GithubOperations(builder, objectMapper, accessToken, branch);
 	}
 
 	public static void main(String[] args) {

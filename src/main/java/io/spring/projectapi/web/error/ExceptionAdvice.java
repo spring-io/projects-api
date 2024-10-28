@@ -16,9 +16,8 @@
 
 package io.spring.projectapi.web.error;
 
-import io.spring.projectapi.contentful.NoSuchContentfulProjectDocumentationFoundException;
-import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
-import io.spring.projectapi.contentful.NoUniqueContentfulProjectException;
+import io.spring.projectapi.github.NoSuchGithubProjectDocumentationFoundException;
+import io.spring.projectapi.github.NoSuchGithubProjectException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,18 +35,13 @@ public class ExceptionAdvice {
 	private static final ResponseEntity<Object> NOT_FOUND = ResponseEntity.notFound().build();
 
 	@ExceptionHandler
-	private ResponseEntity<?> noSuchContentfulProjectExceptionHandler(NoSuchContentfulProjectException ex) {
+	private ResponseEntity<?> noSuchGithubProjectExceptionHandler(NoSuchGithubProjectException ex) {
 		return NOT_FOUND;
 	}
 
 	@ExceptionHandler
-	private ResponseEntity<?> noUniqueContentfulProjectExceptionHandler(NoUniqueContentfulProjectException ex) {
-		return NOT_FOUND;
-	}
-
-	@ExceptionHandler
-	private ResponseEntity<?> noSuchContentfulProjectDocumentationExceptionHandler(
-			NoSuchContentfulProjectDocumentationFoundException ex) {
+	private ResponseEntity<?> noSuchGithubProjectDocumentationExceptionHandler(
+			NoSuchGithubProjectDocumentationFoundException ex) {
 		return NOT_FOUND;
 	}
 

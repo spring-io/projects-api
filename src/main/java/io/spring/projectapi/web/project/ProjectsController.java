@@ -18,7 +18,7 @@ package io.spring.projectapi.web.project;
 
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
+import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.web.generation.GenerationsController;
 import io.spring.projectapi.web.project.Project.Status;
 import io.spring.projectapi.web.release.ReleasesController;
@@ -48,31 +48,37 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExposesResourceFor(Project.class)
 public class ProjectsController {
 
-	private final ContentfulService contentfulService;
+	private final GithubOperations githubOperations;
 
 	private final EntityLinks entityLinks;
 
-	public ProjectsController(ContentfulService contentfulService, EntityLinks entityLinks) {
-		this.contentfulService = contentfulService;
+	public ProjectsController(GithubOperations githubOperations, EntityLinks entityLinks) {
+		this.githubOperations = githubOperations;
 		this.entityLinks = entityLinks;
 	}
 
 	@GetMapping
-	public CollectionModel<EntityModel<Project>> projects() {
-		List<Project> projects = this.contentfulService.getProjects().stream().map(this::asProject).toList();
-		CollectionModel<EntityModel<Project>> collection = CollectionModel
-			.of(projects.stream().map(this::asModel).toList());
+	public CollectionModel<EntityModel<Project>> projects() throws Exception {
+		List<Project> projects = this.githubOperations.getProjects().stream().map(this::asProject).toList();
+		CollectionModel<EntityModel<Project>> collection = CollectionModel.of(projects.stream().map((project) -> {
+			try {
+				return asModel(project);
+			}
+			catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+		}).toList());
 		collection.add(linkTo(methodOn(ProjectsController.class).project(null)).withRel("project"));
 		return collection;
 	}
 
 	@GetMapping("/{id}")
 	public EntityModel<Project> project(@PathVariable String id) {
-		Project project = asProject(this.contentfulService.getProject(id));
+		Project project = asProject(this.githubOperations.getProject(id));
 		return asModel(project);
 	}
 
-	private Project asProject(io.spring.projectapi.contentful.Project project) {
+	private Project asProject(io.spring.projectapi.github.Project project) {
 		Project.Status status = (project.getStatus() != null) ? Status.valueOf(project.getStatus().name()) : null;
 		return new Project(project.getTitle(), project.getSlug(), project.getGithub(), status);
 	}

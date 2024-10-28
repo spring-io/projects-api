@@ -2,9 +2,9 @@
 
 Spring projects are listed and documented on the spring.io website. 
 We can find there information about releases, samples, support and more.
-These projects are managed in Contentful.
+These projects are managed in Github.
 
-This project provides a RESTful web layer on top of Contentful's API for fetching and updating Spring Project Metadata. 
+This project provides a RESTful web layer on top of Github's API for fetching and updating Spring Project Metadata.
 It uses hypermedia to describe the relationships between resources and to allow navigation between them.
 
 ## Running the app locally
@@ -14,14 +14,11 @@ Configure the application with the following properties:
 [source,yaml]
 ----
 projects:
-  contentful:
-    access-token: 
-    content-management-token:
-    space-id:
-    environment-id:
   github:
     org:
     team:
+    accessToken:
+    branch:
 ----
 
 Build the application with `./gradlew build`.

@@ -21,10 +21,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.contentful.ContentfulService;
-import io.spring.projectapi.contentful.NoSuchContentfulProjectException;
-import io.spring.projectapi.contentful.ProjectDocumentation;
-import io.spring.projectapi.contentful.ProjectDocumentation.Status;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.NoSuchGithubProjectException;
+import io.spring.projectapi.github.ProjectDocumentation;
+import io.spring.projectapi.github.ProjectDocumentation.Status;
 import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
@@ -77,11 +77,11 @@ class ReleasesControllerTests {
 	private MockMvc mvc;
 
 	@MockBean
-	private ContentfulService contentfulService;
+	private GithubOperations githubOperations;
 
 	@Test
 	void releasesReturnsReleases() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.releases.length()").value("2"))
@@ -119,15 +119,15 @@ class ReleasesControllerTests {
 
 	@Test
 	void releasesWhenNotFoundReturns404() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot"))
-			.willThrow(NoSuchContentfulProjectException.class);
+		given(this.githubOperations.getProjectDocumentations("spring-boot"))
+			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());
 	}
 
 	@Test
 	void releaseReturnsRelease() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))
@@ -140,7 +140,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void currentReturnsCurrentRelease() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/current").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))
@@ -153,7 +153,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addAddsRelease() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc
@@ -163,7 +163,7 @@ class ReleasesControllerTests {
 			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", expectedLocation));
 		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
-		verify(this.contentfulService).addProjectDocumentation(eq("spring-boot"), captor.capture());
+		verify(this.githubOperations).addProjectDocumentation(eq("spring-boot"), captor.capture());
 		ProjectDocumentation added = captor.getValue();
 		assertThat(added.getVersion()).isEqualTo("2.8.0");
 		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
@@ -176,7 +176,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWithAntoraVersionAddsRelease() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc
@@ -199,7 +199,7 @@ class ReleasesControllerTests {
 								.description(
 										"URL of the API documentation, {version} template variable is supported"))));
 		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
-		verify(this.contentfulService).addProjectDocumentation(eq("spring-boot"), captor.capture());
+		verify(this.githubOperations).addProjectDocumentation(eq("spring-boot"), captor.capture());
 		ProjectDocumentation added = captor.getValue();
 		assertThat(added.getVersion()).isEqualTo("2.8.0");
 		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
@@ -221,8 +221,8 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenProjectDoesNotExistReturnsNotFound() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot"))
-			.willThrow(NoSuchContentfulProjectException.class);
+		given(this.githubOperations.getProjectDocumentations("spring-boot"))
+			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -233,7 +233,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -244,11 +244,11 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteDeletesDocumentation() throws Exception {
-		given(this.contentfulService.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNoContent())
 			.andDo(document("delete-release"));
-		verify(this.contentfulService).deleteDocumentation("spring-boot", "2.3.0");
+		verify(this.githubOperations).deleteDocumentation("spring-boot", "2.3.0");
 	}
 
 	@Test
@@ -260,7 +260,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteWhenProjectDoesNotExistReturnsNotFound() throws Exception {
-		willThrow(NoSuchContentfulProjectException.class).given(this.contentfulService)
+		willThrow(NoSuchGithubProjectException.class).given(this.githubOperations)
 			.deleteDocumentation("spring-boot", "2.3.0");
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());

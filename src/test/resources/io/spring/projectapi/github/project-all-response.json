@@ -1,0 +1,50 @@
+[
+  {
+    "name": "spring-webflow",
+    "path": "project/spring-webflow",
+    "sha": "6b7812b0b9b62c14a557032d7820f457482e8f64",
+    "size": 0,
+    "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-webflow?ref=main",
+    "html_url": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-webflow",
+    "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/6b7812b0b9b62c14a557032d7820f457482e8f64",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-webflow?ref=main",
+      "git": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/6b7812b0b9b62c14a557032d7820f457482e8f64",
+      "html": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-webflow"
+    }
+  },
+  {
+    "name": "spring-ws",
+    "path": "project/spring-ws",
+    "sha": "e2a5f0256ed61c592d3bba083d6928c08430e14b",
+    "size": 0,
+    "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-ws?ref=main",
+    "html_url": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-ws",
+    "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/e2a5f0256ed61c592d3bba083d6928c08430e14b",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-ws?ref=main",
+      "git": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/e2a5f0256ed61c592d3bba083d6928c08430e14b",
+      "html": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-ws"
+    }
+  },
+  {
+    "name": "spring-xd",
+    "path": "project/spring-xd",
+    "sha": "830732d468260beb30e5ea8ba7ad4ef2f76e0d1e",
+    "size": 0,
+    "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-xd?ref=main",
+    "html_url": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-xd",
+    "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/830732d468260beb30e5ea8ba7ad4ef2f76e0d1e",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-xd?ref=main",
+      "git": "https://api.github.com/repos/spring-io/spring-website-content/git/trees/830732d468260beb30e5ea8ba7ad4ef2f76e0d1e",
+      "html": "https://github.com/spring-io/spring-website-content/tree/main/project/spring-xd"
+    }
+  }
+]
