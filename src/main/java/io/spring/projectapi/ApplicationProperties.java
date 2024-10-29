@@ -28,81 +28,15 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @ConfigurationProperties(prefix = "projects")
 public class ApplicationProperties {
 
-	private final Contentful contentful;
-
 	private final Github github;
 
 	@ConstructorBinding
-	ApplicationProperties(@DefaultValue Contentful contentful, @DefaultValue Github github) {
-		this.contentful = contentful;
+	ApplicationProperties(@DefaultValue Github github) {
 		this.github = github;
-	}
-
-	public Contentful getContentful() {
-		return this.contentful;
 	}
 
 	public Github getGithub() {
 		return this.github;
-	}
-
-	/**
-	 * Properties to access Contentful's API.
-	 */
-	public static class Contentful {
-
-		/**
-		 * Access token for Contentful's Content Delivery API.
-		 *
-		 * @see <a href=
-		 * "https://www.contentful.com/developers/docs/references/content-delivery-api/">Content
-		 * Delivery API</a>
-		 */
-		private String accessToken;
-
-		/**
-		 * Access token for Contentful's Content Management API.
-		 *
-		 * @see <a href=
-		 * "https://www.contentful.com/developers/docs/references/content-management-api/">Content
-		 * Management API</a>
-		 */
-		private String contentManagementToken;
-
-		/**
-		 * Contentful space id.
-		 */
-		private String spaceId;
-
-		/**
-		 * Contentful environment id.
-		 */
-		private String environmentId;
-
-		@ConstructorBinding
-		Contentful(String accessToken, String contentManagementToken, String spaceId, String environmentId) {
-			this.accessToken = accessToken;
-			this.contentManagementToken = contentManagementToken;
-			this.spaceId = spaceId;
-			this.environmentId = environmentId;
-		}
-
-		public String getAccessToken() {
-			return this.accessToken;
-		}
-
-		public String getSpaceId() {
-			return this.spaceId;
-		}
-
-		public String getEnvironmentId() {
-			return this.environmentId;
-		}
-
-		public String getContentManagementToken() {
-			return this.contentManagementToken;
-		}
-
 	}
 
 	/**
