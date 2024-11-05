@@ -37,6 +37,7 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -94,6 +95,7 @@ public class GithubOperations {
 		return -version1.compareTo(version2);
 	}
 
+	@Cacheable(value = "documentation", key = "#projectSlug")
 	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug) {
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
 		String content = getFileContents(response);
@@ -250,6 +252,7 @@ public class GithubOperations {
 		return (String) exchange.getBody().get("sha");
 	}
 
+	@Cacheable("projects")
 	public List<Project> getProjects() {
 		List<Project> projects = new ArrayList<>();
 		try {
@@ -274,6 +277,7 @@ public class GithubOperations {
 		return projects;
 	}
 
+	@Cacheable(value = "project", key = "#projectSlug")
 	public Project getProject(String projectSlug) {
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
 		String contents = getFileContents(response);
@@ -283,6 +287,7 @@ public class GithubOperations {
 		return this.objectMapper.convertValue(frontMatter, Project.class);
 	}
 
+	@Cacheable(value = "support", key = "#projectSlug")
 	public List<ProjectSupport> getProjectSupports(String projectSlug) {
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "support.json");
 		if (response == null) {
@@ -299,6 +304,7 @@ public class GithubOperations {
 		}
 	}
 
+	@Cacheable(value = "support_policy", key = "#projectSlug")
 	public String getProjectSupportPolicy(String projectSlug) {
 		ResponseEntity<Map<String, Object>> indexResponse = getFile(projectSlug, "index.md");
 		String indexContents = getFileContents(indexResponse);
