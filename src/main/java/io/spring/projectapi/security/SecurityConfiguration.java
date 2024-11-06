@@ -49,6 +49,7 @@ public class SecurityConfiguration {
 		http.requiresChannel((channel) -> channel.requestMatchers(this::hasXForwardedPortHeader).requiresSecure());
 		http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers(HttpMethod.GET, "/**").permitAll();
+			requests.requestMatchers("/refresh_cache").permitAll();
 			requests.anyRequest().hasRole("ADMIN");
 		});
 		Github github = properties.getGithub();

@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.ProjectSupport;
 import io.spring.projectapi.test.WebApiTests;
@@ -55,19 +55,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTests
+@WebApiTests(GenerationsController.class)
 class GenerationsControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@MockBean
-	private GithubOperations githubOperations;
+	private ProjectRepository projectRepository;
 
 	@Test
 	void generationsReturnsGenerations() throws Exception {
-		given(this.githubOperations.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
-		given(this.githubOperations.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
+		given(this.projectRepository.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -98,8 +98,8 @@ class GenerationsControllerTests {
 
 	@Test
 	void generationReturnsGeneration() throws Exception {
-		given(this.githubOperations.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
-		given(this.githubOperations.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
+		given(this.projectRepository.getProjectSupports("spring-boot")).willReturn(getProjectSupports());
+		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
 		this.mvc.perform(get("/projects/spring-boot/generations/2.2.x").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("2.2.x"))
@@ -112,7 +112,7 @@ class GenerationsControllerTests {
 
 	@Test
 	void generationWhenNotFoundReturns404() throws Exception {
-		given(this.githubOperations.getProjectSupports("spring-boot")).willThrow(NoSuchGithubProjectException.class);
+		given(this.projectRepository.getProjectSupports("spring-boot")).willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());
 	}

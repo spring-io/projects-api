@@ -19,7 +19,7 @@ package io.spring.projectapi.web.release;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectDocumentation;
 
 import org.springframework.http.MediaType;
@@ -34,15 +34,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LegacyReleasesController {
 
-	private final GithubOperations githubOperations;
+	private final ProjectRepository projectRepository;
 
-	public LegacyReleasesController(GithubOperations githubOperations) {
-		this.githubOperations = githubOperations;
+	public LegacyReleasesController(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
 	}
 
 	@GetMapping(value = "/project_metadata/spring-boot", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SpringBootMetadata springBootMetadata() {
-		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations("spring-boot");
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations("spring-boot");
 		return new SpringBootMetadata(documentations);
 	}
 

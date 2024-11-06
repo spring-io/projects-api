@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Madhura Bhave
  */
-@WebApiTests
+@WebApiTests(ProjectDetailsController.class)
 class ProjectDetailsControllerTests {
 
 	@Autowired
