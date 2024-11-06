@@ -16,10 +16,12 @@
 
 package io.spring.projectapi.web.index;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.hypermedia.LinkDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,6 +43,9 @@ public class IndexControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
+
+	@MockBean
+	private ProjectRepository projectRepository;
 
 	@Test
 	public void indexReturnProjectsAndRepositories() throws Exception {

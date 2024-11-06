@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.ProjectDocumentation;
@@ -79,9 +80,12 @@ class ReleasesControllerTests {
 	@MockBean
 	private GithubOperations githubOperations;
 
+	@MockBean
+	private ProjectRepository projectRepository;
+
 	@Test
 	void releasesReturnsReleases() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.releases.length()").value("2"))
@@ -119,7 +123,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void releasesWhenNotFoundReturns404() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot"))
+		given(this.projectRepository.getProjectDocumentations("spring-boot"))
 			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());
@@ -127,7 +131,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void releaseReturnsRelease() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))
@@ -140,7 +144,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void currentReturnsCurrentRelease() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/current").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))

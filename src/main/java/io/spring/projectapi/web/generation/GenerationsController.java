@@ -19,6 +19,7 @@ package io.spring.projectapi.web.generation;
 import java.time.LocalDate;
 import java.util.List;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectSupport;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
@@ -48,16 +49,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExposesResourceFor(Generation.class)
 public class GenerationsController {
 
-	private final GithubOperations githubOperations;
+	private final ProjectRepository projectRepository;
 
-	public GenerationsController(GithubOperations githubOperations) {
-		this.githubOperations = githubOperations;
+	public GenerationsController(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
-		List<ProjectSupport> supports = this.githubOperations.getProjectSupports(id);
-		String supportPolicy = this.githubOperations.getProjectSupportPolicy(id);
+		List<ProjectSupport> supports = this.projectRepository.getProjectSupports(id);
+		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
 		List<Generation> generations = supports.stream()
 			.map((support) -> asGeneration(support, supportPolicy))
 			.toList();
@@ -69,8 +70,8 @@ public class GenerationsController {
 
 	@GetMapping("/{name}")
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
-		List<ProjectSupport> supports = this.githubOperations.getProjectSupports(id);
-		String supportPolicy = this.githubOperations.getProjectSupportPolicy(id);
+		List<ProjectSupport> supports = this.projectRepository.getProjectSupports(id);
+		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
 		List<Generation> generations = supports.stream()
 			.map((support) -> asGeneration(support, supportPolicy))
 			.toList();

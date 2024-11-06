@@ -35,8 +35,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
@@ -79,8 +77,6 @@ public class GithubOperations {
 	private final DefaultPrettyPrinter prettyPrinter;
 
 	private final String branch;
-
-	private static final Logger logger = LoggerFactory.getLogger(GithubOperations.class);
 
 	public GithubOperations(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, String token,
 			String branch) {
@@ -209,7 +205,6 @@ public class GithubOperations {
 	}
 
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {
-		logger.info("****In private getFile for project " + projectSlug);
 		RequestEntity<Void> request = RequestEntity
 			.get("/project/{projectSlug}/{fileName}?ref=" + this.branch, projectSlug, fileName)
 			.build();
@@ -217,7 +212,6 @@ public class GithubOperations {
 			return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
 		}
 		catch (HttpClientErrorException ex) {
-			logger.info("****In private getFile for project with exception " + projectSlug);
 			HttpStatusCode statusCode = ex.getStatusCode();
 			if (statusCode.value() == 404) {
 				throwIfProjectDoesNotExist(projectSlug);
@@ -255,7 +249,6 @@ public class GithubOperations {
 	public List<Project> getProjects() {
 		List<Project> projects = new ArrayList<>();
 		try {
-			logger.info("****In getProjects");
 			RequestEntity<Void> request = RequestEntity.get("/project?ref=" + this.branch).build();
 			ResponseEntity<List<Map<String, Object>>> exchange = this.restTemplate.exchange(request,
 					STRING_OBJECT_MAP_LIST);
@@ -277,9 +270,7 @@ public class GithubOperations {
 		return projects;
 	}
 
-	@Cacheable(value = "project", key = "#projectSlug")
 	public Project getProject(String projectSlug) {
-		logger.info("****In getProject with project " + projectSlug);
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
 		String contents = getFileContents(response);
 		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(contents);
@@ -288,17 +279,13 @@ public class GithubOperations {
 		return this.objectMapper.convertValue(frontMatter, Project.class);
 	}
 
-	@Cacheable(value = "documentation", key = "#projectSlug")
 	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug) {
-		logger.info("****In getProjectDocumentations with project " + projectSlug);
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
 		String content = getFileContents(response);
 		return convertToProjectDocumentation(content);
 	}
 
-	@Cacheable(value = "support", key = "#projectSlug")
 	public List<ProjectSupport> getProjectSupports(String projectSlug) {
-		logger.info("****In getProjectSupports with project " + projectSlug);
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "support.json");
 		if (response == null) {
 			return Collections.emptyList();
@@ -316,7 +303,6 @@ public class GithubOperations {
 
 	@Cacheable(value = "support_policy", key = "#projectSlug")
 	public String getProjectSupportPolicy(String projectSlug) {
-		logger.info("****In getProjectSupportPolicy with project " + projectSlug);
 		ResponseEntity<Map<String, Object>> indexResponse = getFile(projectSlug, "index.md");
 		String indexContents = getFileContents(indexResponse);
 		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(indexContents);

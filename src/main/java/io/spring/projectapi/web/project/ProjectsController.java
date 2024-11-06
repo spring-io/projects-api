@@ -18,7 +18,7 @@ package io.spring.projectapi.web.project;
 
 import java.util.List;
 
-import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.web.generation.GenerationsController;
 import io.spring.projectapi.web.project.Project.Status;
 import io.spring.projectapi.web.release.ReleasesController;
@@ -48,18 +48,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ExposesResourceFor(Project.class)
 public class ProjectsController {
 
-	private final GithubOperations githubOperations;
+	private final ProjectRepository projectRepository;
 
 	private final EntityLinks entityLinks;
 
-	public ProjectsController(GithubOperations githubOperations, EntityLinks entityLinks) {
-		this.githubOperations = githubOperations;
+	public ProjectsController(ProjectRepository projectRepository, EntityLinks entityLinks) {
+		this.projectRepository = projectRepository;
 		this.entityLinks = entityLinks;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Project>> projects() throws Exception {
-		List<Project> projects = this.githubOperations.getProjects().stream().map(this::asProject).toList();
+		List<Project> projects = this.projectRepository.getProjects().stream().map(this::asProject).toList();
 		CollectionModel<EntityModel<Project>> collection = CollectionModel.of(projects.stream().map((project) -> {
 			try {
 				return asModel(project);
@@ -74,7 +74,7 @@ public class ProjectsController {
 
 	@GetMapping("/{id}")
 	public EntityModel<Project> project(@PathVariable String id) {
-		Project project = asProject(this.githubOperations.getProject(id));
+		Project project = asProject(this.projectRepository.getProject(id));
 		return asModel(project);
 	}
 

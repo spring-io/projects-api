@@ -19,6 +19,7 @@ package io.spring.projectapi.web.release;
 import java.net.URI;
 import java.util.List;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
@@ -59,13 +60,16 @@ public class ReleasesController {
 
 	private final GithubOperations githubOperations;
 
-	public ReleasesController(GithubOperations githubOperations) {
+	private final ProjectRepository projectRepository;
+
+	public ReleasesController(GithubOperations githubOperations, ProjectRepository projectRepository) {
 		this.githubOperations = githubOperations;
+		this.projectRepository = projectRepository;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Release>> releases(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
 			.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
@@ -78,7 +82,7 @@ public class ReleasesController {
 
 	@GetMapping("/{version}")
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
-		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter((candidate) -> candidate.getVersion().equals(version))
@@ -90,7 +94,7 @@ public class ReleasesController {
 
 	@GetMapping("/current")
 	public EntityModel<Release> current(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter(Release::isCurrent)

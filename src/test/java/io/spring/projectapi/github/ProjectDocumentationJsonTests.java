@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,6 +44,9 @@ class ProjectDocumentationJsonTests {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@MockBean
+	private ProjectRepository projectRepository;
 
 	@Autowired
 	private JacksonTester<ProjectDocumentation> json;

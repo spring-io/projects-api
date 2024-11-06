@@ -16,10 +16,12 @@
 
 package io.spring.projectapi.web.repository;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.hypermedia.LinksSnippet;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -50,6 +52,9 @@ class RepositoriesControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
+
+	@MockBean
+	private ProjectRepository projectRepository;
 
 	@Test
 	void repositoriesReturnsRepositories() throws Exception {

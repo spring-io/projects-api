@@ -19,6 +19,7 @@ package io.spring.projectapi.web.project;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.Project.Status;
@@ -54,18 +55,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Madhura Bhave
  * @author Phillip Webb
  */
-@WebApiTests
+@WebApiTests(ProjectsController.class)
 class ProjectsControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@MockBean
-	private GithubOperations githubOperations;
+	private ProjectRepository projectRepository;
 
 	@Test
 	void projectsReturnsProjects() throws Exception {
-		given(this.githubOperations.getProjects()).willReturn(getProjects());
+		given(this.projectRepository.getProjects()).willReturn(getProjects());
 		this.mvc.perform(get("/projects").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.projects.length()").value("2"))
@@ -101,13 +102,13 @@ class ProjectsControllerTests {
 
 	@Test
 	void projectWhenNotFoundReturns404() throws Exception {
-		given(this.githubOperations.getProject("does-not-exist")).willThrow(NoSuchGithubProjectException.class);
+		given(this.projectRepository.getProject("does-not-exist")).willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/does-not-exist").accept(MediaTypes.HAL_JSON)).andExpect(status().isNotFound());
 	}
 
 	@Test
 	void projectReturnsProject() throws Exception {
-		given(this.githubOperations.getProject("spring-boot")).willReturn(getProjects().get(0));
+		given(this.projectRepository.getProject("spring-boot")).willReturn(getProjects().get(0));
 		this.mvc.perform(get("/projects/spring-boot").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("Spring Boot"))

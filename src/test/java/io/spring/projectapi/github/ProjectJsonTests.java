@@ -18,6 +18,7 @@ package io.spring.projectapi.github;
 
 import java.io.IOException;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.Project.Status;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +42,9 @@ class ProjectJsonTests {
 
 	@Autowired
 	private JacksonTester<Project[]> json;
+
+	@MockBean
+	private ProjectRepository projectRepository;
 
 	@Test
 	void readObjectReadsJson() throws IOException {

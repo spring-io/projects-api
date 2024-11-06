@@ -68,12 +68,18 @@ public class ApplicationProperties {
 		 */
 		private String branch;
 
+		/**
+		 * Secret for triggering the webhook that refreshes the cache.
+		 */
+		private String webhookSecret;
+
 		@ConstructorBinding
-		Github(String org, String team, String accesstoken, @DefaultValue("main") String branch) {
+		Github(String org, String team, String accesstoken, @DefaultValue("main") String branch, String webhookSecret) {
 			this.org = org;
 			this.team = team;
 			this.accesstoken = accesstoken;
 			this.branch = branch;
+			this.webhookSecret = webhookSecret;
 		}
 
 		public String getOrg() {
@@ -90,6 +96,10 @@ public class ApplicationProperties {
 
 		public String getAccesstoken() {
 			return this.accesstoken;
+		}
+
+		public String getWebhookSecret() {
+			return this.webhookSecret;
 		}
 
 	}

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.Project.Status;
@@ -55,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Madhura Bhave
  */
-@WebApiTests
+@WebApiTests(ProjectDetailsController.class)
 class ProjectDetailsControllerTests {
 
 	@Autowired
@@ -63,6 +64,9 @@ class ProjectDetailsControllerTests {
 
 	@MockBean
 	private GithubOperations githubOperations;
+
+	@MockBean
+	private ProjectRepository projectRepository;
 
 	@Autowired
 	private ObjectMapper objectMapper;

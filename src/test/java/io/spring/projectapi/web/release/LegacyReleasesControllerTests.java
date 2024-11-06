@@ -19,6 +19,7 @@ package io.spring.projectapi.web.release;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Brian Clozel
  */
-@WebApiTests
+@WebApiTests(LegacyReleasesController.class)
 class LegacyReleasesControllerTests {
 
 	@Autowired
@@ -49,9 +50,12 @@ class LegacyReleasesControllerTests {
 	@MockBean
 	private GithubOperations githubOperations;
 
+	@MockBean
+	private ProjectRepository projectRepository;
+
 	@Test
 	void legacyReleasesReturnsReleases() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/project_metadata/spring-boot").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value("spring-boot"))
