@@ -283,6 +283,9 @@ public class GithubOperations {
 
 	public Project getProject(String projectSlug) {
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
+		if (response == null) {
+			return null;
+		}
 		String contents = getFileContents(response);
 		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(contents);
 		InvalidGithubProjectIndexException.throwIfInvalid(Objects::nonNull, frontMatter, projectSlug);
@@ -305,7 +308,6 @@ public class GithubOperations {
 			return Collections.emptyList();
 		}
 		String contents = getFileContents(response);
-		getProjectSupportPolicy(projectSlug);
 		return List.copyOf(readValue(contents, SUPPORT_LIST));
 	}
 
@@ -326,7 +328,8 @@ public class GithubOperations {
 		String indexContents = getFileContents(indexResponse);
 		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(indexContents);
 		InvalidGithubProjectIndexException.throwIfInvalid(Objects::nonNull, frontMatter, projectSlug);
-		return frontMatter.get("supportPolicy");
+		String supportPolicy = frontMatter.get("supportPolicy");
+		return (supportPolicy != null) ? supportPolicy : DEFAULT_SUPPORT_POLICY;
 	}
 
 }
