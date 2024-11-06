@@ -35,6 +35,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
@@ -64,6 +66,8 @@ public class GithubOperations {
 
 	private static final Comparator<ProjectDocumentation> VERSION_COMPARATOR = GithubOperations::compare;
 
+	private static final Logger logger = LoggerFactory.getLogger(GithubOperations.class);
+
 	private final RestTemplate restTemplate;
 
 	private final ObjectMapper objectMapper;
@@ -73,6 +77,8 @@ public class GithubOperations {
 	private static final String INDEX_COMMIT_MESSAGE = "Update project index";
 
 	private static final String CONFIG_COMMIT_MESSAGE = "Update Spring Boot Config";
+
+	private static final String DEFAULT_SUPPORT_POLICY = "UPSTREAM";
 
 	private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<>() {
 	};
@@ -212,6 +218,8 @@ public class GithubOperations {
 			return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
 		}
 		catch (HttpClientErrorException ex) {
+			logger.info("*** Exception thrown for " + projectSlug + " and file " + fileName + " due to "
+					+ ex.getMessage() + " with status " + ex.getStatusCode());
 			HttpStatusCode statusCode = ex.getStatusCode();
 			if (statusCode.value() == 404) {
 				throwIfProjectDoesNotExist(projectSlug);
@@ -257,7 +265,10 @@ public class GithubOperations {
 			body.forEach((project) -> {
 				String projectSlug = (String) project.get("name");
 				try {
-					projects.add(getProject(projectSlug));
+					Project fetchedProject = getProject(projectSlug);
+					if (fetchedProject != null) {
+						projects.add(fetchedProject);
+					}
 				}
 				catch (Exception ex) {
 					// Ignore project without an index file
@@ -281,6 +292,9 @@ public class GithubOperations {
 
 	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug) {
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
+		if (response == null) {
+			return Collections.emptyList();
+		}
 		String content = getFileContents(response);
 		return List.copyOf(convertToProjectDocumentation(content));
 	}
@@ -304,9 +318,11 @@ public class GithubOperations {
 		}
 	}
 
-	@Cacheable(value = "support_policy", key = "#projectSlug")
 	public String getProjectSupportPolicy(String projectSlug) {
 		ResponseEntity<Map<String, Object>> indexResponse = getFile(projectSlug, "index.md");
+		if (indexResponse == null) {
+			return DEFAULT_SUPPORT_POLICY;
+		}
 		String indexContents = getFileContents(indexResponse);
 		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(indexContents);
 		InvalidGithubProjectIndexException.throwIfInvalid(Objects::nonNull, frontMatter, projectSlug);
