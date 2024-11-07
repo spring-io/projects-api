@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -59,9 +58,6 @@ public class GithubOperations {
 	private static final TypeReference<@NotNull List<ProjectDocumentation>> DOCUMENTATION_LIST = new TypeReference<>() {
 	};
 
-	private static final TypeReference<List<ProjectSupport>> SUPPORT_LIST = new TypeReference<>() {
-	};
-
 	private static final String GITHUB_URI = "https://api.github.com/repos/spring-io/spring-website-content/contents";
 
 	private static final Comparator<ProjectDocumentation> VERSION_COMPARATOR = GithubOperations::compare;
@@ -77,8 +73,6 @@ public class GithubOperations {
 	private static final String INDEX_COMMIT_MESSAGE = "Update project index";
 
 	private static final String CONFIG_COMMIT_MESSAGE = "Update Spring Boot Config";
-
-	private static final String DEFAULT_SUPPORT_POLICY = "UPSTREAM";
 
 	private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<>() {
 	};
@@ -121,9 +115,17 @@ public class GithubOperations {
 		updateProjectDocumentation(projectSlug, updatedDocumentation, sha);
 	}
 
-	@NotNull
 	private List<ProjectDocumentation> convertToProjectDocumentation(String content) {
 		return readValue(content, DOCUMENTATION_LIST);
+	}
+
+	private <T> T readValue(String contents, TypeReference<T> type) {
+		try {
+			return this.objectMapper.readValue(contents, type);
+		}
+		catch (JsonProcessingException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	private void updateProjectDocumentation(String projectSlug, List<ProjectDocumentation> documentations, String sha) {
@@ -140,14 +142,14 @@ public class GithubOperations {
 		throwIfProjectDoesNotExist(projectSlug);
 		if (projectDetails.getSpringBootConfig() != null) {
 			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "springBootConfig.md");
-			NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
+			NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "springBootConfig.md");
 			String sha = getFileSha(response);
 			updateContents(projectDetails.getSpringBootConfig().getBytes(), sha, projectSlug, "springBootConfig.md",
 					CONFIG_COMMIT_MESSAGE);
 		}
 		if (projectDetails.getBody() != null) {
 			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
-			NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
+			NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "index.md");
 			String contents = getFileContents(response);
 			String sha = getFileSha(response);
 			String updatedContent = MarkdownUtils.getUpdatedContent(contents, projectDetails.getBody());
@@ -218,9 +220,9 @@ public class GithubOperations {
 			return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
 		}
 		catch (HttpClientErrorException ex) {
-			logger.info("*** Exception thrown for " + projectSlug + " and file " + fileName + " due to "
-					+ ex.getMessage() + " with status " + ex.getStatusCode());
 			HttpStatusCode statusCode = ex.getStatusCode();
+			logger.debug("Failed to get file " + fileName + " for project " + projectSlug + " due to " + ex.getMessage()
+					+ " with status " + statusCode);
 			if (statusCode.value() == 404) {
 				throwIfProjectDoesNotExist(projectSlug);
 				return null;
@@ -251,85 +253,6 @@ public class GithubOperations {
 	private String getFileSha(ResponseEntity<Map<String, Object>> exchange) {
 		InvalidGithubResponseException.throwIfInvalid(exchange);
 		return (String) exchange.getBody().get("sha");
-	}
-
-	@Cacheable("projects")
-	public List<Project> getProjects() {
-		List<Project> projects = new ArrayList<>();
-		try {
-			RequestEntity<Void> request = RequestEntity.get("/project?ref=" + this.branch).build();
-			ResponseEntity<List<Map<String, Object>>> exchange = this.restTemplate.exchange(request,
-					STRING_OBJECT_MAP_LIST);
-			InvalidGithubResponseException.throwIfInvalid(exchange);
-			List<Map<String, Object>> body = exchange.getBody();
-			body.forEach((project) -> {
-				String projectSlug = (String) project.get("name");
-				try {
-					Project fetchedProject = getProject(projectSlug);
-					if (fetchedProject != null) {
-						projects.add(fetchedProject);
-					}
-				}
-				catch (Exception ex) {
-					// Ignore project without an index file
-				}
-			});
-		}
-		catch (HttpClientErrorException ex) {
-			// Return empty list
-		}
-		return List.copyOf(projects);
-	}
-
-	public Project getProject(String projectSlug) {
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
-		if (response == null) {
-			return null;
-		}
-		String contents = getFileContents(response);
-		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(contents);
-		InvalidGithubProjectIndexException.throwIfInvalid(Objects::nonNull, frontMatter, projectSlug);
-		frontMatter.put("slug", projectSlug);
-		return this.objectMapper.convertValue(frontMatter, Project.class);
-	}
-
-	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug) {
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
-		if (response == null) {
-			return Collections.emptyList();
-		}
-		String content = getFileContents(response);
-		return List.copyOf(convertToProjectDocumentation(content));
-	}
-
-	public List<ProjectSupport> getProjectSupports(String projectSlug) {
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "support.json");
-		if (response == null) {
-			return Collections.emptyList();
-		}
-		String contents = getFileContents(response);
-		return List.copyOf(readValue(contents, SUPPORT_LIST));
-	}
-
-	private <T> T readValue(String contents, TypeReference<T> type) {
-		try {
-			return this.objectMapper.readValue(contents, type);
-		}
-		catch (JsonProcessingException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-
-	public String getProjectSupportPolicy(String projectSlug) {
-		ResponseEntity<Map<String, Object>> indexResponse = getFile(projectSlug, "index.md");
-		if (indexResponse == null) {
-			return DEFAULT_SUPPORT_POLICY;
-		}
-		String indexContents = getFileContents(indexResponse);
-		Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(indexContents);
-		InvalidGithubProjectIndexException.throwIfInvalid(Objects::nonNull, frontMatter, projectSlug);
-		String supportPolicy = frontMatter.get("supportPolicy");
-		return (supportPolicy != null) ? supportPolicy : DEFAULT_SUPPORT_POLICY;
 	}
 
 }

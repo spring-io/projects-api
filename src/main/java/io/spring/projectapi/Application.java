@@ -19,6 +19,7 @@ package io.spring.projectapi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.ApplicationProperties.Github;
 import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.GithubQueries;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +38,15 @@ public class Application {
 		String accessToken = github.getAccesstoken();
 		String branch = github.getBranch();
 		return new GithubOperations(builder, objectMapper, accessToken, branch);
+	}
+
+	@Bean
+	public GithubQueries githubQueries(RestTemplateBuilder builder, ObjectMapper objectMapper,
+			ApplicationProperties properties) {
+		Github github = properties.getGithub();
+		String accessToken = github.getAccesstoken();
+		String branch = github.getBranch();
+		return new GithubQueries(builder, objectMapper, accessToken, branch);
 	}
 
 	public static void main(String[] args) {

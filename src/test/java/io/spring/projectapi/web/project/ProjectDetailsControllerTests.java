@@ -39,7 +39,6 @@ import org.springframework.util.FileCopyUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -97,7 +96,6 @@ class ProjectDetailsControllerTests {
 	void patchProjectDetailsWithMissingField() throws Exception {
 		io.spring.projectapi.github.Project project = new io.spring.projectapi.github.Project("Spring Boot",
 				"spring-boot", "https://github.com/spring-projects/spring-boot", Status.ACTIVE);
-		given(this.githubOperations.getProject("spring-boot")).willReturn(project);
 		this.mvc
 			.perform(patch("/projects/spring-boot/details").contentType(MediaType.APPLICATION_JSON)
 				.content(from("patch-field-missing.json")))

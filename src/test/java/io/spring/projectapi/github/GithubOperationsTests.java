@@ -18,9 +18,7 @@ package io.spring.projectapi.github;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.Base64;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +26,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
-import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,10 +35,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.util.FileCopyUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -74,87 +69,6 @@ class GithubOperationsTests {
 		objectMapper.registerModule(new JavaTimeModule());
 		this.operations = new GithubOperations(new RestTemplateBuilder(this.customizer), objectMapper, "test-token",
 				"test");
-	}
-
-	@Test
-	void getProjectsReturnsProjects() throws Exception {
-		setupFile("project-all-response.json", "/project?ref=test");
-		this.customizer.getServer()
-			.expect(ExpectedCount.manyTimes(),
-					requestTo(MatchesPattern.matchesPattern("\\/project\\/.+\\/index\\.md\\?ref\\=test")))
-			.andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
-		List<Project> projects = this.operations.getProjects();
-		assertThat(projects.size()).isEqualTo(3);
-		assertThat(projects.get(0).getSlug()).isEqualTo("spring-webflow");
-	}
-
-	@Test
-	void getProjectsWhenNoProjectsReturnsEmpty() {
-		setupNoProjectDirectory();
-		List<Project> projects = this.operations.getProjects();
-		assertThat(projects).isEmpty();
-	}
-
-	// @Test
-	// void getProjectsWhenErrorThrowsException() throws Exception {
-	// setupResponse("query-error.json");
-	// assertThatExceptionOfType(GithubException.class).isThrownBy(this.operations::getProjects);
-	// }
-
-	@Test
-	void getProjectReturnsProject() throws Exception {
-		setupFile("project-index-response.json", "/project/spring-boot/index.md?ref=test");
-		Project project = this.operations.getProject("spring-boot");
-		assertThat(project.getSlug()).isEqualTo("spring-boot");
-	}
-
-	@Test
-	void getProjectWhenNoProjectMatchThrowsException() throws Exception {
-		setupNonExistentProject("index.md");
-		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.operations.getProject("does-not-exist"))
-			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("does-not-exist"));
-	}
-
-	@Test
-	void getProjectDocumentationsReturnsDocumentations() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		List<ProjectDocumentation> documentations = this.operations.getProjectDocumentations("test-project");
-		assertThat(documentations).hasSize(9);
-	}
-
-	@Test
-	void getProjectDocumentationsWhenNoProjectMatchThrowsException() throws Exception {
-		setupNonExistentProject("documentation.json");
-		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.operations.getProjectDocumentations("does-not-exist"))
-			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("does-not-exist"));
-	}
-
-	@Test
-	void getProjectSupportsReturnsSupports() throws Exception {
-		setupFile("project-support-response.json", "/project/spring-boot/support.json?ref=test");
-		setupFile("project-index-response.json", "/project/spring-boot/index.md?ref=test");
-		List<ProjectSupport> supports = this.operations.getProjectSupports("spring-boot");
-		assertThat(supports).hasSize(14);
-		assertThat(supports.get(0).getInitialDate()).isEqualTo(LocalDate.parse("2017-01-30"));
-	}
-
-	@Test
-	void getProjectSupportsWhenNoProjectMatchThrowsException() throws Exception {
-		setupNonExistentProject("support.json");
-		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.operations.getProjectSupports("does-not-exist"))
-			.satisfies((ex) -> assertThat(ex.getProjectSlug()).isEqualTo("does-not-exist"));
-	}
-
-	@Test
-	void getProjectSupportsWhenNullReturnsEmptyList() {
-		setupResourceNotFound("/project/test-project/support.json?ref=test");
-		setupProject();
-		List<ProjectSupport> supports = this.operations.getProjectSupports("test-project");
-		assertThat(supports).isEmpty();
 	}
 
 	@Test
@@ -332,10 +246,6 @@ class GithubOperationsTests {
 			.expect(requestTo(expectedUri))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
-	}
-
-	private void setupNoProjectDirectory() {
-		setupResourceNotFound("/project?ref=test");
 	}
 
 	private String getEncodedContent(String path) throws Exception {
