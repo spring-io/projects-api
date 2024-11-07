@@ -107,7 +107,7 @@ public class ReleasesController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@PathVariable String id, @RequestBody NewRelease release) throws Exception {
 		String version = release.getVersion();
-		List<ProjectDocumentation> documentations = this.githubOperations.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		if (documentations.stream().anyMatch((candidate) -> candidate.getVersion().equals(version))) {
 			String message = "Release '%s' already present for project '%s'".formatted(version, id);
 			return ResponseEntity.badRequest().body(message);

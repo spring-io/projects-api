@@ -157,7 +157,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addAddsRelease() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc
@@ -180,7 +180,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWithAntoraVersionAddsRelease() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc
@@ -225,7 +225,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenProjectDoesNotExistReturnsNotFound() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot"))
+		given(this.projectRepository.getProjectDocumentations("spring-boot"))
 			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
@@ -237,7 +237,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -248,7 +248,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteDeletesDocumentation() throws Exception {
-		given(this.githubOperations.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNoContent())
 			.andDo(document("delete-release"));

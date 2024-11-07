@@ -39,6 +39,12 @@ public final class NoSuchGithubProjectException extends GithubException {
 		}
 	}
 
+	static void throwIfNotFound(Object value, String projectSlug) {
+		if (value == null) {
+			throw new NoSuchGithubProjectException(projectSlug);
+		}
+	}
+
 	public String getProjectSlug() {
 		return this.projectSlug;
 	}
