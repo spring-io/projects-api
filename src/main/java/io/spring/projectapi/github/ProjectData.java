@@ -19,6 +19,8 @@ package io.spring.projectapi.github;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents cached data from Github.
  *
@@ -34,10 +36,20 @@ record ProjectData(Map<String, Project> project, Map<String, List<ProjectDocumen
 
 	public static ProjectData load(GithubQueries githubQueries) {
 		ProjectData data = githubQueries.getData();
-		Map<String, Project> projects = data.project();
-		Map<String, List<ProjectDocumentation>> documentation = data.documentation();
-		Map<String, List<ProjectSupport>> support = data.support();
-		Map<String, String> supportPolicy = data.supportPolicy();
+		return getImmutableProjectData(data);
+	}
+
+	public static ProjectData update(ProjectData data, List<String> changes, GithubQueries githubQueries) {
+		ProjectData updatedData = githubQueries.updateData(data, changes);
+		return getImmutableProjectData(updatedData);
+	}
+
+	@NotNull
+	private static ProjectData getImmutableProjectData(ProjectData updatedData) {
+		Map<String, Project> projects = updatedData.project();
+		Map<String, List<ProjectDocumentation>> documentation = updatedData.documentation();
+		Map<String, List<ProjectSupport>> support = updatedData.support();
+		Map<String, String> supportPolicy = updatedData.supportPolicy();
 		return new ProjectData(Map.copyOf(projects), Map.copyOf(documentation), Map.copyOf(support),
 				Map.copyOf(supportPolicy));
 	}

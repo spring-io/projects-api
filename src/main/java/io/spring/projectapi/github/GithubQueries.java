@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,7 +35,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -58,6 +62,8 @@ public class GithubQueries {
 	private final ObjectMapper objectMapper;
 
 	private static final String DEFAULT_SUPPORT_POLICY = "SPRING_BOOT";
+
+	private static final Pattern PROJECT_FILE = Pattern.compile("project\\/(.*)\\/.*");
 
 	private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<>() {
 	};
@@ -94,6 +100,95 @@ public class GithubQueries {
 			// Return empty list
 		}
 		return new ProjectData(projects, documentation, support, supportPolicy);
+	}
+
+	ProjectData updateData(ProjectData data, List<String> changes) {
+		Assert.notNull(data, "Project data should not be null");
+		Map<String, Project> projects = new LinkedHashMap<>(data.project());
+		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>(data.documentation());
+		Map<String, List<ProjectSupport>> support = new LinkedHashMap<>(data.support());
+		Map<String, String> supportPolicy = new LinkedHashMap<>(data.supportPolicy());
+		Map<String, Boolean> checkedProjects = new LinkedHashMap<>();
+		try {
+			changes.forEach((change) -> {
+				ProjectFile file = ProjectFile.from(change);
+				if (ProjectFile.OTHER.equals(file)) {
+					return;
+				}
+				updateData(change, file, projects, supportPolicy, documentation, support, checkedProjects);
+			});
+		}
+		catch (Exception ex) {
+			logger.debug("Could not update data due to '%s'".formatted(ex.getMessage()));
+		}
+		return new ProjectData(projects, documentation, support, supportPolicy);
+	}
+
+	private void updateData(String change, ProjectFile file, Map<String, Project> projects,
+			Map<String, String> supportPolicy, Map<String, List<ProjectDocumentation>> documentation,
+			Map<String, List<ProjectSupport>> support, Map<String, Boolean> checkedprojects) {
+		Matcher matcher = PROJECT_FILE.matcher(change);
+		if (!matcher.matches()) {
+			return;
+		}
+		String slug = matcher.group(1);
+		if (checkedprojects.get(slug) == null) {
+			checkedprojects.put(slug, doesProjectExist(slug));
+		}
+		if (checkedprojects.get(slug)) {
+			updateFromIndex(file, projects, supportPolicy, slug);
+			updateDocumentation(file, documentation, slug);
+			updateSupport(file, support, slug);
+			return;
+		}
+		projects.remove(slug);
+		documentation.remove(slug);
+		support.remove(slug);
+		supportPolicy.remove(slug);
+	}
+
+	private void updateSupport(ProjectFile file, Map<String, List<ProjectSupport>> support, String slug) {
+		if (ProjectFile.SUPPORT.equals(file)) {
+			List<ProjectSupport> projectSupports = getProjectSupports(slug);
+			support.put(slug, projectSupports);
+		}
+	}
+
+	private void updateDocumentation(ProjectFile file, Map<String, List<ProjectDocumentation>> documentation,
+			String slug) {
+		if (ProjectFile.DOCUMENTATION.equals(file)) {
+			List<ProjectDocumentation> projectDocumentation = getProjectDocumentations(slug);
+			documentation.put(slug, projectDocumentation);
+		}
+	}
+
+	private void updateFromIndex(ProjectFile file, Map<String, Project> projects, Map<String, String> supportPolicy,
+			String slug) {
+		if (ProjectFile.INDEX.equals(file)) {
+			ResponseEntity<Map<String, Object>> response = getFile(slug, "index.md");
+			Project project = getProject(response, slug);
+			if (project != null) {
+				projects.put(slug, project);
+			}
+			String policy = getProjectSupportPolicy(response, slug);
+			supportPolicy.put(slug, policy);
+		}
+	}
+
+	private boolean doesProjectExist(String projectSlug) {
+		RequestEntity<Void> request = RequestEntity.get("/project/{projectSlug}?ref=" + this.branch, projectSlug)
+			.build();
+		try {
+			this.restTemplate.exchange(request, STRING_OBJECT_MAP);
+		}
+		catch (Exception ex) {
+			if (ex instanceof HttpClientErrorException) {
+				if (((HttpClientErrorException) ex).getStatusCode().value() == 404) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private void populateData(Map<String, Object> project, Map<String, Project> projects,
@@ -186,6 +281,31 @@ public class GithubQueries {
 		String cleanedContent = StringUtils.replace(encodedContent, "\n", "");
 		byte[] contents = Base64.getDecoder().decode(cleanedContent);
 		return new String(contents);
+	}
+
+	enum ProjectFile {
+
+		INDEX,
+
+		SUPPORT,
+
+		DOCUMENTATION,
+
+		OTHER;
+
+		static ProjectFile from(String fileName) {
+			if (fileName.contains("index.md")) {
+				return INDEX;
+			}
+			if (fileName.contains("documentation.json")) {
+				return DOCUMENTATION;
+			}
+			if (fileName.contains("support.json")) {
+				return SUPPORT;
+			}
+			return OTHER;
+		}
+
 	}
 
 }

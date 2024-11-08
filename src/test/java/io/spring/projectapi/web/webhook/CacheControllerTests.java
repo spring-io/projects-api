@@ -17,6 +17,7 @@
 package io.spring.projectapi.web.webhook;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.security.SecurityConfiguration;
@@ -113,7 +114,7 @@ class CacheControllerTests {
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content()
 				.string("{ \"message\": \"Successfully processed cache refresh\" }"));
-		verify(this.projectRepository, times(1)).update();
+		verify(this.projectRepository, times(1)).update(List.of("index-common.html"));
 	}
 
 	private String getTestPayload(String fileName) throws Exception {

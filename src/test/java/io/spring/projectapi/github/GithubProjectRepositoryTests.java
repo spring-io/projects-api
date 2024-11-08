@@ -24,13 +24,11 @@ import java.util.Map;
 import io.spring.projectapi.github.Project.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -43,27 +41,32 @@ class GithubProjectRepositoryTests {
 
 	private GithubQueries githubQueries;
 
+	private ProjectData data;
+
 	@BeforeEach
 	void setup() {
 		this.githubQueries = mock(GithubQueries.class);
-		setupGithubResponse("spring-boot");
+		this.data = getData("spring-boot");
+		given(this.githubQueries.getData()).willReturn(this.data);
 		this.projectRepository = new GithubProjectRepository(this.githubQueries);
 	}
 
 	@Test
 	void dataLoadedOnBeanCreation() {
 		validateCachedValues("spring-boot");
-		verifyCacheUpdate(atMostOnce());
+		verify(this.githubQueries).getData();
 	}
 
 	@Test
 	void updateRefreshesCache() {
-		setupGithubResponse("spring-boot-updated");
-		this.projectRepository.update();
+		List<String> changes = List.of("project/spring-boot-updated/index.md",
+				"project/spring-boot-updated/documentation.json", "project/spring-boot-updated/support.json");
+		given(this.githubQueries.updateData(any(), any())).willReturn(getData("spring-boot-updated"));
+		this.projectRepository.update(changes);
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
 			.isThrownBy(() -> this.projectRepository.getProject("spring-boot"));
 		validateCachedValues("spring-boot-updated");
-		verifyCacheUpdate(Mockito.atMost(2));
+		verify(this.githubQueries).updateData(this.data, changes);
 	}
 
 	@Test
@@ -131,14 +134,6 @@ class GithubProjectRepositoryTests {
 		assertThat(documentations).size().isEqualTo(2);
 		String policy = this.projectRepository.getProjectSupportPolicy(projectSlug);
 		assertThat(policy).isEqualTo("UPSTREAM");
-	}
-
-	private void setupGithubResponse(String project) {
-		given(this.githubQueries.getData()).willReturn(getData(project));
-	}
-
-	private void verifyCacheUpdate(VerificationMode mode) {
-		verify(this.githubQueries, mode).getData();
 	}
 
 	private ProjectData getData(String project) {

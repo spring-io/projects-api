@@ -20,11 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import io.spring.projectapi.github.Project.Status;
 import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -138,6 +140,86 @@ class GithubQueriesTests {
 			.andRespond(withResourceNotFound());
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.support().get("spring-xd")).isEmpty();
+	}
+
+	@Test
+	void updateDataUpdatesOnlyChangedData() throws Exception {
+		ProjectData data = getProjectData();
+		List<String> changes = List.of("project/spring-boot/index.md", "project/spring-framework/documentation.json");
+		this.customizer.getServer()
+			.expect(requestTo("/project/spring-boot?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess());
+		this.customizer.getServer()
+			.expect(requestTo("/project/spring-boot/index.md?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
+		this.customizer.getServer()
+			.expect(requestTo("/project/spring-framework?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess());
+		this.customizer.getServer()
+			.expect(requestTo("/project/spring-framework/documentation.json?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from("project-documentation-response.json"), MediaType.APPLICATION_JSON));
+		ProjectData projectData = this.queries.updateData(data, changes);
+		assertThat(projectData.project().size()).isEqualTo(3);
+		assertThat(projectData.project().get("spring-boot").getTitle()).isEqualTo("Spring AMQP");
+		assertThat(projectData.documentation().get("spring-framework").size()).isEqualTo(9);
+	}
+
+	@Test
+	void updateDataRemovesDeletedProject() {
+		ProjectData data = getProjectData();
+		List<String> changes = List.of("project/spring-boot/index.md", "project/spring-boot/documentation.json");
+		this.customizer.getServer()
+			.expect(requestTo("/project/spring-boot?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withResourceNotFound());
+		ProjectData projectData = this.queries.updateData(data, changes);
+		assertThat(projectData.project().size()).isEqualTo(2);
+		assertThat(projectData.project().get("spring-boot")).isNull();
+		assertThat(projectData.documentation().get("spring-boot")).isNull();
+		assertThat(projectData.support().get("spring-boot")).isNull();
+		assertThat(projectData.supportPolicy().get("spring-boot")).isNull();
+	}
+
+	@Test
+	void updateDataWhenNoProjectFilesChangedDoesNothing() {
+		ProjectData data = getProjectData();
+		List<String> changes = List.of("blog.md");
+		ProjectData projectData = this.queries.updateData(data, changes);
+		assertThat(projectData.project().size()).isEqualTo(3);
+	}
+
+	private ProjectData getProjectData() {
+		return new ProjectData(getProjects(), getProjectDocumentation(), getProjectSupports(),
+				getProjectSupportPolicy());
+	}
+
+	private Map<String, Project> getProjects() {
+		Project project1 = new Project("Spring Boot", "spring-boot", "github", Status.ACTIVE);
+		Project project2 = new Project("Spring Batch", "spring-batch", "github", Status.ACTIVE);
+		Project project3 = new Project("Spring Framework", "spring-framework", "github", Status.ACTIVE);
+		return Map.of("spring-boot", project1, "spring-batch", project2, "spring-framework", project3);
+	}
+
+	private Map<String, List<ProjectSupport>> getProjectSupports() {
+		ProjectSupport support1 = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null);
+		ProjectSupport support2 = new ProjectSupport("2.3.x", LocalDate.parse("2021-02-01"), null, null);
+		return Map.of("spring-boot", List.of(support1, support2));
+	}
+
+	private Map<String, List<ProjectDocumentation>> getProjectDocumentation() {
+		ProjectDocumentation documentation1 = new ProjectDocumentation("1.0", false, "api", "ref",
+				ProjectDocumentation.Status.PRERELEASE, true);
+		ProjectDocumentation documentation2 = new ProjectDocumentation("2.0", false, "api", "ref",
+				ProjectDocumentation.Status.PRERELEASE, true);
+		return Map.of("spring-boot", List.of(documentation1, documentation2));
+	}
+
+	private Map<String, String> getProjectSupportPolicy() {
+		return Map.of("spring-boot", "UPSTREAM");
 	}
 
 	private void setupProjectFiles(String fileName, String responseFileName) throws IOException {

@@ -21,6 +21,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.crypto.Mac;
@@ -87,6 +89,7 @@ public class CacheController {
 	}
 
 	@PostMapping("/refresh_cache")
+	@SuppressWarnings("unchecked")
 	public ResponseEntity<String> refresh(@RequestBody String payload,
 			@RequestHeader("X-Hub-Signature") String signature,
 			@RequestHeader(name = "X-GitHub-Event", required = false, defaultValue = "push") String event)
@@ -97,8 +100,24 @@ public class CacheController {
 		}
 		Map<?, ?> push = this.objectMapper.readValue(payload, Map.class);
 		logPayload(push);
-		this.repository.update();
+		List<Map<String, ?>> commits = (List<Map<String, ?>>) push.get("commits");
+		List<String> changes = getChangedFiles(commits);
+		this.repository.update(changes);
 		return ResponseEntity.ok("{ \"message\": \"Successfully processed cache refresh\" }");
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<String> getChangedFiles(List<Map<String, ?>> commits) {
+		List<String> changedFiles = new ArrayList<>();
+		commits.forEach((commit) -> {
+			List<String> added = (List<String>) commit.get("added");
+			List<String> removed = (List<String>) commit.get("removed");
+			List<String> modified = (List<String>) commit.get("modified");
+			changedFiles.addAll(added);
+			changedFiles.addAll(removed);
+			changedFiles.addAll(modified);
+		});
+		return changedFiles.stream().distinct().toList();
 	}
 
 	@ExceptionHandler(WebhookAuthenticationException.class)
