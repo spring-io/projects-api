@@ -31,7 +31,7 @@ import io.spring.projectapi.web.webhook.CacheController;
  */
 public interface ProjectRepository {
 
-	void update();
+	void update(List<String> changes);
 
 	Collection<Project> getProjects();
 

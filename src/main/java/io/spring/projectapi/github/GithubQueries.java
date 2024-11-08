@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,6 +35,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -58,6 +61,8 @@ public class GithubQueries {
 	private final ObjectMapper objectMapper;
 
 	private static final String DEFAULT_SUPPORT_POLICY = "SPRING_BOOT";
+
+	private static final Pattern PROJECT_FILE = Pattern.compile("/project/(.*)/.");
 
 	private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<>() {
 	};
@@ -94,6 +99,51 @@ public class GithubQueries {
 			// Return empty list
 		}
 		return new ProjectData(projects, documentation, support, supportPolicy);
+	}
+
+	ProjectData updateData(ProjectData data, List<String> changes) {
+		Assert.notNull(data, "Project data should not be null");
+		Map<String, Project> projects = new LinkedHashMap<>(data.project());
+		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>(data.documentation());
+		Map<String, List<ProjectSupport>> support = new LinkedHashMap<>(data.support());
+		Map<String, String> supportPolicy = new LinkedHashMap<>(data.supportPolicy());
+		try {
+			changes.forEach((change) -> {
+				ProjectFile file = ProjectFile.from(change);
+				if (ProjectFile.OTHER.equals(file)) {
+					return;
+				}
+				updateData(change, file, projects, supportPolicy, documentation, support);
+			});
+		}
+		catch (Exception ex) {
+			logger.debug("Could not update data due to '%s'".formatted(ex.getMessage()));
+		}
+		return new ProjectData(projects, documentation, support, supportPolicy);
+	}
+
+	private void updateData(String change, ProjectFile file, Map<String, Project> projects,
+			Map<String, String> supportPolicy, Map<String, List<ProjectDocumentation>> documentation,
+			Map<String, List<ProjectSupport>> support) {
+		Matcher matcher = PROJECT_FILE.matcher(change);
+		String slug = matcher.group();
+		if (ProjectFile.INDEX.equals(file)) {
+			ResponseEntity<Map<String, Object>> response = getFile(slug, "index.md");
+			Project project = getProject(response, slug);
+			if (project != null) {
+				projects.put(slug, project);
+			}
+			String policy = getProjectSupportPolicy(response, slug);
+			supportPolicy.put(slug, policy);
+		}
+		if (ProjectFile.DOCUMENTATION.equals(file)) {
+			List<ProjectDocumentation> projectDocumentation = getProjectDocumentations(slug);
+			documentation.put(slug, projectDocumentation);
+		}
+		if (ProjectFile.SUPPORT.equals(file)) {
+			List<ProjectSupport> projectSupports = getProjectSupports(slug);
+			support.put(slug, projectSupports);
+		}
 	}
 
 	private void populateData(Map<String, Object> project, Map<String, Project> projects,
@@ -186,6 +236,31 @@ public class GithubQueries {
 		String cleanedContent = StringUtils.replace(encodedContent, "\n", "");
 		byte[] contents = Base64.getDecoder().decode(cleanedContent);
 		return new String(contents);
+	}
+
+	enum ProjectFile {
+
+		INDEX,
+
+		SUPPORT,
+
+		DOCUMENTATION,
+
+		OTHER;
+
+		static ProjectFile from(String fileName) {
+			if (fileName.contains("index.md")) {
+				return INDEX;
+			}
+			if (fileName.contains("documentation.json")) {
+				return DOCUMENTATION;
+			}
+			if (fileName.contains("support.json")) {
+				return SUPPORT;
+			}
+			return OTHER;
+		}
+
 	}
 
 }

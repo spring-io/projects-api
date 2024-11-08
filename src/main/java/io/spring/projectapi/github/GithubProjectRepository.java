@@ -42,8 +42,8 @@ class GithubProjectRepository implements ProjectRepository {
 	}
 
 	@Override
-	public void update() {
-		this.projectData = ProjectData.load(this.githubQueries);
+	public void update(List<String> changes) {
+		this.projectData = ProjectData.update(this.projectData, changes, this.githubQueries);
 	}
 
 	@Override

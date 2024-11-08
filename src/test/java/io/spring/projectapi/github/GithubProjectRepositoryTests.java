@@ -29,6 +29,7 @@ import org.mockito.verification.VerificationMode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
@@ -58,8 +59,10 @@ class GithubProjectRepositoryTests {
 
 	@Test
 	void updateRefreshesCache() {
-		setupGithubResponse("spring-boot-updated");
-		this.projectRepository.update();
+		List<String> changes = List.of("project/spring-boot-updated/index.md",
+				"project/spring-boot-updated/documentation.json", "project/spring-boot-updated/support.json");
+		given(this.githubQueries.updateData(any(), any())).willReturn(getData("spring-boot-updated"));
+		this.projectRepository.update(changes);
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
 			.isThrownBy(() -> this.projectRepository.getProject("spring-boot"));
 		validateCachedValues("spring-boot-updated");
