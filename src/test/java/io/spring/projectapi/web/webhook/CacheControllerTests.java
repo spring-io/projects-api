@@ -37,6 +37,7 @@ import org.springframework.util.StreamUtils;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
  * Tests for {@link CacheController}.
@@ -103,18 +104,32 @@ class CacheControllerTests {
 	}
 
 	@Test
-	void shouldTriggerCacheRefresh() throws Exception {
+	void cacheRefreshNotTriggeredOnBranchOtherThanMain() throws Exception {
 		this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/refresh_cache")
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=C8D5B1C972E8DCFB69AB7124678D4C91E11D6F23")
 				.header("X-GitHub-Event", "push")
+				.content(getTestPayload("push_other_branch")))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Push event not on main\" }"));
+		verifyNoInteractions(this.projectRepository);
+	}
+
+	@Test
+	void shouldTriggerCacheRefresh() throws Exception {
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/refresh_cache")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("X-Hub-Signature", "sha1=E1C54005D92AE14A76A7C0CD164AEAC6E6740C64")
+				.header("X-GitHub-Event", "push")
 				.content(getTestPayload("push")))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content()
 				.string("{ \"message\": \"Successfully processed cache refresh\" }"));
-		verify(this.projectRepository, times(1)).update(List.of("index-common.html"));
+		verify(this.projectRepository, times(1)).update(List.of("added.html", "index-common.html"));
 	}
 
 	private String getTestPayload(String fileName) throws Exception {

@@ -63,6 +63,8 @@ public class CacheController {
 
 	private static final String PING_EVENT = "ping";
 
+	private static final String MAIN_BRANCH = "refs/heads/main";
+
 	private final ObjectMapper objectMapper;
 
 	private final Mac hmac;
@@ -100,6 +102,9 @@ public class CacheController {
 		}
 		Map<?, ?> push = this.objectMapper.readValue(payload, Map.class);
 		logPayload(push);
+		if (!push.get("ref").equals(MAIN_BRANCH)) {
+			return ResponseEntity.ok("{ \"message\": \"Push event not on main\" }");
+		}
 		List<Map<String, ?>> commits = (List<Map<String, ?>>) push.get("commits");
 		List<String> changes = getChangedFiles(commits);
 		this.repository.update(changes);

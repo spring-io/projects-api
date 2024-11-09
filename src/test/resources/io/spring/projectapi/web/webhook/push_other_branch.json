@@ -1,5 +1,5 @@
 {
-  "ref": "refs/heads/main",
+  "ref": "refs/heads/master",
   "after": "a427f3f4db6c96ae5e86b610d0eef149393c9996",
   "before": "3193db21394092a84d973bef8c4a3741aec1b814",
   "created": false,
@@ -24,7 +24,6 @@
         "username": "cbeams"
       },
       "added": [
-        "added.html"
       ],
       "removed": [
       ],
