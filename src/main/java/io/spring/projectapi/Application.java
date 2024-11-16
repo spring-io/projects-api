@@ -26,6 +26,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.support.RetryTemplate;
+import org.springframework.web.client.HttpClientErrorException;
 
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationProperties.class)
@@ -33,11 +35,11 @@ public class Application {
 
 	@Bean
 	public GithubOperations githubOperations(RestTemplateBuilder builder, ObjectMapper objectMapper,
-			ApplicationProperties properties) {
+			ApplicationProperties properties, RetryTemplate retryTemplate) {
 		Github github = properties.getGithub();
 		String accessToken = github.getAccesstoken();
 		String branch = github.getBranch();
-		return new GithubOperations(builder, objectMapper, accessToken, branch);
+		return new GithubOperations(builder, objectMapper, accessToken, branch, retryTemplate);
 	}
 
 	@Bean
@@ -47,6 +49,16 @@ public class Application {
 		String accessToken = github.getAccesstoken();
 		String branch = github.getBranch();
 		return new GithubQueries(builder, objectMapper, accessToken, branch);
+	}
+
+	@Bean
+	public RetryTemplate retryTemplate() {
+		return RetryTemplate.builder().maxAttempts(10).exponentialBackoff(100, 2, 10000).retryOn((throwable) -> {
+			if (throwable instanceof HttpClientErrorException ex) {
+				return (ex.getStatusCode().value() == 409);
+			}
+			return false;
+		}).build();
 	}
 
 	public static void main(String[] args) {

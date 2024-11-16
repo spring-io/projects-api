@@ -41,6 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
+	implementation 'org.springframework.retry:spring-retry:2.0.10'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'

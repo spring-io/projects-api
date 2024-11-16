@@ -35,7 +35,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
@@ -60,6 +62,8 @@ class GithubOperationsTests {
 
 	private static final String DOCUMENTATION_URI = "/project/test-project/documentation.json?ref=test";
 
+	private RetryTemplate retryTemplate;
+
 	@BeforeEach
 	void setup() {
 		this.customizer = new MockServerRestTemplateCustomizer();
@@ -67,8 +71,18 @@ class GithubOperationsTests {
 		objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		objectMapper.registerModule(new JavaTimeModule());
+		this.retryTemplate = getRetryTemplate();
 		this.operations = new GithubOperations(new RestTemplateBuilder(this.customizer), objectMapper, "test-token",
-				"test");
+				"test", this.retryTemplate);
+	}
+
+	private static RetryTemplate getRetryTemplate() {
+		return RetryTemplate.builder().maxAttempts(2).retryOn((throwable) -> {
+			if (throwable instanceof HttpClientErrorException ex) {
+				return ex.getStatusCode().value() == 409;
+			}
+			return false;
+		}).build();
 	}
 
 	@Test
@@ -76,6 +90,28 @@ class GithubOperationsTests {
 		setupNonExistentProject("documentation.json");
 		assertThatExceptionOfType(NoSuchGithubProjectException.class).isThrownBy(() -> this.operations
 			.addProjectDocumentation("does-not-exist", getDocumentation("1.0", Status.GENERAL_AVAILABILITY)));
+	}
+
+	@Test
+	void addProjectDocumentationWhenConflictShouldRetry() throws Exception {
+		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
+		setupFileUpdate("project-documentation-updated-content.json", "Update documentation",
+				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
+		ProjectDocumentation documentation = getDocumentation("3.15.1", Status.GENERAL_AVAILABILITY);
+		this.operations.addProjectDocumentation("test-project", documentation);
+	}
+
+	@Test
+	void addProjectDocumentationWhenConflictShouldThrowWhenRetriesFail() throws Exception {
+		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		ProjectDocumentation documentation = getDocumentation("3.15.1", Status.GENERAL_AVAILABILITY);
+		assertThatExceptionOfType(ConflictingGithubContentException.class)
+			.isThrownBy(() -> this.operations.addProjectDocumentation("test-project", documentation));
 	}
 
 	@Test

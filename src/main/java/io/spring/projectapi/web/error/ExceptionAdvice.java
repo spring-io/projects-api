@@ -16,6 +16,7 @@
 
 package io.spring.projectapi.web.error;
 
+import io.spring.projectapi.github.ConflictingGithubContentException;
 import io.spring.projectapi.github.NoSuchGithubProjectDocumentationFoundException;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 
@@ -34,6 +35,8 @@ public class ExceptionAdvice {
 
 	private static final ResponseEntity<Object> NOT_FOUND = ResponseEntity.notFound().build();
 
+	private static final ResponseEntity<Object> CONFLICT = ResponseEntity.status(409).build();
+
 	@ExceptionHandler
 	private ResponseEntity<?> noSuchGithubProjectExceptionHandler(NoSuchGithubProjectException ex) {
 		return NOT_FOUND;
@@ -43,6 +46,11 @@ public class ExceptionAdvice {
 	private ResponseEntity<?> noSuchGithubProjectDocumentationExceptionHandler(
 			NoSuchGithubProjectDocumentationFoundException ex) {
 		return NOT_FOUND;
+	}
+
+	@ExceptionHandler
+	private ResponseEntity<?> conflictingGithubContentsExceptionHandler(ConflictingGithubContentException ex) {
+		return CONFLICT;
 	}
 
 }

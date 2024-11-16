@@ -44,6 +44,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -84,8 +85,11 @@ public class GithubOperations {
 
 	private final String branch;
 
+	private final RetryTemplate retryTemplate;
+
 	public GithubOperations(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, String token,
-			String branch) {
+			String branch, RetryTemplate retryTemplate) {
+		this.retryTemplate = retryTemplate;
 		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
@@ -102,17 +106,26 @@ public class GithubOperations {
 	}
 
 	public void addProjectDocumentation(String projectSlug, ProjectDocumentation documentation) {
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
-		List<ProjectDocumentation> documentations = new ArrayList<>();
-		String sha = null;
-		if (response != null) {
-			String content = getFileContents(response);
-			sha = getFileSha(response);
-			documentations.addAll(convertToProjectDocumentation(content));
+		try {
+			this.retryTemplate.execute((context) -> {
+				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
+				List<ProjectDocumentation> documentations = new ArrayList<>();
+				String sha = null;
+				if (response != null) {
+					String content = getFileContents(response);
+					sha = getFileSha(response);
+					documentations.addAll(convertToProjectDocumentation(content));
+				}
+				documentations.add(documentation);
+				List<ProjectDocumentation> updatedDocumentation = computeCurrentRelease(documentations);
+				updateProjectDocumentation(projectSlug, updatedDocumentation, sha);
+				return null;
+			});
 		}
-		documentations.add(documentation);
-		List<ProjectDocumentation> updatedDocumentation = computeCurrentRelease(documentations);
-		updateProjectDocumentation(projectSlug, updatedDocumentation, sha);
+		catch (HttpClientErrorException ex) {
+			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, "documentation.json");
+		}
+
 	}
 
 	private List<ProjectDocumentation> convertToProjectDocumentation(String content) {
@@ -201,15 +214,25 @@ public class GithubOperations {
 	}
 
 	public void deleteDocumentation(String projectSlug, String version) {
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
-		NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
-		String content = getFileContents(response);
-		String sha = getFileSha(response);
-		List<ProjectDocumentation> documentation = convertToProjectDocumentation(content);
-		NoSuchGithubProjectDocumentationFoundException.throwIfHasNotPresent(documentation, projectSlug, version);
-		documentation.removeIf((y) -> y.getVersion().equals(version));
-		List<ProjectDocumentation> documentations1 = computeCurrentRelease(documentation);
-		updateProjectDocumentation(projectSlug, documentations1, sha);
+		try {
+			this.retryTemplate.execute((context) -> {
+				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
+				NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
+				String content = getFileContents(response);
+				String sha = getFileSha(response);
+				List<ProjectDocumentation> documentation = convertToProjectDocumentation(content);
+				NoSuchGithubProjectDocumentationFoundException.throwIfHasNotPresent(documentation, projectSlug,
+						version);
+				documentation.removeIf((y) -> y.getVersion().equals(version));
+				List<ProjectDocumentation> documentations1 = computeCurrentRelease(documentation);
+				updateProjectDocumentation(projectSlug, documentations1, sha);
+				return null;
+			});
+		}
+		catch (HttpClientErrorException ex) {
+			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, "documentation.json");
+		}
+
 	}
 
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {
