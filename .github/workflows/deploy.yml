@@ -9,7 +9,7 @@ env:
   SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
   RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
   KEY_VAULT: ${{ secrets.KEY_VAULT }}
-  PROJECT_API_APP: project-api
+  PROJECT_API_APP: projects-api
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
       - name: Set up Azure
         uses:  azure/login@cb79c773a3cfa27f31f25eb3f677781210c9ce3d
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_SPRING_IO }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
       - name: Create app
@@ -51,7 +51,7 @@ jobs:
           az spring app deploy \
             --name ${PROJECT_API_APP} \
             --resource-group "$RESOURCE_GROUP" \
-            --build-env BP_JVM_VERSION=17 \
+            --runtime-version Java_17 \
             --service "$SPRING_APPS_SERVICE" \
             --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}" "SPRING_PROFILES_ACTIVE=key-vault" \
             --source-path ./
