@@ -86,7 +86,7 @@ public class GenerationsController {
 		LocalDate ossPolicyEnd = SupportPolicyCalculator.getOSSPolicyEnd(support.getInitialDate(),
 				support.getOssPolicyEnd(), supportPolicy);
 		LocalDate commercialPolicyEnd = SupportPolicyCalculator.getEnterprisePolicyEnd(support.getInitialDate(),
-				support.getCommercialPolicyEnd(), supportPolicy);
+				support.getCommercialPolicyEnd(), supportPolicy, support.isLastMinor());
 		return new Generation(support.getBranch(), support.getInitialDate(), ossPolicyEnd, commercialPolicyEnd);
 	}
 

@@ -45,6 +45,7 @@ class ProjectSupportJsonTests {
 		assertThat(projectSupport.getInitialDate()).isEqualTo("2017-01-30");
 		assertThat(projectSupport.getOssPolicyEnd()).isEqualTo("2019-08-07");
 		assertThat(projectSupport.getCommercialPolicyEnd()).isEqualTo("2020-11-06");
+		assertThat(projectSupport.isLastMinor()).isTrue();
 	}
 
 }

@@ -205,8 +205,8 @@ class GithubQueriesTests {
 	}
 
 	private Map<String, List<ProjectSupport>> getProjectSupports() {
-		ProjectSupport support1 = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null);
-		ProjectSupport support2 = new ProjectSupport("2.3.x", LocalDate.parse("2021-02-01"), null, null);
+		ProjectSupport support1 = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null, false);
+		ProjectSupport support2 = new ProjectSupport("2.3.x", LocalDate.parse("2021-02-01"), null, null, false);
 		return Map.of("spring-boot", List.of(support1, support2));
 	}
 

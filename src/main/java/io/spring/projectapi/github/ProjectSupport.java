@@ -42,13 +42,16 @@ public class ProjectSupport {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private final LocalDate commercialPolicyEnd;
 
+	private final boolean isLastMinor;
+
 	@JsonCreator(mode = Mode.PROPERTIES)
 	public ProjectSupport(String branch, LocalDate initialRelease, LocalDate ossPolicyEnd,
-			LocalDate commercialPolicyEnd) {
+			LocalDate commercialPolicyEnd, boolean isLastMinor) {
 		this.branch = branch;
 		this.initialDate = initialRelease;
 		this.ossPolicyEnd = ossPolicyEnd;
 		this.commercialPolicyEnd = commercialPolicyEnd;
+		this.isLastMinor = isLastMinor;
 	}
 
 	public String getBranch() {
@@ -65,6 +68,10 @@ public class ProjectSupport {
 
 	public LocalDate getCommercialPolicyEnd() {
 		return this.commercialPolicyEnd;
+	}
+
+	public boolean isLastMinor() {
+		return this.isLastMinor;
 	}
 
 }

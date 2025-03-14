@@ -74,8 +74,8 @@ class GenerationsControllerTests {
 			.andExpect(jsonPath("$._embedded.generations.length()").value("2"))
 			.andExpect(jsonPath("$._embedded.generations[0].name").value("2.2.x"))
 			.andExpect(jsonPath("$._embedded.generations[0].initialReleaseDate").value("2020-02-01"))
-			.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2021-02-01"))
-			.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2021-05-01"))
+			.andExpect(jsonPath("$._embedded.generations[0].ossSupportEndDate").value("2021-03-31"))
+			.andExpect(jsonPath("$._embedded.generations[0].commercialSupportEndDate").value("2027-03-31"))
 			.andExpect(jsonPath("$._embedded.generations[0]._links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
 			.andExpect(jsonPath("$._embedded.generations[0]._links.project.href")
@@ -119,9 +119,9 @@ class GenerationsControllerTests {
 
 	private List<ProjectSupport> getProjectSupports() {
 		List<ProjectSupport> result = new ArrayList<>();
-		result.add(new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null));
+		result.add(new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null, true));
 		result.add(new ProjectSupport("2.1.x", LocalDate.parse("2020-01-01"), LocalDate.parse("2021-03-01"),
-				LocalDate.parse("2022-03-01")));
+				LocalDate.parse("2022-03-01"), false));
 		return result;
 	}
 

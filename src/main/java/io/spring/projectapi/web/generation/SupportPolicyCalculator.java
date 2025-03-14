@@ -17,6 +17,7 @@
 package io.spring.projectapi.web.generation;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * Calculates end of support dates when only initial release date is available.
@@ -33,33 +34,39 @@ final class SupportPolicyCalculator {
 			return ossEnforcedPolicy;
 		}
 		SupportPolicy policy = SupportPolicy.valueOf(supportPolicy);
-		return initialDate.plusMonths(policy.getOssPolicyMonths());
+		return initialDate.plusMonths(policy.getOssPolicyMonths()).with(TemporalAdjusters.lastDayOfMonth());
 	}
 
 	static LocalDate getEnterprisePolicyEnd(LocalDate initialDate, LocalDate enterpriseEnforcedPolicy,
-			String supportPolicy) {
+			String supportPolicy, boolean isLastMinor) {
 		if (enterpriseEnforcedPolicy != null) {
 			return enterpriseEnforcedPolicy;
 		}
 		SupportPolicy policy = SupportPolicy.valueOf(supportPolicy);
-		return initialDate.plusMonths(policy.getEnterprisePolicyMonths());
+		if (isLastMinor) {
+			return initialDate.plusMonths(policy.getExtendedPolicyMonths()).with(TemporalAdjusters.lastDayOfMonth());
+		}
+		return initialDate.plusMonths(policy.getEnterprisePolicyMonths()).with(TemporalAdjusters.lastDayOfMonth());
 	}
 
 	private enum SupportPolicy {
 
-		SPRING_BOOT(12, 15),
+		SPRING_BOOT(13, 25, 85),
 
-		DOWNSTREAM(12, 12),
+		DOWNSTREAM(12, 24, 84),
 
-		UPSTREAM(12, 16);
+		UPSTREAM(13, 25, 85);
 
 		private final int ossPolicyMonths;
 
 		private final int enterprisePolicyMonths;
 
-		SupportPolicy(int ossPolicyMonths, int enterprisePolicyMonths) {
+		private final int extendedPolicyMonths;
+
+		SupportPolicy(int ossPolicyMonths, int enterprisePolicyMonths, int extendedPolicyMonths) {
 			this.ossPolicyMonths = ossPolicyMonths;
 			this.enterprisePolicyMonths = enterprisePolicyMonths;
+			this.extendedPolicyMonths = extendedPolicyMonths;
 		}
 
 		int getOssPolicyMonths() {
@@ -68,6 +75,10 @@ final class SupportPolicyCalculator {
 
 		int getEnterprisePolicyMonths() {
 			return this.enterprisePolicyMonths;
+		}
+
+		int getExtendedPolicyMonths() {
+			return this.extendedPolicyMonths;
 		}
 
 	}

@@ -33,13 +33,13 @@ class SupportPolicyCalculatorTests {
 	void ossSupportPolicyWhenEnforcedDateIsEmpty() {
 		LocalDate ossPolicyEndSpringBoot = SupportPolicyCalculator.getOSSPolicyEnd(LocalDate.parse("2022-11-24"), null,
 				"SPRING_BOOT");
-		assertThat(ossPolicyEndSpringBoot).isEqualTo(LocalDate.of(2023, 11, 24));
+		assertThat(ossPolicyEndSpringBoot).isEqualTo(LocalDate.of(2023, 12, 31));
 		LocalDate ossPolicyEndUpstream = SupportPolicyCalculator.getOSSPolicyEnd(LocalDate.parse("2022-11-24"), null,
 				"UPSTREAM");
-		assertThat(ossPolicyEndUpstream).isEqualTo(LocalDate.of(2023, 11, 24));
-		LocalDate ossPolicyEndDownstream = SupportPolicyCalculator.getOSSPolicyEnd(LocalDate.parse("2022-11-24"), null,
+		assertThat(ossPolicyEndUpstream).isEqualTo(LocalDate.of(2023, 12, 31));
+		LocalDate ossPolicyEndDownstream = SupportPolicyCalculator.getOSSPolicyEnd(LocalDate.parse("2022-12-24"), null,
 				"DOWNSTREAM");
-		assertThat(ossPolicyEndDownstream).isEqualTo(LocalDate.of(2023, 11, 24));
+		assertThat(ossPolicyEndDownstream).isEqualTo(LocalDate.of(2023, 12, 31));
 	}
 
 	@Test
@@ -58,26 +58,39 @@ class SupportPolicyCalculatorTests {
 	@Test
 	void enterpriseSupportPolicyWhenEnforcedDateIsEmpty() {
 		LocalDate ossPolicyEndSpringBoot = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				null, "SPRING_BOOT");
-		assertThat(ossPolicyEndSpringBoot).isEqualTo(LocalDate.of(2024, 2, 24));
+				null, "SPRING_BOOT", false);
+		assertThat(ossPolicyEndSpringBoot).isEqualTo(LocalDate.of(2024, 12, 31));
 		LocalDate ossPolicyEndUpstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				null, "UPSTREAM");
-		assertThat(ossPolicyEndUpstream).isEqualTo(LocalDate.of(2024, 3, 24));
-		LocalDate ossPolicyEndDownstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				null, "DOWNSTREAM");
-		assertThat(ossPolicyEndDownstream).isEqualTo(LocalDate.of(2023, 11, 24));
+				null, "UPSTREAM", false);
+		assertThat(ossPolicyEndUpstream).isEqualTo(LocalDate.of(2024, 12, 31));
+		LocalDate ossPolicyEndDownstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-12-24"),
+				null, "DOWNSTREAM", false);
+		assertThat(ossPolicyEndDownstream).isEqualTo(LocalDate.of(2024, 12, 31));
+	}
+
+	@Test
+	void enterpriseSupportPolicyWhenEnforcedDateIsEmptyAndLastMinor() {
+		LocalDate ossPolicyEndSpringBoot = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
+				null, "SPRING_BOOT", true);
+		assertThat(ossPolicyEndSpringBoot).isEqualTo(LocalDate.of(2029, 12, 31));
+		LocalDate ossPolicyEndUpstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
+				null, "UPSTREAM", true);
+		assertThat(ossPolicyEndUpstream).isEqualTo(LocalDate.of(2029, 12, 31));
+		LocalDate ossPolicyEndDownstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-12-24"),
+				null, "DOWNSTREAM", true);
+		assertThat(ossPolicyEndDownstream).isEqualTo(LocalDate.of(2029, 12, 31));
 	}
 
 	@Test
 	void enterpriseSupportPolicyWhenEnforcedDateIsNotEmpty() {
 		LocalDate policyEndSpringBoot = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				LocalDate.parse("2025-02-02"), "SPRING_BOOT");
+				LocalDate.parse("2025-02-02"), "SPRING_BOOT", false);
 		assertThat(policyEndSpringBoot).isEqualTo(LocalDate.of(2025, 2, 2));
 		LocalDate policyEndUpstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				LocalDate.parse("2025-02-02"), "UPSTREAM");
+				LocalDate.parse("2025-02-02"), "UPSTREAM", false);
 		assertThat(policyEndUpstream).isEqualTo(LocalDate.of(2025, 2, 2));
 		LocalDate policyEndDownstream = SupportPolicyCalculator.getEnterprisePolicyEnd(LocalDate.parse("2022-11-24"),
-				LocalDate.parse("2025-02-02"), "DOWNSTREAM");
+				LocalDate.parse("2025-02-02"), "DOWNSTREAM", false);
 		assertThat(policyEndDownstream).isEqualTo(LocalDate.of(2025, 2, 2));
 	}
 
