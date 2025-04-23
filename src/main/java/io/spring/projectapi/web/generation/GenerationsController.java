@@ -21,6 +21,7 @@ import java.util.List;
 
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectSupport;
+import io.spring.projectapi.project.ProjectSupportProvider;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 import io.spring.projectapi.web.project.ProjectsController;
 
@@ -50,13 +51,16 @@ public class GenerationsController {
 
 	private final ProjectRepository projectRepository;
 
-	public GenerationsController(ProjectRepository projectRepository) {
+	private final ProjectSupportProvider projectSupportProvider;
+
+	public GenerationsController(ProjectRepository projectRepository, ProjectSupportProvider projectSupportProvider) {
 		this.projectRepository = projectRepository;
+		this.projectSupportProvider = projectSupportProvider;
 	}
 
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
-		List<ProjectSupport> supports = this.projectRepository.getProjectSupports(id);
+		List<ProjectSupport> supports = this.projectSupportProvider.getProjectSupports(id);
 		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
 		List<Generation> generations = supports.stream()
 			.map((support) -> asGeneration(support, supportPolicy))

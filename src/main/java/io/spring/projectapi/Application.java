@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.ApplicationProperties.Github;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.GithubQueries;
+import io.spring.projectapi.project.ProjectMatrix;
+import io.spring.projectapi.project.ProjectSupportProvider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -59,6 +61,16 @@ public class Application {
 			}
 			return false;
 		}).build();
+	}
+
+	@Bean
+	public ProjectMatrix projectMatrix(ProjectRepository projectRepository) {
+		return new ProjectMatrix(projectRepository);
+	}
+
+	@Bean
+	public ProjectSupportProvider projectSupportProvider(ProjectMatrix projectMatrix, ProjectRepository projectRepository) {
+		return new ProjectSupportProvider(projectMatrix, projectRepository);
 	}
 
 	public static void main(String[] args) {

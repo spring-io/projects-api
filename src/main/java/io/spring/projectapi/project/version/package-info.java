@@ -1,0 +1,1 @@
+package io.spring.projectapi.project.version;
