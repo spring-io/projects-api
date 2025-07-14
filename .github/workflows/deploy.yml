@@ -31,7 +31,7 @@ jobs:
       - name: Set up Azure
         uses:  azure/login@cb79c773a3cfa27f31f25eb3f677781210c9ce3d
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_SPRING_ASA }}
       - name: Set up Azure Spring Extension
         run: az extension add --name spring
       - name: Create app
