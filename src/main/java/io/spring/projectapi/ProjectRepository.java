@@ -21,7 +21,7 @@ import java.util.List;
 
 import io.spring.projectapi.github.Project;
 import io.spring.projectapi.github.ProjectDocumentation;
-import io.spring.projectapi.github.ProjectSupport;
+import io.spring.projectapi.github.ProjectGeneration;
 import io.spring.projectapi.web.webhook.CacheController;
 
 /**
@@ -39,7 +39,7 @@ public interface ProjectRepository {
 
 	List<ProjectDocumentation> getProjectDocumentations(String projectSlug);
 
-	List<ProjectSupport> getProjectSupports(String projectSlug);
+	ProjectGeneration getProjectGenerations(String projectSlug);
 
 	String getProjectSupportPolicy(String projectSlug);
 

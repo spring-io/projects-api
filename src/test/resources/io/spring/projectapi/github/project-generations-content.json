@@ -1,0 +1,183 @@
+{
+  "_comment": "This file is generated, do not edit",
+  "generations": [
+    {
+      "generation": "1.5.x",
+      "initialRelease": "2017-01",
+      "ossSupportEnd": "2019-08",
+      "enterpriseSupportEnd": "2020-11",
+      "linkedGenerations": {
+        "spring-boot": [
+          "1.5.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.0.x",
+      "initialRelease": "2018-03",
+      "ossSupportEnd": "2019-03",
+      "enterpriseSupportEnd": "2020-06",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.0.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.1.x",
+      "initialRelease": "2018-10",
+      "ossSupportEnd": "2019-10",
+      "enterpriseSupportEnd": "2021-01",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.1.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.2.x",
+      "initialRelease": "2019-10",
+      "ossSupportEnd": "2020-10",
+      "enterpriseSupportEnd": "2022-01",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.2.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.3.x",
+      "initialRelease": "2020-05",
+      "ossSupportEnd": "2021-05",
+      "enterpriseSupportEnd": "2022-08",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.3.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.4.x",
+      "initialRelease": "2020-11",
+      "ossSupportEnd": "2021-11",
+      "enterpriseSupportEnd": "2023-02",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.4.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.5.x",
+      "initialRelease": "2021-05",
+      "ossSupportEnd": "2022-05",
+      "enterpriseSupportEnd": "2023-08",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.5.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.6.x",
+      "initialRelease": "2021-11",
+      "ossSupportEnd": "2022-11",
+      "enterpriseSupportEnd": "2024-02",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.6.x"
+        ]
+      }
+    },
+    {
+      "generation": "2.7.x",
+      "initialRelease": "2022-05",
+      "lastMinor": true,
+      "ossSupportEnd": "2023-06",
+      "enterpriseSupportEnd": "2029-06",
+      "linkedGenerations": {
+        "spring-boot": [
+          "2.7.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.0.x",
+      "initialRelease": "2022-11",
+      "ossSupportEnd": "2023-12",
+      "enterpriseSupportEnd": "2024-12",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.0.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.1.x",
+      "initialRelease": "2023-05",
+      "ossSupportEnd": "2024-06",
+      "enterpriseSupportEnd": "2025-06",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.1.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.2.x",
+      "initialRelease": "2023-11",
+      "ossSupportEnd": "2024-12",
+      "enterpriseSupportEnd": "2025-12",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.2.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.3.x",
+      "initialRelease": "2024-05",
+      "ossSupportEnd": "2025-06",
+      "enterpriseSupportEnd": "2026-06",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.3.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.4.x",
+      "initialRelease": "2024-11",
+      "ossSupportEnd": "2025-12",
+      "enterpriseSupportEnd": "2026-12",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.4.x"
+        ]
+      }
+    },
+    {
+      "generation": "3.5.x",
+      "initialRelease": "2025-05",
+      "lastMinor": true,
+      "ossSupportEnd": "2026-06",
+      "enterpriseSupportEnd": "2032-06",
+      "linkedGenerations": {
+        "spring-boot": [
+          "3.5.x"
+        ]
+      }
+    },
+    {
+      "generation": "4.0.x",
+      "initialRelease": "2025-11",
+      "ossSupportEnd": "2026-12",
+      "enterpriseSupportEnd": "2027-12",
+      "linkedGenerations": {
+        "spring-boot": [
+          "4.0.x"
+        ]
+      }
+    }
+  ]
+}

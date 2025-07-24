@@ -26,13 +26,13 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param project all projects
  * @param documentation map of project slug to project documentations
- * @param support map of project slug to project supports
- * @param supportPolicy map of project slug to project support policy
+ * @param generation map of project slug to project generations
+ * @param supportPolicy map of project slug to project generation policy
  * @author Phillip Webb
  * @author Madhura Bhave
  */
 record ProjectData(Map<String, Project> project, Map<String, List<ProjectDocumentation>> documentation,
-		Map<String, List<ProjectSupport>> support, Map<String, String> supportPolicy) {
+		Map<String, ProjectGeneration> generation, Map<String, String> supportPolicy) {
 
 	public static ProjectData load(GithubQueries githubQueries) {
 		ProjectData data = githubQueries.getData();
@@ -48,9 +48,9 @@ record ProjectData(Map<String, Project> project, Map<String, List<ProjectDocumen
 	private static ProjectData getImmutableProjectData(ProjectData updatedData) {
 		Map<String, Project> projects = updatedData.project();
 		Map<String, List<ProjectDocumentation>> documentation = updatedData.documentation();
-		Map<String, List<ProjectSupport>> support = updatedData.support();
+		Map<String, ProjectGeneration> generation = updatedData.generation();
 		Map<String, String> supportPolicy = updatedData.supportPolicy();
-		return new ProjectData(Map.copyOf(projects), Map.copyOf(documentation), Map.copyOf(support),
+		return new ProjectData(Map.copyOf(projects), Map.copyOf(documentation), Map.copyOf(generation),
 				Map.copyOf(supportPolicy));
 	}
 

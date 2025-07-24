@@ -16,6 +16,8 @@
 
 package io.spring.projectapi.github;
 
+import java.time.YearMonth;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +28,27 @@ import org.springframework.boot.test.json.JacksonTester;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * JSON tests for {@link ProjectSupport}.
+ * JSON tests for {@link ProjectGeneration}.
  *
  * @author Madhura Bhave
  * @author Phillip Webb
  */
 @JsonTest
 @AutoConfigureWebClient
-class ProjectSupportJsonTests {
+class ProjectGenerationJsonTests {
 
 	@Autowired
-	private JacksonTester<ProjectSupport> json;
+	private JacksonTester<ProjectGeneration> json;
 
 	@Test
 	void readObjectReadsJson() throws Exception {
-		ProjectSupport projectSupport = this.json.readObject("project-support.json");
-		assertThat(projectSupport.getBranch()).isEqualTo("1.5.x");
-		assertThat(projectSupport.getInitialDate()).isEqualTo("2017-01-30");
-		assertThat(projectSupport.getOssPolicyEnd()).isEqualTo("2019-08-07");
-		assertThat(projectSupport.getCommercialPolicyEnd()).isEqualTo("2020-11-06");
-		assertThat(projectSupport.isLastMinor()).isTrue();
+		ProjectGeneration projectGeneration = this.json.readObject("project-generations.json");
+		assertThat(projectGeneration.getGenerations().get(0).getGeneration()).isEqualTo("1.5.x");
+		assertThat(projectGeneration.getGenerations().get(0).getInitialRelease()).isEqualTo(YearMonth.parse("2017-01"));
+		assertThat(projectGeneration.getGenerations().get(0).getOssSupportEnd()).isEqualTo(YearMonth.parse("2019-08"));
+		assertThat(projectGeneration.getGenerations().get(0).getEnterpriseSupportEnd())
+			.isEqualTo(YearMonth.parse("2020-11"));
+		assertThat(projectGeneration.getGenerations().get(0).isLastMinor()).isTrue();
 	}
 
 }
