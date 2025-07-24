@@ -1,0 +1,17 @@
+{
+  "_comment": "This file is generated, do not edit",
+  "generations": [
+    {
+      "generation": "1.5.x",
+      "initialRelease": "2017-01",
+      "ossSupportEnd": "2019-08",
+      "enterpriseSupportEnd": "2020-11",
+      "lastMinor": true,
+      "linkedGenerations": {
+        "spring-boot": [
+          "1.5.x"
+        ]
+      }
+    }
+  ]
+}

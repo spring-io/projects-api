@@ -16,7 +16,7 @@
 
 package io.spring.projectapi.github;
 
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +60,7 @@ class GithubProjectRepositoryTests {
 	@Test
 	void updateRefreshesCache() {
 		List<String> changes = List.of("project/spring-boot-updated/index.md",
-				"project/spring-boot-updated/documentation.json", "project/spring-boot-updated/support.json");
+				"project/spring-boot-updated/documentation.json", "project/spring-boot-updated/generations.json");
 		given(this.githubQueries.updateData(any(), any())).willReturn(getData("spring-boot-updated"));
 		this.projectRepository.update(changes);
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
@@ -88,9 +88,9 @@ class GithubProjectRepositoryTests {
 	}
 
 	@Test
-	void getProjectSupportReturnsProjectSupport() {
-		List<ProjectSupport> support = this.projectRepository.getProjectSupports("spring-boot");
-		assertThat(support.size()).isEqualTo(2);
+	void getProjectGenerationReturnsProjectGeneration() {
+		ProjectGeneration generation = this.projectRepository.getProjectGenerations("spring-boot");
+		assertThat(generation.getGenerations().size()).isEqualTo(2);
 	}
 
 	@Test
@@ -112,9 +112,9 @@ class GithubProjectRepositoryTests {
 	}
 
 	@Test
-	void getProjectSupportForNonExistentProjectThrowsException() {
+	void getProjectGenerationForNonExistentProjectThrowsException() {
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.projectRepository.getProjectSupports("spring-foo"));
+			.isThrownBy(() -> this.projectRepository.getProjectGenerations("spring-foo"));
 	}
 
 	@Test
@@ -128,8 +128,8 @@ class GithubProjectRepositoryTests {
 		assertThat(projects.size()).isEqualTo(3);
 		Project updated = this.projectRepository.getProject(projectSlug);
 		assertThat(updated.getSlug()).isEqualTo(projectSlug);
-		List<ProjectSupport> support = this.projectRepository.getProjectSupports(projectSlug);
-		assertThat(support).size().isEqualTo(2);
+		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(projectSlug);
+		assertThat(projectGeneration.getGenerations()).size().isEqualTo(2);
 		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(projectSlug);
 		assertThat(documentations).size().isEqualTo(2);
 		String policy = this.projectRepository.getProjectSupportPolicy(projectSlug);
@@ -148,10 +148,13 @@ class GithubProjectRepositoryTests {
 		return Map.of(project, project1, "spring-batch", project2, "spring-framework", project3);
 	}
 
-	private Map<String, List<ProjectSupport>> getProjectSupports(String project) {
-		ProjectSupport support1 = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null, false);
-		ProjectSupport support2 = new ProjectSupport("2.3.x", LocalDate.parse("2021-02-01"), null, null, false);
-		return Map.of(project, List.of(support1, support2));
+	private Map<String, ProjectGeneration> getProjectSupports(String project) {
+		ProjectGeneration.Generation generation1 = new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"),
+				null, null, false);
+		ProjectGeneration.Generation generation2 = new ProjectGeneration.Generation("2.3.x", YearMonth.parse("2021-02"),
+				null, null, false);
+		ProjectGeneration support = new ProjectGeneration(List.of(generation1, generation2));
+		return Map.of(project, support);
 	}
 
 	private Map<String, List<ProjectDocumentation>> getProjectDocumentation(String project) {

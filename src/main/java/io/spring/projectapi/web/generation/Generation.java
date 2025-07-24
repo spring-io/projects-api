@@ -17,6 +17,7 @@
 package io.spring.projectapi.web.generation;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,12 +45,12 @@ public class Generation {
 	private final LocalDate commercialSupportEndDate;
 
 	@JsonCreator
-	public Generation(String name, LocalDate initialReleaseDate, LocalDate ossSupportEndDate,
-			LocalDate commercialSupportEndDate) {
+	public Generation(String name, YearMonth initialReleaseDate, YearMonth ossSupportEndDate,
+			YearMonth commercialSupportEndDate) {
 		this.name = name;
-		this.initialReleaseDate = initialReleaseDate;
-		this.ossSupportEndDate = ossSupportEndDate;
-		this.commercialSupportEndDate = commercialSupportEndDate;
+		this.initialReleaseDate = initialReleaseDate.atEndOfMonth();
+		this.ossSupportEndDate = ossSupportEndDate.atEndOfMonth();
+		this.commercialSupportEndDate = commercialSupportEndDate.atEndOfMonth();
 	}
 
 	public String getName() {

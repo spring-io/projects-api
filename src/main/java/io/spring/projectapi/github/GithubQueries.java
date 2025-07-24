@@ -50,9 +50,6 @@ public class GithubQueries {
 	private static final TypeReference<@NotNull List<ProjectDocumentation>> DOCUMENTATION_LIST = new TypeReference<>() {
 	};
 
-	private static final TypeReference<List<ProjectSupport>> SUPPORT_LIST = new TypeReference<>() {
-	};
-
 	private static final String GITHUB_URI = "https://api.github.com/repos/spring-io/spring-website-content/contents";
 
 	private static final Logger logger = LoggerFactory.getLogger(GithubOperations.class);
@@ -85,7 +82,7 @@ public class GithubQueries {
 	ProjectData getData() {
 		Map<String, Project> projects = new LinkedHashMap<>();
 		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>();
-		Map<String, List<ProjectSupport>> support = new LinkedHashMap<>();
+		Map<String, ProjectGeneration> generation = new LinkedHashMap<>();
 		Map<String, String> supportPolicy = new LinkedHashMap<>();
 		try {
 			RequestEntity<Void> request = RequestEntity.get("/project?ref=" + this.branch).build();
@@ -93,20 +90,20 @@ public class GithubQueries {
 					STRING_OBJECT_MAP_LIST);
 			InvalidGithubResponseException.throwIfInvalid(exchange);
 			List<Map<String, Object>> body = exchange.getBody();
-			body.forEach((project) -> populateData(project, projects, documentation, support, supportPolicy));
+			body.forEach((project) -> populateData(project, projects, documentation, generation, supportPolicy));
 		}
 		catch (Exception ex) {
 			logger.debug("Could not get projects due to '%s'".formatted(ex.getMessage()));
 			// Return empty list
 		}
-		return new ProjectData(projects, documentation, support, supportPolicy);
+		return new ProjectData(projects, documentation, generation, supportPolicy);
 	}
 
 	ProjectData updateData(ProjectData data, List<String> changes) {
 		Assert.notNull(data, "Project data should not be null");
 		Map<String, Project> projects = new LinkedHashMap<>(data.project());
 		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>(data.documentation());
-		Map<String, List<ProjectSupport>> support = new LinkedHashMap<>(data.support());
+		Map<String, ProjectGeneration> generation = new LinkedHashMap<>(data.generation());
 		Map<String, String> supportPolicy = new LinkedHashMap<>(data.supportPolicy());
 		Map<String, Boolean> checkedProjects = new LinkedHashMap<>();
 		try {
@@ -115,18 +112,18 @@ public class GithubQueries {
 				if (ProjectFile.OTHER.equals(file)) {
 					return;
 				}
-				updateData(change, file, projects, supportPolicy, documentation, support, checkedProjects);
+				updateData(change, file, projects, supportPolicy, documentation, generation, checkedProjects);
 			});
 		}
 		catch (Exception ex) {
 			logger.debug("Could not update data due to '%s'".formatted(ex.getMessage()));
 		}
-		return new ProjectData(projects, documentation, support, supportPolicy);
+		return new ProjectData(projects, documentation, generation, supportPolicy);
 	}
 
 	private void updateData(String change, ProjectFile file, Map<String, Project> projects,
 			Map<String, String> supportPolicy, Map<String, List<ProjectDocumentation>> documentation,
-			Map<String, List<ProjectSupport>> support, Map<String, Boolean> checkedprojects) {
+			Map<String, ProjectGeneration> generation, Map<String, Boolean> checkedprojects) {
 		Matcher matcher = PROJECT_FILE.matcher(change);
 		if (!matcher.matches()) {
 			return;
@@ -138,18 +135,18 @@ public class GithubQueries {
 		if (checkedprojects.get(slug)) {
 			updateFromIndex(file, projects, supportPolicy, slug);
 			updateDocumentation(file, documentation, slug);
-			updateSupport(file, support, slug);
+			updateGeneration(file, generation, slug);
 			return;
 		}
 		projects.remove(slug);
 		documentation.remove(slug);
-		support.remove(slug);
+		generation.remove(slug);
 		supportPolicy.remove(slug);
 	}
 
-	private void updateSupport(ProjectFile file, Map<String, List<ProjectSupport>> support, String slug) {
+	private void updateGeneration(ProjectFile file, Map<String, ProjectGeneration> support, String slug) {
 		if (ProjectFile.SUPPORT.equals(file)) {
-			List<ProjectSupport> projectSupports = getProjectSupports(slug);
+			ProjectGeneration projectSupports = getProjectSupports(slug);
 			support.put(slug, projectSupports);
 		}
 	}
@@ -192,7 +189,7 @@ public class GithubQueries {
 	}
 
 	private void populateData(Map<String, Object> project, Map<String, Project> projects,
-			Map<String, List<ProjectDocumentation>> documentation, Map<String, List<ProjectSupport>> support,
+			Map<String, List<ProjectDocumentation>> documentation, Map<String, ProjectGeneration> support,
 			Map<String, String> supportPolicy) {
 		String projectSlug = (String) project.get("name");
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
@@ -202,7 +199,7 @@ public class GithubQueries {
 		}
 		List<ProjectDocumentation> projectDocumentations = getProjectDocumentations(projectSlug);
 		documentation.put(projectSlug, projectDocumentations);
-		List<ProjectSupport> projectSupports = getProjectSupports(projectSlug);
+		ProjectGeneration projectSupports = getProjectSupports(projectSlug);
 		support.put(projectSlug, projectSupports);
 		String policy = getProjectSupportPolicy(response, projectSlug);
 		supportPolicy.put(projectSlug, policy);
@@ -234,16 +231,17 @@ public class GithubQueries {
 		return Collections.emptyList();
 	}
 
-	private List<ProjectSupport> getProjectSupports(String projectSlug) {
+	private ProjectGeneration getProjectSupports(String projectSlug) {
 		try {
-			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "support.json");
+			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "generations.json");
 			String contents = getFileContent(response);
-			return List.copyOf(readValue(contents, SUPPORT_LIST));
+			return this.objectMapper.readValue(contents, ProjectGeneration.class);
 		}
 		catch (Exception ex) {
-			logger.debug("Could not get project support for '%s' due to '%s'".formatted(projectSlug, ex.getMessage()));
+			logger
+				.debug("Could not get project generation for '%s' due to '%s'".formatted(projectSlug, ex.getMessage()));
 		}
-		return Collections.emptyList();
+		return new ProjectGeneration(Collections.emptyList());
 	}
 
 	private String getProjectSupportPolicy(ResponseEntity<Map<String, Object>> response, String projectSlug) {
@@ -255,7 +253,7 @@ public class GithubQueries {
 			return (supportPolicy != null) ? supportPolicy : DEFAULT_SUPPORT_POLICY;
 		}
 		catch (Exception ex) {
-			logger.debug("Could not get project support policy for '%s' due to '%s'".formatted(projectSlug,
+			logger.debug("Could not get project generation policy for '%s' due to '%s'".formatted(projectSlug,
 					ex.getMessage()));
 		}
 		return DEFAULT_SUPPORT_POLICY;
@@ -300,7 +298,7 @@ public class GithubQueries {
 			if (fileName.contains("documentation.json")) {
 				return DOCUMENTATION;
 			}
-			if (fileName.contains("support.json")) {
+			if (fileName.contains("generations.json")) {
 				return SUPPORT;
 			}
 			return OTHER;

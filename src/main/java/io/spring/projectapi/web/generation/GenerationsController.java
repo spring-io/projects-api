@@ -16,11 +16,10 @@
 
 package io.spring.projectapi.web.generation;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import io.spring.projectapi.ProjectRepository;
-import io.spring.projectapi.github.ProjectSupport;
+import io.spring.projectapi.github.ProjectGeneration;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 import io.spring.projectapi.web.project.ProjectsController;
 
@@ -56,10 +55,11 @@ public class GenerationsController {
 
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
-		List<ProjectSupport> supports = this.projectRepository.getProjectSupports(id);
+		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(id);
 		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
-		List<Generation> generations = supports.stream()
-			.map((support) -> asGeneration(support, supportPolicy))
+		List<Generation> generations = projectGeneration.getGenerations()
+			.stream()
+			.map((generation) -> asGeneration(generation, supportPolicy))
 			.toList();
 		CollectionModel<EntityModel<Generation>> model = CollectionModel
 			.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
@@ -69,10 +69,11 @@ public class GenerationsController {
 
 	@GetMapping("/{name}")
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
-		List<ProjectSupport> supports = this.projectRepository.getProjectSupports(id);
+		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(id);
 		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
-		List<Generation> generations = supports.stream()
-			.map((support) -> asGeneration(support, supportPolicy))
+		List<Generation> generations = projectGeneration.getGenerations()
+			.stream()
+			.map((generation) -> asGeneration(generation, supportPolicy))
 			.toList();
 		Generation generation = generations.stream()
 			.filter((candidate) -> candidate.getName().equals(name))
@@ -82,12 +83,9 @@ public class GenerationsController {
 		return asModel(id, generation);
 	}
 
-	private Generation asGeneration(ProjectSupport support, String supportPolicy) {
-		LocalDate ossPolicyEnd = SupportPolicyCalculator.getOSSPolicyEnd(support.getInitialDate(),
-				support.getOssPolicyEnd(), supportPolicy);
-		LocalDate commercialPolicyEnd = SupportPolicyCalculator.getEnterprisePolicyEnd(support.getInitialDate(),
-				support.getCommercialPolicyEnd(), supportPolicy, support.isLastMinor());
-		return new Generation(support.getBranch(), support.getInitialDate(), ossPolicyEnd, commercialPolicyEnd);
+	private Generation asGeneration(ProjectGeneration.Generation generation, String supportPolicy) {
+		return new Generation(generation.getGeneration(), generation.getInitialRelease(), generation.getOssSupportEnd(),
+				generation.getEnterpriseSupportEnd());
 	}
 
 	private EntityModel<Generation> asModel(String id, Generation generation) {

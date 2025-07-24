@@ -18,7 +18,7 @@ package io.spring.projectapi.github;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 
@@ -68,14 +68,16 @@ class GithubQueriesTests {
 		setupProjects();
 		setupProjectFiles("index\\.md", "project-index-response.json");
 		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		setupProjectFiles("support\\.json", "project-support-response.json");
+		setupProjectFiles("generations\\.json", "project-generations-response.json");
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.project().size()).isEqualTo(3);
 		assertThat(projectData.project().get("spring-webflow").getSlug()).isEqualTo("spring-webflow");
 		assertThat(projectData.documentation().get("spring-webflow")).hasSize(9);
-		List<ProjectSupport> support = projectData.support().get("spring-webflow");
-		assertThat(support).hasSize(14);
-		assertThat(support.get(0).getInitialDate()).isEqualTo(LocalDate.parse("2017-01-30"));
+		List<ProjectGeneration.Generation> generations = projectData.generation()
+			.get("spring-webflow")
+			.getGenerations();
+		assertThat(generations).hasSize(16);
+		assertThat(generations.get(0).getInitialRelease()).isEqualTo(YearMonth.parse("2017-01"));
 		assertThat(projectData.supportPolicy().get("spring-webflow")).isEqualTo("UPSTREAM");
 	}
 
@@ -88,7 +90,7 @@ class GithubQueriesTests {
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
 		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		setupProjectFiles("support\\.json", "project-support-response.json");
+		setupProjectFiles("generations\\.json", "project-generations-response.json");
 		this.customizer.getServer()
 			.expect(ExpectedCount.once(), requestTo("/project/spring-xd/index.md?ref=test"))
 			.andExpect(method(HttpMethod.GET))
@@ -115,7 +117,7 @@ class GithubQueriesTests {
 						.matchesPattern("\\/project\\/spring-w.+\\/documentation\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		setupProjectFiles("support\\.json", "project-support-response.json");
+		setupProjectFiles("generations\\.json", "project-generations-response.json");
 		this.customizer.getServer()
 			.expect(ExpectedCount.once(), requestTo("/project/spring-xd/documentation.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
@@ -125,21 +127,22 @@ class GithubQueriesTests {
 	}
 
 	@Test
-	void projectSupportsWhenFileNotFoundReturnsEmptyList() throws Exception {
+	void projectGenerationWhenFileNotFoundReturnsEmptyList() throws Exception {
 		setupProjects();
 		setupProjectFiles("index\\.md", "project-index-response.json");
 		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
 		this.customizer.getServer()
 			.expect(ExpectedCount.max(2),
-					requestTo(MatchesPattern.matchesPattern("\\/project\\/spring-w.+\\/support\\.json\\?ref\\=test")))
+					requestTo(
+							MatchesPattern.matchesPattern("\\/project\\/spring-w.+\\/generations\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(from("project-support-response.json"), MediaType.APPLICATION_JSON));
+			.andRespond(withSuccess(from("project-generations-response.json"), MediaType.APPLICATION_JSON));
 		this.customizer.getServer()
-			.expect(ExpectedCount.once(), requestTo("/project/spring-xd/support.json?ref=test"))
+			.expect(ExpectedCount.once(), requestTo("/project/spring-xd/generations.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
 		ProjectData projectData = this.queries.getData();
-		assertThat(projectData.support().get("spring-xd")).isEmpty();
+		assertThat(projectData.generation().get("spring-xd").getGenerations()).isEmpty();
 	}
 
 	@Test
@@ -180,7 +183,7 @@ class GithubQueriesTests {
 		assertThat(projectData.project().size()).isEqualTo(2);
 		assertThat(projectData.project().get("spring-boot")).isNull();
 		assertThat(projectData.documentation().get("spring-boot")).isNull();
-		assertThat(projectData.support().get("spring-boot")).isNull();
+		assertThat(projectData.generation().get("spring-boot")).isNull();
 		assertThat(projectData.supportPolicy().get("spring-boot")).isNull();
 	}
 
@@ -204,10 +207,13 @@ class GithubQueriesTests {
 		return Map.of("spring-boot", project1, "spring-batch", project2, "spring-framework", project3);
 	}
 
-	private Map<String, List<ProjectSupport>> getProjectSupports() {
-		ProjectSupport support1 = new ProjectSupport("2.2.x", LocalDate.parse("2020-02-01"), null, null, false);
-		ProjectSupport support2 = new ProjectSupport("2.3.x", LocalDate.parse("2021-02-01"), null, null, false);
-		return Map.of("spring-boot", List.of(support1, support2));
+	private Map<String, ProjectGeneration> getProjectSupports() {
+		ProjectGeneration.Generation generation1 = new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"),
+				null, null, false);
+		ProjectGeneration.Generation generation2 = new ProjectGeneration.Generation("2.3.x", YearMonth.parse("2021-02"),
+				null, null, false);
+		ProjectGeneration support = new ProjectGeneration(List.of(generation1, generation2));
+		return Map.of("spring-boot", support);
 	}
 
 	private Map<String, List<ProjectDocumentation>> getProjectDocumentation() {

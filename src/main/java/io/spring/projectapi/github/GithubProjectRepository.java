@@ -66,10 +66,10 @@ class GithubProjectRepository implements ProjectRepository {
 	}
 
 	@Override
-	public List<ProjectSupport> getProjectSupports(String projectSlug) {
-		List<ProjectSupport> projectSupports = this.projectData.support().get(projectSlug);
-		NoSuchGithubProjectException.throwIfNotFound(projectSupports, projectSlug);
-		return projectSupports;
+	public ProjectGeneration getProjectGenerations(String projectSlug) {
+		ProjectGeneration projectGeneration = this.projectData.generation().get(projectSlug);
+		NoSuchGithubProjectException.throwIfNotFound(projectGeneration, projectSlug);
+		return projectGeneration;
 	}
 
 	@Override
