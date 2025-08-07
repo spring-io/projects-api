@@ -82,6 +82,11 @@ public class Project {
 		ACTIVE,
 
 		/**
+		 * Active Unsupported.
+		 */
+		ACTIVE_UNSUPPORTED,
+
+		/**
 		 * Community Maintained.
 		 */
 		COMMUNITY,
