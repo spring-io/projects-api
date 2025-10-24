@@ -1,28 +1,23 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:${javaformatVersion}")
-	}
-}
-
 plugins {
-	id 'org.springframework.boot' version '3.2.5'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'org.asciidoctor.jvm.convert' version '4.0.2'
-	id 'java'
+    id "java"
+    id "checkstyle"
+    id "io.spring.dependency-management" version "1.1.4"
+    id "io.spring.javaformat" version "$javaformatVersion"
+    id "org.asciidoctor.jvm.convert" version "4.0.2"
+    id "org.springframework.boot" version "3.2.5"
 }
 
-apply plugin: 'io.spring.javaformat'
-apply plugin: 'checkstyle'
-
-group = 'io.spring.project-api'
+group = "io.spring.project-api"
 version = "1.0.0-SNAPSHOT"
-sourceCompatibility = '17'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 ext {
-	snippetsDir = file('build/generated-snippets')
+	snippetsDir = file("build/generated-snippets")
 }
 
 repositories {
@@ -34,25 +29,27 @@ checkstyle {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-cache'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-graphql'
-	implementation 'org.springframework.retry:spring-retry:2.0.10'
-	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
-	implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
-	implementation 'org.apache.maven:maven-artifact:3.6.3'
-	testImplementation 'com.squareup.okhttp3:mockwebserver'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.graphql:spring-graphql-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:${javaformatVersion}")
+    checkstyle("io.spring.javaformat:spring-javaformat-checkstyle:${javaformatVersion}")
+
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas")
+	implementation("org.springframework.boot:spring-boot-starter-graphql")
+	implementation("org.springframework.retry:spring-retry:2.0.10")
+	implementation("com.azure.spring:spring-cloud-azure-starter-keyvault-secrets")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+	implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
+	implementation("org.apache.maven:maven-artifact:3.6.3")
+
+	testImplementation("com.squareup.okhttp3:mockwebserver")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.graphql:spring-graphql-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
 
 dependencyManagement {
@@ -61,19 +58,19 @@ dependencyManagement {
 	}
 }
 
-tasks.named('test') {
+tasks.named("test") {
 	useJUnitPlatform()
 	outputs.dir snippetsDir
 }
 
 asciidoctor {
-	attributes 'snippets': snippetsDir
+	attributes "snippets": snippetsDir
 	dependsOn test
 }
 
 bootJar {
 	dependsOn asciidoctor
 	from("${asciidoctor.outputDir}/index.html") {
-		into 'static/restdocs'
+		into "static/restdocs"
 	}
 }
