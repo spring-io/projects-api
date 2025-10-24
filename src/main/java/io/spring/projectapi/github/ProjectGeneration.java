@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Java representation of the {@code project generation} type as defined in
@@ -54,22 +55,22 @@ public class ProjectGeneration {
 		@JsonFormat(pattern = "yyyy-MM")
 		private final YearMonth initialRelease;
 
+		private final SupportType support;
+
 		@JsonFormat(pattern = "yyyy-MM")
 		private final YearMonth ossSupportEnd;
 
 		@JsonFormat(pattern = "yyyy-MM")
 		private final YearMonth enterpriseSupportEnd;
 
-		private final boolean lastMinor;
-
 		@JsonCreator(mode = Mode.PROPERTIES)
-		public Generation(String generation, YearMonth initialRelease, YearMonth ossSupportEnd,
-				YearMonth enterpriseSupportEnd, boolean lastMinor) {
+		public Generation(String generation, YearMonth initialRelease, SupportType support, YearMonth ossSupportEnd,
+				YearMonth enterpriseSupportEnd) {
 			this.generation = generation;
 			this.initialRelease = initialRelease;
+			this.support = (support != null) ? support : SupportType.DEFAULT;
 			this.ossSupportEnd = ossSupportEnd;
 			this.enterpriseSupportEnd = enterpriseSupportEnd;
-			this.lastMinor = lastMinor;
 		}
 
 		/**
@@ -86,6 +87,14 @@ public class ProjectGeneration {
 		 */
 		public YearMonth getInitialRelease() {
 			return this.initialRelease;
+		}
+
+		/**
+		 * Return the {@link SupportType}.
+		 * @return the type of support
+		 */
+		public SupportType getSupport() {
+			return this.support;
 		}
 
 		/**
@@ -106,9 +115,30 @@ public class ProjectGeneration {
 			return this.enterpriseSupportEnd;
 		}
 
-		public boolean isLastMinor() {
-			return this.lastMinor;
-		}
+	}
+
+	/**
+	 * Describe the type of support.
+	 */
+	public enum SupportType {
+
+		/**
+		 * Not supported.
+		 */
+		@JsonProperty("none")
+		NONE,
+
+		/**
+		 * Default support.
+		 */
+		@JsonProperty("default")
+		DEFAULT,
+
+		/**
+		 * Extended support.
+		 */
+		@JsonProperty("extended")
+		EXTENDED
 
 	}
 

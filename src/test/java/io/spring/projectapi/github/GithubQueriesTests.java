@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.spring.projectapi.github.Project.Status;
+import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -209,9 +210,9 @@ class GithubQueriesTests {
 
 	private Map<String, ProjectGeneration> getProjectSupports() {
 		ProjectGeneration.Generation generation1 = new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"),
-				null, null, false);
+				SupportType.NONE, null, null);
 		ProjectGeneration.Generation generation2 = new ProjectGeneration.Generation("2.3.x", YearMonth.parse("2021-02"),
-				null, null, false);
+				SupportType.NONE, null, null);
 		ProjectGeneration support = new ProjectGeneration(List.of(generation1, generation2));
 		return Map.of("spring-boot", support);
 	}

@@ -41,6 +41,8 @@ public class Generation {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private final LocalDate initialReleaseDate;
 
+	private String support;
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private final LocalDate ossSupportEndDate;
 
@@ -48,10 +50,11 @@ public class Generation {
 	private final LocalDate commercialSupportEndDate;
 
 	@JsonCreator
-	public Generation(String name, YearMonth initialReleaseDate, YearMonth ossSupportEndDate,
+	public Generation(String name, YearMonth initialReleaseDate, String support, YearMonth ossSupportEndDate,
 			YearMonth commercialSupportEndDate) {
 		this.name = name;
 		this.initialReleaseDate = initialReleaseDate.atEndOfMonth();
+		this.support = support;
 		this.ossSupportEndDate = (ossSupportEndDate != null) ? ossSupportEndDate.atEndOfMonth() : null;
 		this.commercialSupportEndDate = (commercialSupportEndDate != null) ? commercialSupportEndDate.atEndOfMonth()
 				: null;
@@ -63,6 +66,10 @@ public class Generation {
 
 	public LocalDate getInitialReleaseDate() {
 		return this.initialReleaseDate;
+	}
+
+	public String getSupport() {
+		return this.support;
 	}
 
 	public LocalDate getOssSupportEndDate() {

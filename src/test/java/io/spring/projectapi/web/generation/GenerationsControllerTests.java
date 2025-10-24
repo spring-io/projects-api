@@ -23,6 +23,7 @@ import java.util.List;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.ProjectGeneration;
+import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 
@@ -75,6 +76,7 @@ class GenerationsControllerTests {
 			.andExpect(jsonPath("$._embedded.generations.length()").value("3"))
 			.andExpect(generationJsonPath(0, "name").value("1.0.x"))
 			.andExpect(generationJsonPath(0, "initialReleaseDate").value("2015-03-31"))
+			.andExpect(generationJsonPath(0, "support").value("none"))
 			.andExpect(generationJsonPath(0, "ossSupportEndDate").doesNotExist())
 			.andExpect(generationJsonPath(0, "commercialSupportEndDate").doesNotExist())
 			.andExpect(generationJsonPath(0, "_links.self.href")
@@ -83,6 +85,7 @@ class GenerationsControllerTests {
 
 			.andExpect(generationJsonPath(1, "name").value("2.2.x"))
 			.andExpect(generationJsonPath(1, "initialReleaseDate").value("2020-02-29"))
+			.andExpect(generationJsonPath(1, "support").value("extended"))
 			.andExpect(generationJsonPath(1, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(1, "commercialSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(1, "_links.self.href")
@@ -91,6 +94,7 @@ class GenerationsControllerTests {
 
 			.andExpect(generationJsonPath(2, "name").value("2.1.x"))
 			.andExpect(generationJsonPath(2, "initialReleaseDate").value("2020-01-31"))
+			.andExpect(generationJsonPath(2, "support").value("default"))
 			.andExpect(generationJsonPath(2, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(2, "commercialSupportEndDate").value("2022-03-31"))
 			.andExpect(generationJsonPath(2, "_links.self.href")
@@ -133,11 +137,12 @@ class GenerationsControllerTests {
 
 	private ProjectGeneration getProjectGenerations() {
 		List<ProjectGeneration.Generation> generations = new ArrayList<>();
-		generations.add(new ProjectGeneration.Generation("1.0.x", YearMonth.parse("2015-03"), null, null, false));
-		generations.add(new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"),
-				YearMonth.parse("2021-03"), YearMonth.parse("2021-03"), true));
-		generations.add(new ProjectGeneration.Generation("2.1.x", YearMonth.parse("2020-01"),
-				YearMonth.parse("2021-03"), YearMonth.parse("2022-03"), false));
+		generations
+			.add(new ProjectGeneration.Generation("1.0.x", YearMonth.parse("2015-03"), SupportType.NONE, null, null));
+		generations.add(new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"), SupportType.EXTENDED,
+				YearMonth.parse("2021-03"), YearMonth.parse("2021-03")));
+		generations.add(new ProjectGeneration.Generation("2.1.x", YearMonth.parse("2020-01"), SupportType.DEFAULT,
+				YearMonth.parse("2021-03"), YearMonth.parse("2022-03")));
 		return new ProjectGeneration(generations);
 	}
 
@@ -145,6 +150,7 @@ class GenerationsControllerTests {
 		return new FieldDescriptor[] { fieldWithPath("name").type(JsonFieldType.STRING).description("Generation Name"),
 				fieldWithPath("initialReleaseDate").type(JsonFieldType.STRING)
 					.description("Date of the first release for this Generation"),
+				fieldWithPath("support").type(JsonFieldType.STRING).description("Type of support"),
 				fieldWithPath("ossSupportEndDate").type(JsonFieldType.STRING)
 					.optional()
 					.description("End date of the OSS support"),

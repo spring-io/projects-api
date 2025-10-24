@@ -92,7 +92,7 @@
     {
       "generation": "2.7.x",
       "initialRelease": "2022-05",
-      "lastMinor": true,
+      "support": "extended",
       "ossSupportEnd": "2023-06",
       "enterpriseSupportEnd": "2029-06",
       "linkedGenerations": {
@@ -159,7 +159,7 @@
     {
       "generation": "3.5.x",
       "initialRelease": "2025-05",
-      "lastMinor": true,
+      "support": "extended",
       "ossSupportEnd": "2026-06",
       "enterpriseSupportEnd": "2032-06",
       "linkedGenerations": {

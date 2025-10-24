@@ -17,6 +17,7 @@
 package io.spring.projectapi.web.generation;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectGeneration;
@@ -56,11 +57,7 @@ public class GenerationsController {
 	@GetMapping
 	public CollectionModel<EntityModel<Generation>> generations(@PathVariable String id) {
 		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(id);
-		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
-		List<Generation> generations = projectGeneration.getGenerations()
-			.stream()
-			.map((generation) -> asGeneration(generation, supportPolicy))
-			.toList();
+		List<Generation> generations = projectGeneration.getGenerations().stream().map(this::asGeneration).toList();
 		CollectionModel<EntityModel<Generation>> model = CollectionModel
 			.of(generations.stream().map((generation) -> asModel(id, generation)).toList());
 		model.add(linkToProject(id));
@@ -70,11 +67,7 @@ public class GenerationsController {
 	@GetMapping("/{name}")
 	public EntityModel<Generation> generation(@PathVariable String id, @PathVariable String name) {
 		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(id);
-		String supportPolicy = this.projectRepository.getProjectSupportPolicy(id);
-		List<Generation> generations = projectGeneration.getGenerations()
-			.stream()
-			.map((generation) -> asGeneration(generation, supportPolicy))
-			.toList();
+		List<Generation> generations = projectGeneration.getGenerations().stream().map(this::asGeneration).toList();
 		Generation generation = generations.stream()
 			.filter((candidate) -> candidate.getName().equals(name))
 			.findFirst()
@@ -83,8 +76,9 @@ public class GenerationsController {
 		return asModel(id, generation);
 	}
 
-	private Generation asGeneration(ProjectGeneration.Generation generation, String supportPolicy) {
-		return new Generation(generation.getGeneration(), generation.getInitialRelease(), generation.getOssSupportEnd(),
+	private Generation asGeneration(ProjectGeneration.Generation generation) {
+		return new Generation(generation.getGeneration(), generation.getInitialRelease(),
+				generation.getSupport().name().toLowerCase(Locale.ROOT), generation.getOssSupportEnd(),
 				generation.getEnterpriseSupportEnd());
 	}
 

@@ -18,6 +18,7 @@ package io.spring.projectapi.github;
 
 import java.time.YearMonth;
 
+import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Madhura Bhave
  * @author Phillip Webb
+ * @author Stephane Nicoll
  */
 @JsonTest
 @AutoConfigureWebClient
@@ -42,13 +44,27 @@ class ProjectGenerationJsonTests {
 
 	@Test
 	void readObjectReadsJson() throws Exception {
-		ProjectGeneration projectGeneration = this.json.readObject("project-generations.json");
-		assertThat(projectGeneration.getGenerations().get(0).getGeneration()).isEqualTo("1.5.x");
-		assertThat(projectGeneration.getGenerations().get(0).getInitialRelease()).isEqualTo(YearMonth.parse("2017-01"));
-		assertThat(projectGeneration.getGenerations().get(0).getOssSupportEnd()).isEqualTo(YearMonth.parse("2019-08"));
-		assertThat(projectGeneration.getGenerations().get(0).getEnterpriseSupportEnd())
-			.isEqualTo(YearMonth.parse("2020-11"));
-		assertThat(projectGeneration.getGenerations().get(0).isLastMinor()).isTrue();
+		ProjectGeneration projectGeneration = this.json.readObject("project-generations-content.json");
+		assertThat(projectGeneration.getGenerations()
+			.stream()
+			.filter((candidate) -> candidate.getGeneration().equals("1.5.x"))).singleElement()
+			.satisfies((generation) -> {
+				assertThat(generation.getGeneration()).isEqualTo("1.5.x");
+				assertThat(generation.getSupport()).isEqualTo(SupportType.DEFAULT);
+				assertThat(generation.getInitialRelease()).isEqualTo(YearMonth.parse("2017-01"));
+				assertThat(generation.getOssSupportEnd()).isEqualTo(YearMonth.parse("2019-08"));
+				assertThat(generation.getEnterpriseSupportEnd()).isEqualTo(YearMonth.parse("2020-11"));
+			});
+		assertThat(projectGeneration.getGenerations()
+			.stream()
+			.filter((candidate) -> candidate.getGeneration().equals("2.7.x"))).singleElement()
+			.satisfies((generation) -> {
+				assertThat(generation.getGeneration()).isEqualTo("2.7.x");
+				assertThat(generation.getSupport()).isEqualTo(SupportType.EXTENDED);
+				assertThat(generation.getInitialRelease()).isEqualTo(YearMonth.parse("2022-05"));
+				assertThat(generation.getOssSupportEnd()).isEqualTo(YearMonth.parse("2023-06"));
+				assertThat(generation.getEnterpriseSupportEnd()).isEqualTo(YearMonth.parse("2029-06"));
+			});
 	}
 
 }
