@@ -21,6 +21,8 @@ import java.time.YearMonth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.springframework.hateoas.server.core.Relation;
 
@@ -31,6 +33,7 @@ import org.springframework.hateoas.server.core.Relation;
  * @author Phillip Webb
  */
 @Relation(collectionRelation = "generations")
+@JsonInclude(Include.NON_NULL)
 public class Generation {
 
 	private final String name;
@@ -49,8 +52,9 @@ public class Generation {
 			YearMonth commercialSupportEndDate) {
 		this.name = name;
 		this.initialReleaseDate = initialReleaseDate.atEndOfMonth();
-		this.ossSupportEndDate = ossSupportEndDate.atEndOfMonth();
-		this.commercialSupportEndDate = commercialSupportEndDate.atEndOfMonth();
+		this.ossSupportEndDate = (ossSupportEndDate != null) ? ossSupportEndDate.atEndOfMonth() : null;
+		this.commercialSupportEndDate = (commercialSupportEndDate != null) ? commercialSupportEndDate.atEndOfMonth()
+				: null;
 	}
 
 	public String getName() {

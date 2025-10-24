@@ -72,18 +72,36 @@ public class ProjectGeneration {
 			this.lastMinor = lastMinor;
 		}
 
+		/**
+		 * Return the identifier of the generation.
+		 * @return the identifier of the generation
+		 */
 		public String getGeneration() {
 			return this.generation;
 		}
 
+		/**
+		 * Return the initial release (first GA) date.
+		 * @return the initial release date
+		 */
 		public YearMonth getInitialRelease() {
 			return this.initialRelease;
 		}
 
+		/**
+		 * Return the end of the Open Source support or {@code null} if this generation
+		 * has no support.
+		 * @return the end of OSS support or {@code null}
+		 */
 		public YearMonth getOssSupportEnd() {
 			return this.ossSupportEnd;
 		}
 
+		/**
+		 * Return the end of the Enterprise support or {@code null} if this generation has
+		 * no support.
+		 * @return the end of Enterprise support or {@code null}
+		 */
 		public YearMonth getEnterpriseSupportEnd() {
 			return this.enterpriseSupportEnd;
 		}
