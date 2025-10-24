@@ -43,7 +43,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
 	implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
-	implementation("org.apache.maven:maven-artifact:3.6.3")
+	implementation("org.apache.maven:maven-artifact:3.9.11")
 
 	testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
