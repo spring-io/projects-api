@@ -120,7 +120,7 @@ public class ProjectGeneration {
 		}
 
 		/**
-		 * Return information about the generations that are linked to this generation
+		 * Return information about the generations that are linked to this generation.
 		 * @return the linked generations
 		 */
 		public Map<String, List<String>> getLinkedGenerations() {
