@@ -1,28 +1,29 @@
-# projects-api
+= projects-api
 
 Spring projects are listed and documented on the spring.io website. 
 We can find there information about releases, samples, support and more.
-These projects are managed in Github.
+These projects are managed in GitHub.
 
-This project provides a RESTful web layer on top of Github's API for fetching and updating Spring Project Metadata.
+This project provides a RESTful web layer on top of GitHub's API for fetching and updating Spring Project Metadata.
 It uses hypermedia to describe the relationships between resources and to allow navigation between them.
 
-## Running the app locally
+== Running the app locally
 
 Configure the application with the following properties:
 
-[source,yaml]
+[source,properties]
 ----
-projects:
-  github:
-    org:
-    team:
-    accessToken:
-    branch:
+projects.github.org=
+projects.github.team=
+projects.github.accesstoken=
+projects.github.webhook-secret=
 ----
 
+The project provides sensible default for Spring Team members.
+An optional `secret.properties` can be added to provide the secrets.
+
 Build the application with `./gradlew build`.
-Run the application with `java -jar build/libs/project-api-1.0.0-SNAPSHOT.jar`
+Run the application with `java -jar build/libs/project-api-1.0.0-SNAPSHOT.jar`.
 
 
 
