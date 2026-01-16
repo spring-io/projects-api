@@ -18,7 +18,9 @@ package io.spring.projectapi.web.generation;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
@@ -79,6 +81,7 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(0, "support").value("none"))
 			.andExpect(generationJsonPath(0, "ossSupportEndDate").doesNotExist())
 			.andExpect(generationJsonPath(0, "commercialSupportEndDate").doesNotExist())
+			.andExpect(generationJsonPath(0, "linkedGenerations.spring-boot").value("1.0.x"))
 			.andExpect(generationJsonPath(0, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/1.0.x"))
 			.andExpect(generationJsonPath(0, "_links.project.href").value("https://api.spring.io/projects/spring-boot"))
@@ -88,6 +91,7 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(1, "support").value("extended"))
 			.andExpect(generationJsonPath(1, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(1, "commercialSupportEndDate").value("2021-03-31"))
+			.andExpect(generationJsonPath(1, "linkedGenerations.spring-boot").value("2.2.x"))
 			.andExpect(generationJsonPath(1, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
 			.andExpect(generationJsonPath(1, "_links.project.href").value("https://api.spring.io/projects/spring-boot"))
@@ -97,6 +101,7 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(2, "support").value("default"))
 			.andExpect(generationJsonPath(2, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(2, "commercialSupportEndDate").value("2022-03-31"))
+			.andExpect(generationJsonPath(2, "linkedGenerations.spring-boot").value("2.1.x"))
 			.andExpect(generationJsonPath(2, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.1.x"))
 			.andExpect(generationJsonPath(2, "_links.project.href").value("https://api.spring.io/projects/spring-boot"))
@@ -137,13 +142,17 @@ class GenerationsControllerTests {
 
 	private ProjectGeneration getProjectGenerations() {
 		List<ProjectGeneration.Generation> generations = new ArrayList<>();
-		generations
-			.add(new ProjectGeneration.Generation("1.0.x", YearMonth.parse("2015-03"), SupportType.NONE, null, null));
+		generations.add(new ProjectGeneration.Generation("1.0.x", YearMonth.parse("2015-03"), SupportType.NONE, null,
+				null, springBootLinkedGenerations("1.0.x")));
 		generations.add(new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"), SupportType.EXTENDED,
-				YearMonth.parse("2021-03"), YearMonth.parse("2021-03")));
+				YearMonth.parse("2021-03"), YearMonth.parse("2021-03"), springBootLinkedGenerations("2.2.x")));
 		generations.add(new ProjectGeneration.Generation("2.1.x", YearMonth.parse("2020-01"), SupportType.DEFAULT,
-				YearMonth.parse("2021-03"), YearMonth.parse("2022-03")));
+				YearMonth.parse("2021-03"), YearMonth.parse("2022-03"), springBootLinkedGenerations("2.1.x")));
 		return new ProjectGeneration(generations);
+	}
+
+	private Map<String, List<String>> springBootLinkedGenerations(String... versions) {
+		return Map.of("spring-boot", Arrays.asList(versions));
 	}
 
 	FieldDescriptor[] generationPayload() {
@@ -157,6 +166,7 @@ class GenerationsControllerTests {
 				fieldWithPath("commercialSupportEndDate").type(JsonFieldType.STRING)
 					.optional()
 					.description("End date of the Commercial support"),
+				subsectionWithPath("linkedGenerations").description("Supported generations of linked projects"),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 

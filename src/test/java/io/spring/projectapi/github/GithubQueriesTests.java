@@ -19,6 +19,7 @@ package io.spring.projectapi.github;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.YearMonth;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -210,11 +211,15 @@ class GithubQueriesTests {
 
 	private Map<String, ProjectGeneration> getProjectSupports() {
 		ProjectGeneration.Generation generation1 = new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"),
-				SupportType.NONE, null, null);
+				SupportType.NONE, null, null, springBootLinkedGenerations("2.6.x"));
 		ProjectGeneration.Generation generation2 = new ProjectGeneration.Generation("2.3.x", YearMonth.parse("2021-02"),
-				SupportType.NONE, null, null);
+				SupportType.NONE, null, null, springBootLinkedGenerations("2.7.x"));
 		ProjectGeneration support = new ProjectGeneration(List.of(generation1, generation2));
 		return Map.of("spring-boot", support);
+	}
+
+	private Map<String, List<String>> springBootLinkedGenerations(String... versions) {
+		return Map.of("spring-boot", Arrays.asList(versions));
 	}
 
 	private Map<String, List<ProjectDocumentation>> getProjectDocumentation() {

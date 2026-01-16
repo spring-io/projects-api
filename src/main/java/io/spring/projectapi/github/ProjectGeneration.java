@@ -19,6 +19,7 @@ package io.spring.projectapi.github;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -63,14 +64,17 @@ public class ProjectGeneration {
 		@JsonFormat(pattern = "yyyy-MM")
 		private final YearMonth enterpriseSupportEnd;
 
+		private final Map<String, List<String>> linkedGenerations;
+
 		@JsonCreator(mode = Mode.PROPERTIES)
 		public Generation(String generation, YearMonth initialRelease, SupportType support, YearMonth ossSupportEnd,
-				YearMonth enterpriseSupportEnd) {
+				YearMonth enterpriseSupportEnd, Map<String, List<String>> linkedGenerations) {
 			this.generation = generation;
 			this.initialRelease = initialRelease;
 			this.support = (support != null) ? support : SupportType.DEFAULT;
 			this.ossSupportEnd = ossSupportEnd;
 			this.enterpriseSupportEnd = enterpriseSupportEnd;
+			this.linkedGenerations = linkedGenerations;
 		}
 
 		/**
@@ -113,6 +117,14 @@ public class ProjectGeneration {
 		 */
 		public YearMonth getEnterpriseSupportEnd() {
 			return this.enterpriseSupportEnd;
+		}
+
+		/**
+		 * Return information about the generations that are linked to this generation
+		 * @return the linked generations
+		 */
+		public Map<String, List<String>> getLinkedGenerations() {
+			return this.linkedGenerations;
 		}
 
 	}

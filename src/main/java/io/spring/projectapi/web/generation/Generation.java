@@ -18,6 +18,8 @@ package io.spring.projectapi.web.generation;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -49,15 +51,18 @@ public class Generation {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private final LocalDate commercialSupportEndDate;
 
+	private final Map<String, List<String>> linkedGenerations;
+
 	@JsonCreator
 	public Generation(String name, YearMonth initialReleaseDate, String support, YearMonth ossSupportEndDate,
-			YearMonth commercialSupportEndDate) {
+			YearMonth commercialSupportEndDate, Map<String, List<String>> linkedGenerations) {
 		this.name = name;
 		this.initialReleaseDate = initialReleaseDate.atEndOfMonth();
 		this.support = support;
 		this.ossSupportEndDate = (ossSupportEndDate != null) ? ossSupportEndDate.atEndOfMonth() : null;
 		this.commercialSupportEndDate = (commercialSupportEndDate != null) ? commercialSupportEndDate.atEndOfMonth()
 				: null;
+		this.linkedGenerations = linkedGenerations;
 	}
 
 	public String getName() {
@@ -78,6 +83,10 @@ public class Generation {
 
 	public LocalDate getCommercialSupportEndDate() {
 		return this.commercialSupportEndDate;
+	}
+
+	public Map<String, List<String>> getLinkedGenerations() {
+		return this.linkedGenerations;
 	}
 
 }

@@ -79,7 +79,7 @@ public class GenerationsController {
 	private Generation asGeneration(ProjectGeneration.Generation generation) {
 		return new Generation(generation.getGeneration(), generation.getInitialRelease(),
 				generation.getSupport().name().toLowerCase(Locale.ROOT), generation.getOssSupportEnd(),
-				generation.getEnterpriseSupportEnd());
+				generation.getEnterpriseSupportEnd(), generation.getLinkedGenerations());
 	}
 
 	private EntityModel<Generation> asModel(String id, Generation generation) {
