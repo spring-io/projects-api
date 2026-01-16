@@ -24,7 +24,7 @@ repositories {
 }
 
 checkstyle {
-	toolVersion = "10.12.4"
+	toolVersion = "12.1.2"
 }
 
 dependencies {
