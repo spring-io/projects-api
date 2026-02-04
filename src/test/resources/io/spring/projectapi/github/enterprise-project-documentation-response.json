@@ -1,0 +1,18 @@
+{
+  "name": "documentation.json",
+  "path": "project/spring-boot/documentation.json",
+  "sha": "2d2f875ca7d476d8b01bc1db07d29b5eba1d5120",
+  "size": 2345,
+  "url": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-boot/documentation.json?ref=main",
+  "html_url": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-boot/documentation.json",
+  "git_url": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/2d2f875ca7d476d8b01bc1db07d29b5eba1d5120",
+  "download_url": "https://raw.githubusercontent.com/spring-io/spring-website-content/main/project/spring-boot/documentation.json?token=AANOBAE3EFWQODGXLJULJTTHDPESI",
+  "type": "file",
+  "content": "WwogIHsKICAgICJhcGkiOiAiaHR0cHM6Ly9kb2NzLnNwcmluZy5pby9zcHJpbmctYm9vdC9kb2NzL3t2ZXJzaW9ufS9hcGkvIiwKICAgICJyZWYiOiAiaHR0cHM6Ly9kb2NzLnNwcmluZy5pby9zcHJpbmctYm9vdC9kb2NzL3t2ZXJzaW9ufS9yZWZlcmVuY2UvaHRtbC8iLAogICAgImFudG9yYSI6IGZhbHNlLAogICAgInN0YXR1cyI6ICJHRU5FUkFMX0FWQUlMQUJJTElUWSIsCiAgICAiY3VycmVudCI6IGZhbHNlLAogICAgInZlcnNpb24iOiAiMy4xLjEyIgogIH0sCiAgewogICAgImFwaSI6ICJodHRwczovL2RvY3Muc3ByaW5nLmlvL3NwcmluZy1ib290L2RvY3Mve3ZlcnNpb259L2FwaS8iLAogICAgInJlZiI6ICJodHRwczovL2RvY3Muc3ByaW5nLmlvL3NwcmluZy1ib290L2RvY3Mve3ZlcnNpb259L3JlZmVyZW5jZS9odG1sLyIsCiAgICAiYW50b3JhIjogZmFsc2UsCiAgICAic3RhdHVzIjogIkdFTkVSQUxfQVZBSUxBQklMSVRZIiwKICAgICJjdXJyZW50IjogZmFsc2UsCiAgICAidmVyc2lvbiI6ICIzLjAuMTMiCiAgfSwKICB7CiAgICAiYXBpIjogImh0dHBzOi8vZG9jcy5zcHJpbmcuaW8vc3ByaW5nLWJvb3QvZG9jcy97dmVyc2lvbn0vYXBpLyIsCiAgICAicmVmIjogImh0dHBzOi8vZG9jcy5zcHJpbmcuaW8vc3ByaW5nLWJvb3QvZG9jcy97dmVyc2lvbn0vcmVmZXJlbmNlL2h0bWwvIiwKICAgICJhbnRvcmEiOiBmYWxzZSwKICAgICJzdGF0dXMiOiAiR0VORVJBTF9BVkFJTEFCSUxJVFkiLAogICAgImN1cnJlbnQiOiBmYWxzZSwKICAgICJ2ZXJzaW9uIjogIjIuNy4xOCIKICB9Cl0K",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/spring-io/spring-website-content/contents/project/spring-boot/documentation.json?ref=main",
+    "git": "https://api.github.com/repos/spring-io/spring-website-content/git/blobs/2d2f875ca7d476d8b01bc1db07d29b5eba1d5120",
+    "html": "https://github.com/spring-io/spring-website-content/blob/main/project/spring-boot/documentation.json"
+  }
+}

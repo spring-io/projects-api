@@ -19,6 +19,7 @@ package io.spring.projectapi.web.release;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectDocumentation;
 
@@ -42,7 +43,8 @@ public class LegacyReleasesController {
 
 	@GetMapping(value = "/project_metadata/spring-boot", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SpringBootMetadata springBootMetadata() {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations("spring-boot");
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations("spring-boot",
+				ContentSource.OSS);
 		return new SpringBootMetadata(documentations);
 	}
 

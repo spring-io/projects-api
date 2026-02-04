@@ -53,9 +53,12 @@ public class Generation {
 
 	private final Map<String, List<String>> linkedGenerations;
 
+	@JsonInclude(Include.NON_NULL)
+	private final LatestPatch latestPatch;
+
 	@JsonCreator
 	public Generation(String name, YearMonth initialReleaseDate, String support, YearMonth ossSupportEndDate,
-			YearMonth commercialSupportEndDate, Map<String, List<String>> linkedGenerations) {
+			YearMonth commercialSupportEndDate, Map<String, List<String>> linkedGenerations, LatestPatch latestPatch) {
 		this.name = name;
 		this.initialReleaseDate = initialReleaseDate.atEndOfMonth();
 		this.support = support;
@@ -63,6 +66,7 @@ public class Generation {
 		this.commercialSupportEndDate = (commercialSupportEndDate != null) ? commercialSupportEndDate.atEndOfMonth()
 				: null;
 		this.linkedGenerations = linkedGenerations;
+		this.latestPatch = latestPatch;
 	}
 
 	public String getName() {
@@ -87,6 +91,36 @@ public class Generation {
 
 	public Map<String, List<String>> getLinkedGenerations() {
 		return this.linkedGenerations;
+	}
+
+	public LatestPatch getLatestPatch() {
+		return this.latestPatch;
+	}
+
+	/**
+	 * Representation of the latest patch version for a generation.
+	 *
+	 */
+	@JsonInclude(Include.NON_NULL)
+	public static class LatestPatch {
+
+		private final String oss;
+
+		private final String enterprise;
+
+		public LatestPatch(String oss, String enterprise) {
+			this.oss = oss;
+			this.enterprise = enterprise;
+		}
+
+		public String getOss() {
+			return this.oss;
+		}
+
+		public String getEnterprise() {
+			return this.enterprise;
+		}
+
 	}
 
 }

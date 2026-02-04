@@ -73,13 +73,17 @@ public class ApplicationProperties {
 		 */
 		private String webhookSecret;
 
+		private final Enterprise enterprise;
+
 		@ConstructorBinding
-		Github(String org, String team, String accesstoken, @DefaultValue("main") String branch, String webhookSecret) {
+		Github(String org, String team, String accesstoken, @DefaultValue("main") String branch, String webhookSecret,
+				@DefaultValue Enterprise enterprise) {
 			this.org = org;
 			this.team = team;
 			this.accesstoken = accesstoken;
 			this.branch = branch;
 			this.webhookSecret = webhookSecret;
+			this.enterprise = enterprise;
 		}
 
 		public String getOrg() {
@@ -100,6 +104,41 @@ public class ApplicationProperties {
 
 		public String getWebhookSecret() {
 			return this.webhookSecret;
+		}
+
+		public Enterprise getEnterprise() {
+			return this.enterprise;
+		}
+
+	}
+
+	/**
+	 * Properties for enterprise content repository.
+	 */
+	public static class Enterprise {
+
+		/**
+		 * Github access token for accessing the commercial content API.
+		 */
+		private String accesstoken;
+
+		/**
+		 * Github branch to use for fetching commercial content.
+		 */
+		private String branch;
+
+		@ConstructorBinding
+		Enterprise(String accesstoken, @DefaultValue("main") String branch) {
+			this.accesstoken = accesstoken;
+			this.branch = branch;
+		}
+
+		public String getAccesstoken() {
+			return this.accesstoken;
+		}
+
+		public String getBranch() {
+			return this.branch;
 		}
 
 	}

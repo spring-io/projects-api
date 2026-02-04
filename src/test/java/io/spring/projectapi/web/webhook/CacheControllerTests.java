@@ -19,6 +19,7 @@ package io.spring.projectapi.web.webhook;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.security.SecurityConfiguration;
 import org.junit.jupiter.api.Test;
@@ -118,18 +119,34 @@ class CacheControllerTests {
 	}
 
 	@Test
-	void shouldTriggerCacheRefresh() throws Exception {
+	void shouldTriggerCacheRefreshForOssContent() throws Exception {
 		this.mockMvc
 			.perform(MockMvcRequestBuilders.post("/refresh_cache")
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
-				.header("X-Hub-Signature", "sha1=E1C54005D92AE14A76A7C0CD164AEAC6E6740C64")
+				.header("X-Hub-Signature", "sha1=0F0761EC2C40DF6A3FFA27E5FEB9E9DD8238E114")
 				.header("X-GitHub-Event", "push")
 				.content(getTestPayload("push")))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content()
 				.string("{ \"message\": \"Successfully processed cache refresh\" }"));
-		verify(this.projectRepository, times(1)).update(List.of("added.html", "index-common.html"));
+		verify(this.projectRepository, times(1)).update(List.of("added.html", "index-common.html"), ContentSource.OSS);
+	}
+
+	@Test
+	void shouldTriggerCacheRefreshForEnterpriseContent() throws Exception {
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/refresh_cache")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("X-Hub-Signature", "sha1=B6DC4886C3AAB8664290B9E355AB12CA0CD3DB6C")
+				.header("X-GitHub-Event", "push")
+				.content(getTestPayload("push_enterprise")))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content()
+				.string("{ \"message\": \"Successfully processed cache refresh\" }"));
+		verify(this.projectRepository, times(1)).update(List.of("added.html", "index-common.html"),
+				ContentSource.ENTERPRISE);
 	}
 
 	private String getTestPayload(String fileName) throws Exception {

@@ -177,6 +177,17 @@ Each project generation has two periods of active support:
 https://tanzu.vmware.com/support/oss[Open Source support] and https://tanzu.vmware.com/support/lifecycle_policy[Commercial support].
 All releases cut during these support periods are publicly available in the <<repository, artifact repositories>>.
 
+=== Latest Patch Information
+Each generation response includes information about the latest patch versions available for that generation.
+The `latestPatch` field provides the most current patch versions for both OSS and Enterprise when available:
+
+* `latestPatch.oss` contains the latest OSS patch version, if available
+* `latestPatch.enterprise` contains the latest Enterprise patch version, if available
+* Fields within `latestPatch` are omitted when no matching patch is available for that source
+* If no patch information is available at all (e.g. for generations that are not GA), the entire `latestPatch` field will be omitted from the response
+
+Only releases with `GENERAL_AVAILABILITY` status are considered when determining the latest patch.
+
 We can get the list of generations for a given project by following the `"generations"` link on the Project resource:
 
 include::{snippets}/list-generations/http-response.adoc[]

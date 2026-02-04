@@ -19,6 +19,7 @@ package io.spring.projectapi.web.release;
 import java.net.URI;
 import java.util.List;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectDocumentation;
@@ -69,7 +70,8 @@ public class ReleasesController {
 
 	@GetMapping
 	public CollectionModel<EntityModel<Release>> releases(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
+				ContentSource.OSS);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
 			.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
@@ -82,7 +84,8 @@ public class ReleasesController {
 
 	@GetMapping("/{version}")
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
+				ContentSource.OSS);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter((candidate) -> candidate.getVersion().equals(version))
@@ -94,7 +97,8 @@ public class ReleasesController {
 
 	@GetMapping("/current")
 	public EntityModel<Release> current(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
+				ContentSource.OSS);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter(Release::isCurrent)
@@ -107,7 +111,8 @@ public class ReleasesController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@PathVariable String id, @RequestBody NewRelease release) throws Exception {
 		String version = release.getVersion();
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
+				ContentSource.OSS);
 		if (documentations.stream().anyMatch((candidate) -> candidate.getVersion().equals(version))) {
 			String message = "Release '%s' already present for project '%s'".formatted(version, id);
 			return ResponseEntity.badRequest().body(message);

@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spring.projectapi.ContentSource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,13 +53,19 @@ public class GithubQueries {
 
 	private static final String GITHUB_URI = "https://api.github.com/repos/spring-io/spring-website-content/contents";
 
+	private static final String GITHUB_ENTERPRISE_URI = "https://api.github.com/repos/spring-io/spring-website-commercial-content/contents";
+
 	private static final Logger logger = LoggerFactory.getLogger(GithubOperations.class);
 
 	private final RestTemplate restTemplate;
 
+	private final RestTemplate enterpriseRestTemplate;
+
 	private final ObjectMapper objectMapper;
 
 	private static final String DEFAULT_SUPPORT_POLICY = "SPRING_BOOT";
+
+	private final String enterpriseBranch;
 
 	private static final Pattern PROJECT_FILE = Pattern.compile("project\\/(.*)\\/.*");
 
@@ -71,17 +78,22 @@ public class GithubQueries {
 	private final String branch;
 
 	public GithubQueries(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, String token,
-			String branch) {
+			String branch, String enterpriseToken, String enterpriseBranch) {
 		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
 		this.branch = branch;
 		this.objectMapper = objectMapper;
+		this.enterpriseBranch = enterpriseBranch;
+		this.enterpriseRestTemplate = restTemplateBuilder.rootUri(GITHUB_ENTERPRISE_URI)
+			.defaultHeader("Authorization", "Bearer " + enterpriseToken)
+			.build();
 	}
 
 	ProjectData getData() {
 		Map<String, Project> projects = new LinkedHashMap<>();
 		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>();
+		Map<String, List<ProjectDocumentation>> enterpriseDocumentation = new LinkedHashMap<>();
 		Map<String, ProjectGeneration> generation = new LinkedHashMap<>();
 		Map<String, String> supportPolicy = new LinkedHashMap<>();
 		try {
@@ -90,19 +102,22 @@ public class GithubQueries {
 					STRING_OBJECT_MAP_LIST);
 			InvalidGithubResponseException.throwIfInvalid(exchange);
 			List<Map<String, Object>> body = exchange.getBody();
-			body.forEach((project) -> populateData(project, projects, documentation, generation, supportPolicy));
+			body.forEach((project) -> populateData(project, projects, documentation, enterpriseDocumentation,
+					generation, supportPolicy));
 		}
 		catch (Exception ex) {
 			logger.debug("Could not get projects due to '%s'".formatted(ex.getMessage()));
 			// Return empty list
 		}
-		return new ProjectData(projects, documentation, generation, supportPolicy);
+		return new ProjectData(projects, documentation, enterpriseDocumentation, generation, supportPolicy);
 	}
 
-	ProjectData updateData(ProjectData data, List<String> changes) {
+	ProjectData updateData(ProjectData data, List<String> changes, ContentSource contentSource) {
 		Assert.notNull(data, "Project data should not be null");
 		Map<String, Project> projects = new LinkedHashMap<>(data.project());
 		Map<String, List<ProjectDocumentation>> documentation = new LinkedHashMap<>(data.documentation());
+		Map<String, List<ProjectDocumentation>> enterpriseDocumentation = new LinkedHashMap<>(
+				data.enterpriseDocumentation());
 		Map<String, ProjectGeneration> generation = new LinkedHashMap<>(data.generation());
 		Map<String, String> supportPolicy = new LinkedHashMap<>(data.supportPolicy());
 		Map<String, Boolean> checkedProjects = new LinkedHashMap<>();
@@ -112,18 +127,25 @@ public class GithubQueries {
 				if (ProjectFile.OTHER.equals(file)) {
 					return;
 				}
-				updateData(change, file, projects, supportPolicy, documentation, generation, checkedProjects);
+				if (ContentSource.ENTERPRISE.equals(contentSource)) {
+					updateEnterpriseData(change, file, enterpriseDocumentation);
+				}
+				else {
+					updateOssData(change, file, projects, supportPolicy, documentation, enterpriseDocumentation,
+							generation, checkedProjects);
+				}
 			});
 		}
 		catch (Exception ex) {
 			logger.debug("Could not update data due to '%s'".formatted(ex.getMessage()));
 		}
-		return new ProjectData(projects, documentation, generation, supportPolicy);
+		return new ProjectData(projects, documentation, enterpriseDocumentation, generation, supportPolicy);
 	}
 
-	private void updateData(String change, ProjectFile file, Map<String, Project> projects,
+	private void updateOssData(String change, ProjectFile file, Map<String, Project> projects,
 			Map<String, String> supportPolicy, Map<String, List<ProjectDocumentation>> documentation,
-			Map<String, ProjectGeneration> generation, Map<String, Boolean> checkedprojects) {
+			Map<String, List<ProjectDocumentation>> enterpriseDocumentation, Map<String, ProjectGeneration> generation,
+			Map<String, Boolean> checkedprojects) {
 		Matcher matcher = PROJECT_FILE.matcher(change);
 		if (!matcher.matches()) {
 			return;
@@ -140,8 +162,22 @@ public class GithubQueries {
 		}
 		projects.remove(slug);
 		documentation.remove(slug);
+		enterpriseDocumentation.remove(slug);
 		generation.remove(slug);
 		supportPolicy.remove(slug);
+	}
+
+	private void updateEnterpriseData(String change, ProjectFile file,
+			Map<String, List<ProjectDocumentation>> enterpriseDocumentation) {
+		Matcher matcher = PROJECT_FILE.matcher(change);
+		if (!matcher.matches()) {
+			return;
+		}
+		String slug = matcher.group(1);
+		if (ProjectFile.DOCUMENTATION.equals(file)) {
+			List<ProjectDocumentation> documentation = getEnterpriseProjectDocumentations(slug);
+			enterpriseDocumentation.put(slug, documentation);
+		}
 	}
 
 	private void updateGeneration(ProjectFile file, Map<String, ProjectGeneration> support, String slug) {
@@ -189,7 +225,8 @@ public class GithubQueries {
 	}
 
 	private void populateData(Map<String, Object> project, Map<String, Project> projects,
-			Map<String, List<ProjectDocumentation>> documentation, Map<String, ProjectGeneration> support,
+			Map<String, List<ProjectDocumentation>> documentation,
+			Map<String, List<ProjectDocumentation>> enterpriseDocumentation, Map<String, ProjectGeneration> support,
 			Map<String, String> supportPolicy) {
 		String projectSlug = (String) project.get("name");
 		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
@@ -199,6 +236,8 @@ public class GithubQueries {
 		}
 		List<ProjectDocumentation> projectDocumentations = getProjectDocumentations(projectSlug);
 		documentation.put(projectSlug, projectDocumentations);
+		List<ProjectDocumentation> enterpriseProjectDocumentations = getEnterpriseProjectDocumentations(projectSlug);
+		enterpriseDocumentation.put(projectSlug, enterpriseProjectDocumentations);
 		ProjectGeneration projectSupports = getProjectSupports(projectSlug);
 		support.put(projectSlug, projectSupports);
 		String policy = getProjectSupportPolicy(response, projectSlug);
@@ -227,6 +266,19 @@ public class GithubQueries {
 		catch (Exception ex) {
 			logger.debug(
 					"Could not get project documentation for '%s' due to '%s'".formatted(projectSlug, ex.getMessage()));
+		}
+		return Collections.emptyList();
+	}
+
+	private List<ProjectDocumentation> getEnterpriseProjectDocumentations(String projectSlug) {
+		try {
+			ResponseEntity<Map<String, Object>> response = getEnterpriseFile(projectSlug, "documentation.json");
+			String content = getFileContent(response);
+			return List.copyOf(convertToProjectDocumentation(content));
+		}
+		catch (Exception ex) {
+			logger.debug("Could not get enterprise project documentation for '%s' due to '%s'".formatted(projectSlug,
+					ex.getMessage()));
 		}
 		return Collections.emptyList();
 	}
@@ -272,6 +324,13 @@ public class GithubQueries {
 			.get("/project/{projectSlug}/{fileName}?ref=" + this.branch, projectSlug, fileName)
 			.build();
 		return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
+	}
+
+	private ResponseEntity<Map<String, Object>> getEnterpriseFile(String projectSlug, String fileName) {
+		RequestEntity<Void> request = RequestEntity
+			.get("/project/{projectSlug}/{fileName}?ref=" + this.enterpriseBranch, projectSlug, fileName)
+			.build();
+		return this.enterpriseRestTemplate.exchange(request, STRING_OBJECT_MAP);
 	}
 
 	private String getFileContent(ResponseEntity<Map<String, Object>> exchange) {
