@@ -19,6 +19,7 @@ package io.spring.projectapi.github;
 import java.util.Collection;
 import java.util.List;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 
 import org.springframework.stereotype.Component;
@@ -42,8 +43,8 @@ class GithubProjectRepository implements ProjectRepository {
 	}
 
 	@Override
-	public void update(List<String> changes) {
-		this.projectData = ProjectData.update(this.projectData, changes, this.githubQueries);
+	public void update(List<String> changes, ContentSource contentSource) {
+		this.projectData = ProjectData.update(this.projectData, changes, contentSource, this.githubQueries);
 	}
 
 	@Override
@@ -59,8 +60,14 @@ class GithubProjectRepository implements ProjectRepository {
 	}
 
 	@Override
-	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug) {
-		List<ProjectDocumentation> documentations = this.projectData.documentation().get(projectSlug);
+	public List<ProjectDocumentation> getProjectDocumentations(String projectSlug, ContentSource contentSource) {
+		List<ProjectDocumentation> documentations;
+		if (ContentSource.ENTERPRISE.equals(contentSource)) {
+			documentations = this.projectData.enterpriseDocumentation().get(projectSlug);
+		}
+		else {
+			documentations = this.projectData.documentation().get(projectSlug);
+		}
 		NoSuchGithubProjectException.throwIfNotFound(documentations, projectSlug);
 		return documentations;
 	}

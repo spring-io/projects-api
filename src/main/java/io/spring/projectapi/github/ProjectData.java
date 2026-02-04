@@ -19,6 +19,7 @@ package io.spring.projectapi.github;
 import java.util.List;
 import java.util.Map;
 
+import io.spring.projectapi.ContentSource;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,21 +27,24 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param project all projects
  * @param documentation map of project slug to project documentations
+ * @param enterpriseDocumentation map of project slug to enterprise project documentations
  * @param generation map of project slug to project generations
  * @param supportPolicy map of project slug to project generation policy
  * @author Phillip Webb
  * @author Madhura Bhave
  */
 record ProjectData(Map<String, Project> project, Map<String, List<ProjectDocumentation>> documentation,
-		Map<String, ProjectGeneration> generation, Map<String, String> supportPolicy) {
+		Map<String, List<ProjectDocumentation>> enterpriseDocumentation, Map<String, ProjectGeneration> generation,
+		Map<String, String> supportPolicy) {
 
 	public static ProjectData load(GithubQueries githubQueries) {
 		ProjectData data = githubQueries.getData();
 		return getImmutableProjectData(data);
 	}
 
-	public static ProjectData update(ProjectData data, List<String> changes, GithubQueries githubQueries) {
-		ProjectData updatedData = githubQueries.updateData(data, changes);
+	public static ProjectData update(ProjectData data, List<String> changes, ContentSource contentSource,
+			GithubQueries githubQueries) {
+		ProjectData updatedData = githubQueries.updateData(data, changes, contentSource);
 		return getImmutableProjectData(updatedData);
 	}
 
@@ -48,10 +52,11 @@ record ProjectData(Map<String, Project> project, Map<String, List<ProjectDocumen
 	private static ProjectData getImmutableProjectData(ProjectData updatedData) {
 		Map<String, Project> projects = updatedData.project();
 		Map<String, List<ProjectDocumentation>> documentation = updatedData.documentation();
+		Map<String, List<ProjectDocumentation>> enterpriseDocumentation = updatedData.enterpriseDocumentation();
 		Map<String, ProjectGeneration> generation = updatedData.generation();
 		Map<String, String> supportPolicy = updatedData.supportPolicy();
-		return new ProjectData(Map.copyOf(projects), Map.copyOf(documentation), Map.copyOf(generation),
-				Map.copyOf(supportPolicy));
+		return new ProjectData(Map.copyOf(projects), Map.copyOf(documentation), Map.copyOf(enterpriseDocumentation),
+				Map.copyOf(generation), Map.copyOf(supportPolicy));
 	}
 
 }

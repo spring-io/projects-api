@@ -22,8 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
+import io.spring.projectapi.github.ProjectDocumentation;
+import io.spring.projectapi.github.ProjectDocumentation.Status;
 import io.spring.projectapi.github.ProjectGeneration;
 import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import io.spring.projectapi.test.WebApiTests;
@@ -72,6 +75,10 @@ class GenerationsControllerTests {
 	void generationsReturnsGenerations() throws Exception {
 		given(this.projectRepository.getProjectGenerations("spring-boot")).willReturn(getProjectGenerations());
 		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
+		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
+			.willReturn(getOssDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.ENTERPRISE))
+			.willReturn(getEnterpriseDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -81,6 +88,7 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(0, "support").value("none"))
 			.andExpect(generationJsonPath(0, "ossSupportEndDate").doesNotExist())
 			.andExpect(generationJsonPath(0, "commercialSupportEndDate").doesNotExist())
+			.andExpect(generationJsonPath(0, "latestPatch").doesNotExist())
 			.andExpect(generationJsonPath(0, "linkedGenerations.spring-boot").value("1.0.x"))
 			.andExpect(generationJsonPath(0, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/1.0.x"))
@@ -91,6 +99,8 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(1, "support").value("extended"))
 			.andExpect(generationJsonPath(1, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(1, "commercialSupportEndDate").value("2021-03-31"))
+			.andExpect(generationJsonPath(1, "latestPatch.oss").value("2.2.10"))
+			.andExpect(generationJsonPath(1, "latestPatch.enterprise").value("2.2.11"))
 			.andExpect(generationJsonPath(1, "linkedGenerations.spring-boot").value("2.2.x"))
 			.andExpect(generationJsonPath(1, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
@@ -101,6 +111,8 @@ class GenerationsControllerTests {
 			.andExpect(generationJsonPath(2, "support").value("default"))
 			.andExpect(generationJsonPath(2, "ossSupportEndDate").value("2021-03-31"))
 			.andExpect(generationJsonPath(2, "commercialSupportEndDate").value("2022-03-31"))
+			.andExpect(generationJsonPath(2, "latestPatch.oss").value("2.1.18"))
+			.andExpect(generationJsonPath(2, "latestPatch.enterprise").doesNotExist())
 			.andExpect(generationJsonPath(2, "linkedGenerations.spring-boot").value("2.1.x"))
 			.andExpect(generationJsonPath(2, "_links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.1.x"))
@@ -122,9 +134,15 @@ class GenerationsControllerTests {
 	void generationReturnsGeneration() throws Exception {
 		given(this.projectRepository.getProjectGenerations("spring-boot")).willReturn(getProjectGenerations());
 		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
+		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
+			.willReturn(getOssDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.ENTERPRISE))
+			.willReturn(getEnterpriseDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/generations/2.2.x").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("2.2.x"))
+			.andExpect(jsonPath("$.latestPatch.oss").value("2.2.10"))
+			.andExpect(jsonPath("$.latestPatch.enterprise").value("2.2.11"))
 			.andExpect(jsonPath("$._links.self.href")
 				.value("https://api.spring.io/projects/spring-boot/generations/2.2.x"))
 			.andExpect(jsonPath("$._links.project.href").value("https://api.spring.io/projects/spring-boot"))
@@ -155,6 +173,21 @@ class GenerationsControllerTests {
 		return Map.of("spring-boot", Arrays.asList(versions));
 	}
 
+	private List<ProjectDocumentation> getOssDocumentations() {
+		return List.of(
+				new ProjectDocumentation("2.2.10", false, "https://example.com/api", "https://example.com/ref",
+						Status.GENERAL_AVAILABILITY, false),
+				new ProjectDocumentation("2.1.18", false, "https://example.com/api", "https://example.com/ref",
+						Status.GENERAL_AVAILABILITY, false),
+				new ProjectDocumentation("3.0.0-SNAPSHOT", false, "https://example.com/api", "https://example.com/ref",
+						Status.SNAPSHOT, false));
+	}
+
+	private List<ProjectDocumentation> getEnterpriseDocumentations() {
+		return List.of(new ProjectDocumentation("2.2.11", false, "https://example.com/api", "https://example.com/ref",
+				Status.GENERAL_AVAILABILITY, false));
+	}
+
 	FieldDescriptor[] generationPayload() {
 		return new FieldDescriptor[] { fieldWithPath("name").type(JsonFieldType.STRING).description("Generation Name"),
 				fieldWithPath("initialReleaseDate").type(JsonFieldType.STRING)
@@ -167,6 +200,10 @@ class GenerationsControllerTests {
 					.optional()
 					.description("End date of the Commercial support"),
 				subsectionWithPath("linkedGenerations").description("Supported generations of linked projects"),
+				subsectionWithPath("latestPatch").type(JsonFieldType.OBJECT)
+					.description(
+							"Latest patch versions for this generation, with OSS and Enterprise versions when available")
+					.optional(),
 				subsectionWithPath("_links").description("Links to other resources") };
 	}
 

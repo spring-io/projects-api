@@ -17,6 +17,7 @@
 package io.spring.projectapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spring.projectapi.ApplicationProperties.Enterprise;
 import io.spring.projectapi.ApplicationProperties.Github;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.GithubQueries;
@@ -48,7 +49,10 @@ public class Application {
 		Github github = properties.getGithub();
 		String accessToken = github.getAccesstoken();
 		String branch = github.getBranch();
-		return new GithubQueries(builder, objectMapper, accessToken, branch);
+		Enterprise enterprise = properties.getGithub().getEnterprise();
+		String enterpriseToken = enterprise.getAccesstoken();
+		String enterpriseBranch = enterprise.getBranch();
+		return new GithubQueries(builder, objectMapper, accessToken, branch, enterpriseToken, enterpriseBranch);
 	}
 
 	@Bean

@@ -19,6 +19,7 @@ package io.spring.projectapi.web.release;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
@@ -51,7 +52,8 @@ class LegacyReleasesControllerTests {
 
 	@Test
 	void legacyReleasesReturnsReleases() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
+			.willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/project_metadata/spring-boot").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value("spring-boot"))

@@ -31,13 +31,13 @@ import io.spring.projectapi.web.webhook.CacheController;
  */
 public interface ProjectRepository {
 
-	void update(List<String> changes);
+	void update(List<String> changes, ContentSource contentSource);
 
 	Collection<Project> getProjects();
 
 	Project getProject(String projectSlug);
 
-	List<ProjectDocumentation> getProjectDocumentations(String projectSlug);
+	List<ProjectDocumentation> getProjectDocumentations(String projectSlug, ContentSource contentSource);
 
 	ProjectGeneration getProjectGenerations(String projectSlug);
 
