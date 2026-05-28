@@ -27,24 +27,24 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.core.util.DefaultIndenter;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.databind.json.JsonMapper;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.retry.RetryTemplate;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -67,7 +67,7 @@ public class GithubOperations {
 
 	private final RestTemplate restTemplate;
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
 	private static final String DOCUMENTATION_COMMIT_MESSAGE = "Update documentation";
 
@@ -87,14 +87,14 @@ public class GithubOperations {
 
 	private final RetryTemplate retryTemplate;
 
-	public GithubOperations(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, String token,
-			String branch, RetryTemplate retryTemplate) {
+	public GithubOperations(RestTemplateBuilder restTemplateBuilder, JsonMapper jsonMapper, String token, String branch,
+			RetryTemplate retryTemplate) {
 		this.retryTemplate = retryTemplate;
 		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
 		this.branch = branch;
-		this.objectMapper = objectMapper;
+		this.jsonMapper = jsonMapper;
 		this.prettyPrinter = new DefaultPrettyPrinter();
 		this.prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
 	}
@@ -107,7 +107,7 @@ public class GithubOperations {
 
 	public void addProjectDocumentation(String projectSlug, ProjectDocumentation documentation) {
 		try {
-			this.retryTemplate.execute((context) -> {
+			this.retryTemplate.invoke(() -> {
 				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
 				List<ProjectDocumentation> documentations = new ArrayList<>();
 				String sha = null;
@@ -119,7 +119,6 @@ public class GithubOperations {
 				documentations.add(documentation);
 				List<ProjectDocumentation> updatedDocumentation = computeCurrentRelease(documentations);
 				updateProjectDocumentation(projectSlug, updatedDocumentation, sha);
-				return null;
 			});
 		}
 		catch (HttpClientErrorException ex) {
@@ -134,19 +133,19 @@ public class GithubOperations {
 
 	private <T> T readValue(String contents, TypeReference<T> type) {
 		try {
-			return this.objectMapper.readValue(contents, type);
+			return this.jsonMapper.readValue(contents, type);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
 	private void updateProjectDocumentation(String projectSlug, List<ProjectDocumentation> documentations, String sha) {
 		try {
-			byte[] content = this.objectMapper.writer(this.prettyPrinter).writeValueAsBytes(documentations);
+			byte[] content = this.jsonMapper.writer().with(this.prettyPrinter).writeValueAsBytes(documentations);
 			updateContents(content, sha, projectSlug, "documentation.json", DOCUMENTATION_COMMIT_MESSAGE);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -215,7 +214,7 @@ public class GithubOperations {
 
 	public void deleteDocumentation(String projectSlug, String version) {
 		try {
-			this.retryTemplate.execute((context) -> {
+			this.retryTemplate.invoke(() -> {
 				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
 				NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
 				String content = getFileContents(response);
@@ -226,13 +225,11 @@ public class GithubOperations {
 				documentation.removeIf((y) -> y.getVersion().equals(version));
 				List<ProjectDocumentation> documentations1 = computeCurrentRelease(documentation);
 				updateProjectDocumentation(projectSlug, documentations1, sha);
-				return null;
 			});
 		}
 		catch (HttpClientErrorException ex) {
 			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, "documentation.json");
 		}
-
 	}
 
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {

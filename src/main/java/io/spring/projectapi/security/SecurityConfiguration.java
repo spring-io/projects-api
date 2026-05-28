@@ -20,7 +20,7 @@ import io.spring.projectapi.ApplicationProperties;
 import io.spring.projectapi.ApplicationProperties.Github;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -46,7 +46,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain configure(HttpSecurity http, RestTemplateBuilder restTemplateBuilder,
 			ApplicationProperties properties) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
-		http.requiresChannel((channel) -> channel.requestMatchers(this::hasXForwardedPortHeader).requiresSecure());
+		http.redirectToHttps((configurer) -> configurer.requestMatchers(this::hasXForwardedPortHeader));
 		http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers(HttpMethod.GET, "/**").permitAll();
 			requests.requestMatchers("/refresh_cache").permitAll();

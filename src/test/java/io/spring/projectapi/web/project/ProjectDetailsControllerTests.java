@@ -19,7 +19,6 @@ package io.spring.projectapi.web.project;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.Project.Status;
@@ -27,6 +26,7 @@ import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -64,7 +64,7 @@ class ProjectDetailsControllerTests {
 	private GithubOperations githubOperations;
 
 	@Autowired
-	private ObjectMapper objectMapper;
+	private JsonMapper jsonMapper;
 
 	@Test
 	@WithMockUser(roles = "ADMIN")

@@ -24,15 +24,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.ContentSource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +61,7 @@ public class GithubQueries {
 
 	private final RestTemplate enterpriseRestTemplate;
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
 	private static final String DEFAULT_SUPPORT_POLICY = "SPRING_BOOT";
 
@@ -77,13 +77,13 @@ public class GithubQueries {
 
 	private final String branch;
 
-	public GithubQueries(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper, String token,
-			String branch, String enterpriseToken, String enterpriseBranch) {
+	public GithubQueries(RestTemplateBuilder restTemplateBuilder, JsonMapper jsonMapper, String token, String branch,
+			String enterpriseToken, String enterpriseBranch) {
 		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
 		this.branch = branch;
-		this.objectMapper = objectMapper;
+		this.jsonMapper = jsonMapper;
 		this.enterpriseBranch = enterpriseBranch;
 		this.enterpriseRestTemplate = restTemplateBuilder.rootUri(GITHUB_ENTERPRISE_URI)
 			.defaultHeader("Authorization", "Bearer " + enterpriseToken)
@@ -249,7 +249,7 @@ public class GithubQueries {
 			String contents = getFileContent(response);
 			Map<String, String> frontMatter = MarkdownUtils.getFrontMatter(contents);
 			frontMatter.put("slug", projectSlug);
-			return this.objectMapper.convertValue(frontMatter, Project.class);
+			return this.jsonMapper.convertValue(frontMatter, Project.class);
 		}
 		catch (Exception ex) {
 			logger.debug("Could not get project for '%s' due to '%s'".formatted(projectSlug, ex.getMessage()));
@@ -287,7 +287,7 @@ public class GithubQueries {
 		try {
 			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "generations.json");
 			String contents = getFileContent(response);
-			return this.objectMapper.readValue(contents, ProjectGeneration.class);
+			return this.jsonMapper.readValue(contents, ProjectGeneration.class);
 		}
 		catch (Exception ex) {
 			logger
@@ -311,12 +311,12 @@ public class GithubQueries {
 		return DEFAULT_SUPPORT_POLICY;
 	}
 
-	private List<ProjectDocumentation> convertToProjectDocumentation(String content) throws JsonProcessingException {
+	private List<ProjectDocumentation> convertToProjectDocumentation(String content) throws JacksonException {
 		return readValue(content, DOCUMENTATION_LIST);
 	}
 
-	private <T> T readValue(String contents, TypeReference<T> type) throws JsonProcessingException {
-		return this.objectMapper.readValue(contents, type);
+	private <T> T readValue(String contents, TypeReference<T> type) throws JacksonException {
+		return this.jsonMapper.readValue(contents, type);
 	}
 
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {

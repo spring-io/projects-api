@@ -19,13 +19,13 @@ package io.spring.projectapi.github;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.restclient.test.autoconfigure.AutoConfigureRestClient;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.json.JacksonTester;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,11 +37,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Phillip Webb
  */
 @JsonTest
-@AutoConfigureWebClient
+@AutoConfigureRestClient
 class ProjectDocumentationJsonTests {
 
 	@Autowired
-	private ObjectMapper objectMapper;
+	private JsonMapper jsonMapper;
 
 	@Autowired
 	private JacksonTester<ProjectDocumentation> json;
@@ -50,7 +50,7 @@ class ProjectDocumentationJsonTests {
 	void convertValueToMapReturnsMap() {
 		ProjectDocumentation documentation = new ProjectDocumentation("ver", false, "api", "ref", Status.PRERELEASE,
 				true);
-		Map<?, ?> converted = this.objectMapper.convertValue(documentation, Map.class);
+		Map<?, ?> converted = this.jsonMapper.convertValue(documentation, Map.class);
 		Map<String, Object> expected = new HashMap<>();
 		expected.put("version", documentation.getVersion());
 		expected.put("api", documentation.getApi());
