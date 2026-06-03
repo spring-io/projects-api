@@ -26,7 +26,6 @@ import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import tools.jackson.databind.json.JsonMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -62,9 +61,6 @@ class ProjectDetailsControllerTests {
 
 	@MockitoBean
 	private GithubOperations githubOperations;
-
-	@Autowired
-	private JsonMapper jsonMapper;
 
 	@Test
 	@WithMockUser(roles = "ADMIN")

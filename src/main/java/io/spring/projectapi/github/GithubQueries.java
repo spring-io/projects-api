@@ -28,7 +28,6 @@ import io.spring.projectapi.ContentSource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -311,11 +310,11 @@ public class GithubQueries {
 		return DEFAULT_SUPPORT_POLICY;
 	}
 
-	private List<ProjectDocumentation> convertToProjectDocumentation(String content) throws JacksonException {
+	private List<ProjectDocumentation> convertToProjectDocumentation(String content) {
 		return readValue(content, DOCUMENTATION_LIST);
 	}
 
-	private <T> T readValue(String contents, TypeReference<T> type) throws JacksonException {
+	private <T> T readValue(String contents, TypeReference<T> type) {
 		return this.jsonMapper.readValue(contents, type);
 	}
 

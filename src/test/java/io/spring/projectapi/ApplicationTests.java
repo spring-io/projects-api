@@ -33,19 +33,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ApplicationTests {
 
-	@Autowired
-	private RetryTemplate retryTemplate;
-
 	@MockitoBean
 	private ProjectRepository projectRepository;
 
 	@Test
-	void retryTemplate() {
-		RetryPolicy retryPolicy = this.retryTemplate.getRetryPolicy();
-		ExponentialBackOff backOff = (ExponentialBackOff) retryPolicy.getBackOff();
-		assertThat(backOff.getInitialInterval()).isEqualTo(100L);
-		assertThat(backOff.getMultiplier()).isEqualTo(2.0);
-		assertThat(backOff.getMaxInterval()).isEqualTo(10000L);
+	void retryTemplate(@Autowired RetryTemplate retryTemplate) {
+		RetryPolicy retryPolicy = retryTemplate.getRetryPolicy();
+		assertThat(retryPolicy.getBackOff()).isInstanceOfSatisfying(ExponentialBackOff.class, (backOff) -> {
+			assertThat(backOff.getInitialInterval()).isEqualTo(100L);
+			assertThat(backOff.getMultiplier()).isEqualTo(2.0);
+			assertThat(backOff.getMaxInterval()).isEqualTo(10000L);
+		});
 	}
 
 }
