@@ -1,7 +1,7 @@
 plugins {
     id "java"
 	id "checkstyle"
-	id "org.springframework.boot" version "3.5.9"
+	id "org.springframework.boot" version "4.0.6"
     id "io.spring.dependency-management" version "1.1.7"
     id "io.spring.javaformat" version "$javaformatVersion"
     id "org.asciidoctor.jvm.convert" version "4.0.2"
@@ -32,26 +32,32 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-restclient")
+	implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springframework.retry:spring-retry:2.0.12")
-
 	implementation("com.azure.spring:spring-cloud-azure-starter-keyvault-secrets")
-	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
-	implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
-	implementation("org.apache.maven:maven-artifact:3.9.11")
+	implementation("jakarta.xml.bind:jakarta.xml.bind-api")
+	implementation("org.apache.maven:maven-artifact:3.9.16")
 
-	testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("com.squareup.okhttp3:mockwebserver")
+	testImplementation("org.springframework.boot:spring-boot-starter-cache-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-hateoas-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-restdocs")
+	testImplementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:4.5.0"
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:7.0.0"
+		mavenBom "com.squareup.okhttp3:okhttp-bom:4.12.0"
 	}
 }
 

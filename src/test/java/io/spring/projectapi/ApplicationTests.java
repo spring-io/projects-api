@@ -20,10 +20,10 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.support.RetryTemplate;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.RetryTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.backoff.ExponentialBackOff;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,19 +33,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ApplicationTests {
 
-	@Autowired
-	private RetryTemplate retryTemplate;
-
 	@MockitoBean
 	private ProjectRepository projectRepository;
 
 	@Test
-	void retryTemplate() {
-		ExponentialBackOffPolicy backOffPolicy = (ExponentialBackOffPolicy) ReflectionTestUtils
-			.getField(this.retryTemplate, "backOffPolicy");
-		assertThat(ReflectionTestUtils.getField(backOffPolicy, "initialInterval")).isEqualTo(100L);
-		assertThat(ReflectionTestUtils.getField(backOffPolicy, "multiplier")).isEqualTo(2.0);
-		assertThat(ReflectionTestUtils.getField(backOffPolicy, "maxInterval")).isEqualTo(10000L);
+	void retryTemplate(@Autowired RetryTemplate retryTemplate) {
+		RetryPolicy retryPolicy = retryTemplate.getRetryPolicy();
+		assertThat(retryPolicy.getBackOff()).isInstanceOfSatisfying(ExponentialBackOff.class, (backOff) -> {
+			assertThat(backOff.getInitialInterval()).isEqualTo(100L);
+			assertThat(backOff.getMultiplier()).isEqualTo(2.0);
+			assertThat(backOff.getMaxInterval()).isEqualTo(10000L);
+		});
 	}
 
 }

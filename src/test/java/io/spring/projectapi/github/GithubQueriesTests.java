@@ -23,19 +23,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.github.Project.Status;
 import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
-import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.restclient.test.MockServerRestTemplateCustomizer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -65,10 +62,8 @@ class GithubQueriesTests {
 	@BeforeEach
 	void setup() {
 		MockServerRestTemplateCustomizer customizer = new MockServerRestTemplateCustomizer();
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
-		objectMapper.registerModule(new JavaTimeModule());
-		this.queries = new GithubQueries(new RestTemplateBuilder(customizer), objectMapper, "test-token", "test",
+		JsonMapper jsonMapper = new JsonMapper();
+		this.queries = new GithubQueries(new RestTemplateBuilder(customizer), jsonMapper, "test-token", "test",
 				"test-enterprise-token", "main");
 		RestTemplate ossRestTemplate = (RestTemplate) ReflectionTestUtils.getField(this.queries, "restTemplate");
 		RestTemplate enterpriseRestTemplate = (RestTemplate) ReflectionTestUtils.getField(this.queries,

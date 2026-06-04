@@ -20,22 +20,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 
-import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.restclient.test.MockServerRestTemplateCustomizer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.RetryTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -67,22 +65,20 @@ class GithubOperationsTests {
 	@BeforeEach
 	void setup() {
 		this.customizer = new MockServerRestTemplateCustomizer();
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
-		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-		objectMapper.registerModule(new JavaTimeModule());
+		JsonMapper jsonMapper = JsonMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
 		this.retryTemplate = getRetryTemplate();
-		this.operations = new GithubOperations(new RestTemplateBuilder(this.customizer), objectMapper, "test-token",
+		this.operations = new GithubOperations(new RestTemplateBuilder(this.customizer), jsonMapper, "test-token",
 				"test", this.retryTemplate);
 	}
 
 	private static RetryTemplate getRetryTemplate() {
-		return RetryTemplate.builder().maxAttempts(2).retryOn((throwable) -> {
+		RetryPolicy retryPolicy = RetryPolicy.builder().maxRetries(1).predicate((throwable) -> {
 			if (throwable instanceof HttpClientErrorException ex) {
 				return ex.getStatusCode().value() == 409;
 			}
 			return false;
 		}).build();
+		return new RetryTemplate(retryPolicy);
 	}
 
 	@Test

@@ -25,8 +25,8 @@ import io.spring.projectapi.security.SecurityConfiguration;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.restclient.test.autoconfigure.AutoConfigureRestClient;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -44,7 +44,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
  * Tests for {@link CacheController}.
  */
 @WebMvcTest(value = CacheController.class, properties = "projects.github.webhooksecret=token")
-@AutoConfigureWebClient
+@AutoConfigureRestClient
 @Import(SecurityConfiguration.class)
 class CacheControllerTests {
 

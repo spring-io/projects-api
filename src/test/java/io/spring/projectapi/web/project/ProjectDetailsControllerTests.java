@@ -19,7 +19,6 @@ package io.spring.projectapi.web.project;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
 import io.spring.projectapi.github.Project.Status;
@@ -62,9 +61,6 @@ class ProjectDetailsControllerTests {
 
 	@MockitoBean
 	private GithubOperations githubOperations;
-
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
