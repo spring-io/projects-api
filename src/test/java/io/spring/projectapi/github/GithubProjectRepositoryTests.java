@@ -63,7 +63,8 @@ class GithubProjectRepositoryTests {
 	@Test
 	void updateRefreshesCache() {
 		List<String> changes = List.of("project/spring-boot-updated/index.md",
-				"project/spring-boot-updated/documentation.json", "project/spring-boot-updated/generations.json");
+				"project/spring-boot-updated/documentation.json",
+				"generated-data/project/spring-boot-updated/generations.json");
 		given(this.githubQueries.updateData(any(), any(), any())).willReturn(getData("spring-boot-updated"));
 		this.projectRepository.update(changes, ContentSource.OSS);
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
