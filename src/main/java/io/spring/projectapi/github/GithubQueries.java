@@ -66,7 +66,7 @@ public class GithubQueries {
 
 	private final String enterpriseBranch;
 
-	private static final Pattern PROJECT_FILE = Pattern.compile("project\\/(.*)\\/.*");
+	private static final Pattern PROJECT_FILE = Pattern.compile("(?:generated-data\\/)?project\\/(.*)\\/.*");
 
 	private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<>() {
 	};
@@ -284,7 +284,7 @@ public class GithubQueries {
 
 	private ProjectGeneration getProjectSupports(String projectSlug) {
 		try {
-			ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "generations.json");
+			ResponseEntity<Map<String, Object>> response = getGenerationsFile(projectSlug);
 			String contents = getFileContent(response);
 			return this.jsonMapper.readValue(contents, ProjectGeneration.class);
 		}
@@ -321,6 +321,13 @@ public class GithubQueries {
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {
 		RequestEntity<Void> request = RequestEntity
 			.get("/project/{projectSlug}/{fileName}?ref=" + this.branch, projectSlug, fileName)
+			.build();
+		return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
+	}
+
+	private ResponseEntity<Map<String, Object>> getGenerationsFile(String projectSlug) {
+		RequestEntity<Void> request = RequestEntity
+			.get("/generated-data/project/{projectSlug}/generations.json?ref=" + this.branch, projectSlug)
 			.build();
 		return this.restTemplate.exchange(request, STRING_OBJECT_MAP);
 	}

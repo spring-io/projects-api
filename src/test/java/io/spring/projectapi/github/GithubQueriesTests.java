@@ -77,7 +77,7 @@ class GithubQueriesTests {
 		setupProjects();
 		setupProjectFiles("index\\.md", "project-index-response.json");
 		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		setupProjectFiles("generations\\.json", "project-generations-response.json");
+		setupGenerationsFiles("project-generations-response.json");
 		setupEnterpriseDocumentationFile();
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.project().size()).isEqualTo(3);
@@ -102,7 +102,7 @@ class GithubQueriesTests {
 			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
 		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
 		setupEnterpriseDocumentationFile();
-		setupProjectFiles("generations\\.json", "project-generations-response.json");
+		setupGenerationsFiles("project-generations-response.json");
 		this.ossServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/index.md?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
@@ -129,7 +129,7 @@ class GithubQueriesTests {
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-documentation-response.json"), MediaType.APPLICATION_JSON));
 		setupEnterpriseDocumentationFile();
-		setupProjectFiles("generations\\.json", "project-generations-response.json");
+		setupGenerationsFiles("project-generations-response.json");
 		this.ossServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/documentation.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
@@ -149,7 +149,7 @@ class GithubQueriesTests {
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(
 					withSuccess(from("enterprise-project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		setupProjectFiles("generations\\.json", "project-generations-response.json");
+		setupGenerationsFiles("project-generations-response.json");
 		this.enterpriseServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/documentation.json?ref=main"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
@@ -165,11 +165,12 @@ class GithubQueriesTests {
 		setupEnterpriseDocumentationFile();
 		this.ossServer
 			.expect(ExpectedCount.max(2),
-					requestTo(
-							MatchesPattern.matchesPattern("\\/project\\/spring-w.+\\/generations\\.json\\?ref\\=test")))
+					requestTo(MatchesPattern
+						.matchesPattern("\\/generated-data\\/project\\/spring-w.+\\/generations\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-generations-response.json"), MediaType.APPLICATION_JSON));
-		this.ossServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/generations.json?ref=test"))
+		this.ossServer
+			.expect(ExpectedCount.once(), requestTo("/generated-data/project/spring-xd/generations.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
 		ProjectData projectData = this.queries.getData();
@@ -196,6 +197,23 @@ class GithubQueriesTests {
 		assertThat(projectData.project().size()).isEqualTo(3);
 		assertThat(projectData.project().get("spring-boot").getTitle()).isEqualTo("Spring AMQP");
 		assertThat(projectData.documentation().get("spring-framework").size()).isEqualTo(9);
+	}
+
+	@Test
+	void updateDataUpdatesGenerationsFromGeneratedData() throws Exception {
+		ProjectData data = getProjectData();
+		List<String> changes = List.of("generated-data/project/spring-boot/generations.json");
+		this.ossServer.expect(requestTo("/project/spring-boot?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess());
+		this.ossServer.expect(requestTo("/generated-data/project/spring-boot/generations.json?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from("project-generations-response.json"), MediaType.APPLICATION_JSON));
+		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.OSS);
+		assertThat(projectData.generation().get("spring-boot").getGenerations()).hasSize(16);
+		assertThat(projectData.generation()).containsOnlyKeys("spring-boot");
+		assertThat(projectData.documentation().get("spring-boot")).hasSize(2);
+		this.ossServer.verify();
 	}
 
 	@Test
@@ -286,6 +304,15 @@ class GithubQueriesTests {
 		this.ossServer
 			.expect(ExpectedCount.manyTimes(),
 					requestTo(MatchesPattern.matchesPattern("\\/project\\/.+\\/" + fileName + "\\?ref\\=test")))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from(responseFileName), MediaType.APPLICATION_JSON));
+	}
+
+	private void setupGenerationsFiles(String responseFileName) throws IOException {
+		this.ossServer
+			.expect(ExpectedCount.manyTimes(),
+					requestTo(MatchesPattern
+						.matchesPattern("\\/generated-data\\/project\\/.+\\/generations\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from(responseFileName), MediaType.APPLICATION_JSON));
 	}
