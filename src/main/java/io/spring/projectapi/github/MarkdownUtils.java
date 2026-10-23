@@ -25,7 +25,7 @@ import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Markdown parser to get frontmatter and body.
@@ -70,8 +70,7 @@ final class MarkdownUtils {
 		return resultMap;
 	}
 
-	@Nullable
-	private static Node getFrontMatterNode(String contents) {
+	private static @Nullable Node getFrontMatterNode(String contents) {
 		Node document = PARSER.parse(contents);
 		Node frontMatter = document.getFirstChild();
 		if (!(frontMatter instanceof YamlFrontMatterBlock)) {

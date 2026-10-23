@@ -1,10 +1,10 @@
 plugins {
     id "java"
 	id "checkstyle"
-	id "org.springframework.boot" version "4.0.6"
+	id "org.springframework.boot" version "4.1.2"
     id "io.spring.dependency-management" version "1.1.7"
     id "io.spring.javaformat" version "$javaformatVersion"
-    id "org.asciidoctor.jvm.convert" version "4.0.2"
+    id "org.asciidoctor.jvm.convert" version "4.0.5"
 }
 
 group = "io.spring.project-api"
@@ -24,7 +24,7 @@ repositories {
 }
 
 checkstyle {
-	toolVersion = "12.1.2"
+	toolVersion = "12.3.1"
 }
 
 dependencies {
@@ -39,9 +39,8 @@ dependencies {
 	implementation("com.azure.spring:spring-cloud-azure-starter-keyvault-secrets")
 	implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
 	implementation("jakarta.xml.bind:jakarta.xml.bind-api")
-	implementation("org.apache.maven:maven-artifact:3.9.16")
+	implementation("org.apache.maven:maven-artifact:3.10.0")
 
-	testImplementation("com.squareup.okhttp3:mockwebserver")
 	testImplementation("org.springframework.boot:spring-boot-starter-cache-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-hateoas-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
@@ -56,8 +55,7 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:7.0.0"
-		mavenBom "com.squareup.okhttp3:okhttp-bom:4.12.0"
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:7.4.0"
 	}
 }
 

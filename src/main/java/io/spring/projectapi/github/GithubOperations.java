@@ -90,7 +90,7 @@ public class GithubOperations {
 	public GithubOperations(RestTemplateBuilder restTemplateBuilder, JsonMapper jsonMapper, String token, String branch,
 			RetryTemplate retryTemplate) {
 		this.retryTemplate = retryTemplate;
-		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
+		this.restTemplate = restTemplateBuilder.baseUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
 		this.branch = branch;

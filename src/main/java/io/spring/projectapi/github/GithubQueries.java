@@ -78,13 +78,13 @@ public class GithubQueries {
 
 	public GithubQueries(RestTemplateBuilder restTemplateBuilder, JsonMapper jsonMapper, String token, String branch,
 			String enterpriseToken, String enterpriseBranch) {
-		this.restTemplate = restTemplateBuilder.rootUri(GITHUB_URI)
+		this.restTemplate = restTemplateBuilder.baseUri(GITHUB_URI)
 			.defaultHeader("Authorization", "Bearer " + token)
 			.build();
 		this.branch = branch;
 		this.jsonMapper = jsonMapper;
 		this.enterpriseBranch = enterpriseBranch;
-		this.enterpriseRestTemplate = restTemplateBuilder.rootUri(GITHUB_ENTERPRISE_URI)
+		this.enterpriseRestTemplate = restTemplateBuilder.baseUri(GITHUB_ENTERPRISE_URI)
 			.defaultHeader("Authorization", "Bearer " + enterpriseToken)
 			.build();
 	}
