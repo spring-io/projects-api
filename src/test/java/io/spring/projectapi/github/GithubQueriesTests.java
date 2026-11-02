@@ -112,6 +112,46 @@ class GithubQueriesTests {
 	}
 
 	@Test
+	void getDataIgnoresNonDirectoryEntries() throws Exception {
+		setupProjectListing("""
+				[{"name": "README.md", "type": "file"},
+				 {"name": "spring-webflow", "type": "dir"},
+				 {"name": "FAQ.md", "type": "file"}]
+				""");
+		this.ossServer.expect(requestTo("/project/spring-webflow/index.md?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
+		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
+		setupGenerationsFiles("project-generations-response.json");
+		setupEnterpriseDocumentationFile();
+		ProjectData projectData = this.queries.getData();
+		assertThat(projectData.project()).containsOnlyKeys("spring-webflow");
+		assertThat(projectData.documentation()).containsOnlyKeys("spring-webflow");
+	}
+
+	@Test
+	void getDataSkipsProjectWithoutIndexAndContinues() throws Exception {
+		setupProjectListing("""
+				[{"name": "spring-xd", "type": "dir"},
+				 {"name": "spring-webflow", "type": "dir"}]
+				""");
+		this.ossServer.expect(requestTo("/project/spring-xd/index.md?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withResourceNotFound());
+		this.ossServer.expect(requestTo("/project/spring-webflow/index.md?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
+		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
+		setupGenerationsFiles("project-generations-response.json");
+		setupEnterpriseDocumentationFile();
+		ProjectData projectData = this.queries.getData();
+		assertThat(projectData.project()).containsOnlyKeys("spring-webflow");
+		assertThat(projectData.documentation()).containsOnlyKeys("spring-webflow");
+		assertThat(projectData.generation()).containsOnlyKeys("spring-webflow");
+		assertThat(projectData.supportPolicy()).containsOnlyKeys("spring-webflow");
+	}
+
+	@Test
 	void projectWhenNoProjectsReturnsEmpty() {
 		setupNoProjectDirectory();
 		ProjectData projectData = this.queries.getData();
@@ -324,6 +364,12 @@ class GithubQueriesTests {
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(
 					withSuccess(from("enterprise-project-documentation-response.json"), MediaType.APPLICATION_JSON));
+	}
+
+	private void setupProjectListing(String json) {
+		this.ossServer.expect(requestTo("/project?ref=test"))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
 	}
 
 	private void setupProjects() throws Exception {

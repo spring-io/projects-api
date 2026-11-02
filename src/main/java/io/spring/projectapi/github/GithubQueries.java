@@ -227,8 +227,19 @@ public class GithubQueries {
 			Map<String, List<ProjectDocumentation>> documentation,
 			Map<String, List<ProjectDocumentation>> enterpriseDocumentation, Map<String, ProjectGeneration> support,
 			Map<String, String> supportPolicy) {
+		if (!"dir".equals(project.get("type"))) {
+			return;
+		}
 		String projectSlug = (String) project.get("name");
-		ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "index.md");
+		ResponseEntity<Map<String, Object>> response;
+		try {
+			response = getFile(projectSlug, "index.md");
+		}
+		catch (Exception ex) {
+			logger.debug("Skipping project '%s' as index.md could not be read due to '%s'".formatted(projectSlug,
+					ex.getMessage()));
+			return;
+		}
 		Project fetchedProject = getProject(response, projectSlug);
 		if (fetchedProject != null) {
 			projects.put(projectSlug, fetchedProject);
