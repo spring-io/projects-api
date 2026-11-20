@@ -16,39 +16,36 @@
 
 package io.spring.projectapi.github;
 
-import java.util.List;
-
 /**
- * {@link GithubException} thrown when a project documentation with the specified version
- * does not exist.
+ * {@link GithubException} thrown when a project generation with the specified name does
+ * not exist.
  *
  * @author Madhura Bhave
  */
-public final class NoSuchGithubProjectDocumentationFoundException extends GithubException {
+public final class NoSuchGithubGenerationFoundException extends GithubException {
 
 	private final String projectSlug;
 
-	private final String version;
+	private final String generation;
 
-	NoSuchGithubProjectDocumentationFoundException(String projectSlug, String version) {
-		super("No github documentation found for slug '%s' and version '%s'".formatted(projectSlug, version));
+	NoSuchGithubGenerationFoundException(String projectSlug, String generation) {
+		super("No generation '%s' found for project '%s'".formatted(generation, projectSlug));
 		this.projectSlug = projectSlug;
-		this.version = version;
+		this.generation = generation;
 	}
 
-	static void throwIfHasNotPresent(List<ProjectDocumentation> documentations, String projectSlug, String version) {
-		documentations.stream()
-			.filter((m) -> m.getVersion().equals(version))
-			.findFirst()
-			.orElseThrow((() -> new NoSuchGithubProjectDocumentationFoundException(projectSlug, version)));
+	static void throwIfNull(Object generationNode, String projectSlug, String generation) {
+		if (generationNode == null) {
+			throw new NoSuchGithubGenerationFoundException(projectSlug, generation);
+		}
 	}
 
 	public String getProjectSlug() {
 		return this.projectSlug;
 	}
 
-	public String getVersion() {
-		return this.version;
+	public String getGeneration() {
+		return this.generation;
 	}
 
 }

@@ -18,6 +18,8 @@ package io.spring.projectapi.github;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Java representation of the {@code project documentation} type as defined in
@@ -30,8 +32,6 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	private final String version;
 
-	private final boolean antora;
-
 	private final String api;
 
 	private final String ref;
@@ -40,15 +40,25 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 
 	private final boolean current;
 
+	private final boolean enterprise;
+
+	public ProjectDocumentation(String version, String api, String ref, Status status, boolean current) {
+		this(version, api, ref, status, current, false);
+	}
+
+	public ProjectDocumentation(String version, String api, String ref, Status status, boolean current,
+			boolean enterprise) {
+		this(version, api, ref, status, current, Boolean.valueOf(enterprise));
+	}
+
 	@JsonCreator(mode = Mode.PROPERTIES)
-	public ProjectDocumentation(String version, boolean antora, String api, String ref, Status status,
-			boolean current) {
+	ProjectDocumentation(String version, String api, String ref, Status status, boolean current, Boolean enterprise) {
 		this.version = version;
-		this.antora = antora;
 		this.api = api;
 		this.ref = ref;
 		this.status = status;
 		this.current = current;
+		this.enterprise = Boolean.TRUE.equals(enterprise);
 	}
 
 	public String getVersion() {
@@ -71,6 +81,11 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 		return this.current;
 	}
 
+	@JsonInclude(Include.NON_DEFAULT)
+	public boolean isEnterprise() {
+		return this.enterprise;
+	}
+
 	@Override
 	public int compareTo(ProjectDocumentation other) {
 		if (other == null) {
@@ -78,10 +93,6 @@ public class ProjectDocumentation implements Comparable<ProjectDocumentation> {
 		}
 		// invert Version comparator, to get most recent version first
 		return -this.version.compareTo(other.version);
-	}
-
-	public boolean isAntora() {
-		return this.antora;
 	}
 
 	/**

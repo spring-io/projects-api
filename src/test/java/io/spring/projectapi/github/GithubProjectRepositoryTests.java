@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.github.Project.Status;
 import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,12 +64,12 @@ class GithubProjectRepositoryTests {
 		List<String> changes = List.of("project/spring-boot-updated/index.md",
 				"project/spring-boot-updated/documentation.json",
 				"generated-data/project/spring-boot-updated/generations.json");
-		given(this.githubQueries.updateData(any(), any(), any())).willReturn(getData("spring-boot-updated"));
-		this.projectRepository.update(changes, ContentSource.OSS);
+		given(this.githubQueries.updateData(any(), any())).willReturn(getData("spring-boot-updated"));
+		this.projectRepository.update(changes);
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
 			.isThrownBy(() -> this.projectRepository.getProject("spring-boot"));
 		validateCachedValues("spring-boot-updated");
-		verify(this.githubQueries).updateData(this.data, changes, ContentSource.OSS);
+		verify(this.githubQueries).updateData(this.data, changes);
 	}
 
 	@Test
@@ -87,16 +86,8 @@ class GithubProjectRepositoryTests {
 
 	@Test
 	void getProjectDocumentationReturnsProjectDocumentation() {
-		List<ProjectDocumentation> documentation = this.projectRepository.getProjectDocumentations("spring-boot",
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentation = this.projectRepository.getProjectDocumentations("spring-boot");
 		assertThat(documentation.size()).isEqualTo(2);
-	}
-
-	@Test
-	void getEnterpriseProjectDocumentationReturnsEnterpriseProjectDocumentation() {
-		List<ProjectDocumentation> documentation = this.projectRepository.getProjectDocumentations("spring-boot",
-				ContentSource.ENTERPRISE);
-		assertThat(documentation.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -120,7 +111,7 @@ class GithubProjectRepositoryTests {
 	@Test
 	void getProjectDocumentationForNonExistentProjectThrowsException() {
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.projectRepository.getProjectDocumentations("spring-foo", ContentSource.OSS));
+			.isThrownBy(() -> this.projectRepository.getProjectDocumentations("spring-foo"));
 	}
 
 	@Test
@@ -142,16 +133,14 @@ class GithubProjectRepositoryTests {
 		assertThat(updated.getSlug()).isEqualTo(projectSlug);
 		ProjectGeneration projectGeneration = this.projectRepository.getProjectGenerations(projectSlug);
 		assertThat(projectGeneration.getGenerations()).size().isEqualTo(2);
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(projectSlug,
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(projectSlug);
 		assertThat(documentations).size().isEqualTo(2);
 		String policy = this.projectRepository.getProjectSupportPolicy(projectSlug);
 		assertThat(policy).isEqualTo("UPSTREAM");
 	}
 
 	private ProjectData getData(String project) {
-		return new ProjectData(getProjects(project), getProjectDocumentation(project),
-				getEnterpriseProjectDocumentation(project), getProjectSupports(project),
+		return new ProjectData(getProjects(project), getProjectDocumentation(project), getProjectSupports(project),
 				getProjectSupportPolicy(project));
 	}
 
@@ -176,17 +165,11 @@ class GithubProjectRepositoryTests {
 	}
 
 	private Map<String, List<ProjectDocumentation>> getProjectDocumentation(String project) {
-		ProjectDocumentation documentation1 = new ProjectDocumentation("1.0", false, "api", "ref",
+		ProjectDocumentation documentation1 = new ProjectDocumentation("1.0", "api", "ref",
 				ProjectDocumentation.Status.PRERELEASE, true);
-		ProjectDocumentation documentation2 = new ProjectDocumentation("2.0", false, "api", "ref",
+		ProjectDocumentation documentation2 = new ProjectDocumentation("2.0", "api", "ref",
 				ProjectDocumentation.Status.PRERELEASE, true);
 		return Map.of(project, List.of(documentation1, documentation2));
-	}
-
-	private Map<String, List<ProjectDocumentation>> getEnterpriseProjectDocumentation(String project) {
-		ProjectDocumentation documentation = new ProjectDocumentation("1.5", false, "api", "ref",
-				ProjectDocumentation.Status.GENERAL_AVAILABILITY, true);
-		return Map.of(project, List.of(documentation));
 	}
 
 	private Map<String, String> getProjectSupportPolicy(String project) {

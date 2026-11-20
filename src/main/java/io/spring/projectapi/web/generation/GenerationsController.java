@@ -18,21 +18,26 @@ package io.spring.projectapi.web.generation;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
-import io.spring.projectapi.github.ProjectDocumentation;
+import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectGeneration;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
 import io.spring.projectapi.web.project.ProjectsController;
+import io.spring.projectapi.web.release.Release;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.ExposesResourceFor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,8 +57,11 @@ public class GenerationsController {
 
 	private final ProjectRepository projectRepository;
 
-	public GenerationsController(ProjectRepository projectRepository) {
+	private final GithubOperations githubOperations;
+
+	public GenerationsController(ProjectRepository projectRepository, GithubOperations githubOperations) {
 		this.projectRepository = projectRepository;
+		this.githubOperations = githubOperations;
 	}
 
 	@GetMapping
@@ -84,17 +92,33 @@ public class GenerationsController {
 		return asModel(id, generation);
 	}
 
+	@PutMapping(path = "/{name}/latest-versions/oss", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateLatestOssVersion(@PathVariable String id, @PathVariable String name,
+			@RequestBody LatestVersion latestVersion) {
+		String version = latestVersion.getVersion();
+		String problem = (version != null) ? GenerationVersions.validateLatestVersion(name, version)
+				: "'version' must not be blank";
+		if (problem != null) {
+			return ResponseEntity.badRequest().body(problem);
+		}
+		this.githubOperations.updateLatestOssVersion(id, name, version);
+		return ResponseEntity.noContent().build();
+	}
+
 	private Generation asGeneration(ProjectGeneration.Generation generation, String id) {
-		String generationName = generation.getGeneration();
-		List<ProjectDocumentation> ossDocumentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.OSS);
-		List<ProjectDocumentation> enterpriseDocumentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.ENTERPRISE);
-		Generation.LatestPatch latestPatch = PatchVersionResolver.resolveLatestPatch(generationName, ossDocumentations,
-				enterpriseDocumentations);
+		Map<String, String> latestVersions = generation.getLatestVersions();
+		String oss = latestGaVersion(latestVersions.get("oss"));
+		String enterprise = latestGaVersion(latestVersions.get("enterprise"));
+		Generation.LatestPatch latestPatch = (oss != null || enterprise != null)
+				? new Generation.LatestPatch(oss, enterprise) : null;
 		return new Generation(generation.getGeneration(), generation.getInitialRelease(),
 				generation.getSupport().name().toLowerCase(Locale.ROOT), generation.getOssSupportEnd(),
 				generation.getEnterpriseSupportEnd(), generation.getLinkedGenerations(), latestPatch);
+	}
+
+	private String latestGaVersion(String version) {
+		return (version != null && Release.Status.GENERAL_AVAILABILITY.equals(Release.Status.fromVersion(version)))
+				? version : null;
 	}
 
 	private EntityModel<Generation> asModel(String id, Generation generation) {

@@ -22,11 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
+import io.spring.projectapi.github.GithubOperations;
+import io.spring.projectapi.github.NoSuchGithubGenerationFoundException;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
-import io.spring.projectapi.github.ProjectDocumentation;
-import io.spring.projectapi.github.ProjectDocumentation.Status;
 import io.spring.projectapi.github.ProjectGeneration;
 import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import io.spring.projectapi.test.WebApiTests;
@@ -34,24 +33,32 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.hypermedia.LinksSnippet;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.halLinks;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,14 +78,68 @@ class GenerationsControllerTests {
 	@MockitoBean
 	private ProjectRepository projectRepository;
 
+	@MockitoBean
+	private GithubOperations githubOperations;
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void updateLatestOssVersionUpdatesVersion() throws Exception {
+		this.mvc
+			.perform(put("/projects/spring-boot/generations/4.1.x/latest-versions/oss")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"4.1.3\"}"))
+			.andExpect(status().isNoContent())
+			.andDo(document("update-latest-oss-version", preprocessRequest(prettyPrint()),
+					requestFields(fieldWithPath("version").description("The new latest open source version"))));
+		verify(this.githubOperations).updateLatestOssVersion("spring-boot", "4.1.x", "4.1.3");
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void updateLatestOssVersionWhenVersionNotInGenerationReturnsBadRequest() throws Exception {
+		this.mvc
+			.perform(put("/projects/spring-boot/generations/4.1.x/latest-versions/oss")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"4.2.0\"}"))
+			.andExpect(status().isBadRequest());
+		verifyNoInteractions(this.githubOperations);
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void updateLatestOssVersionWhenSnapshotReturnsBadRequest() throws Exception {
+		this.mvc
+			.perform(put("/projects/spring-boot/generations/4.1.x/latest-versions/oss")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"4.1.3-SNAPSHOT\"}"))
+			.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void updateLatestOssVersionWhenGenerationDoesNotExistReturnsNotFound() throws Exception {
+		willThrow(NoSuchGithubGenerationFoundException.class).given(this.githubOperations)
+			.updateLatestOssVersion("spring-boot", "4.1.x", "4.1.3");
+		this.mvc
+			.perform(put("/projects/spring-boot/generations/4.1.x/latest-versions/oss")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"4.1.3\"}"))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void updateLatestOssVersionWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
+		this.mvc
+			.perform(put("/projects/spring-boot/generations/4.1.x/latest-versions/oss")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"4.1.3\"}"))
+			.andExpect(status().isUnauthorized());
+	}
+
 	@Test
 	void generationsReturnsGenerations() throws Exception {
 		given(this.projectRepository.getProjectGenerations("spring-boot")).willReturn(getProjectGenerations());
 		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getOssDocumentations());
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.ENTERPRISE))
-			.willReturn(getEnterpriseDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/generations").accept(MediaTypes.HAL_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -134,10 +195,6 @@ class GenerationsControllerTests {
 	void generationReturnsGeneration() throws Exception {
 		given(this.projectRepository.getProjectGenerations("spring-boot")).willReturn(getProjectGenerations());
 		given(this.projectRepository.getProjectSupportPolicy("spring-boot")).willReturn("SPRING_BOOT");
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getOssDocumentations());
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.ENTERPRISE))
-			.willReturn(getEnterpriseDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/generations/2.2.x").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name").value("2.2.x"))
@@ -161,31 +218,18 @@ class GenerationsControllerTests {
 	private ProjectGeneration getProjectGenerations() {
 		List<ProjectGeneration.Generation> generations = new ArrayList<>();
 		generations.add(new ProjectGeneration.Generation("1.0.x", YearMonth.parse("2015-03"), SupportType.NONE, null,
-				null, springBootLinkedGenerations("1.0.x")));
+				null, springBootLinkedGenerations("1.0.x"), Map.of()));
 		generations.add(new ProjectGeneration.Generation("2.2.x", YearMonth.parse("2020-02"), SupportType.EXTENDED,
-				YearMonth.parse("2021-03"), YearMonth.parse("2021-03"), springBootLinkedGenerations("2.2.x")));
+				YearMonth.parse("2021-03"), YearMonth.parse("2021-03"), springBootLinkedGenerations("2.2.x"),
+				Map.of("oss", "2.2.10", "enterprise", "2.2.11")));
 		generations.add(new ProjectGeneration.Generation("2.1.x", YearMonth.parse("2020-01"), SupportType.DEFAULT,
-				YearMonth.parse("2021-03"), YearMonth.parse("2022-03"), springBootLinkedGenerations("2.1.x")));
+				YearMonth.parse("2021-03"), YearMonth.parse("2022-03"), springBootLinkedGenerations("2.1.x"),
+				Map.of("oss", "2.1.18")));
 		return new ProjectGeneration(generations);
 	}
 
 	private Map<String, List<String>> springBootLinkedGenerations(String... versions) {
 		return Map.of("spring-boot", Arrays.asList(versions));
-	}
-
-	private List<ProjectDocumentation> getOssDocumentations() {
-		return List.of(
-				new ProjectDocumentation("2.2.10", false, "https://example.com/api", "https://example.com/ref",
-						Status.GENERAL_AVAILABILITY, false),
-				new ProjectDocumentation("2.1.18", false, "https://example.com/api", "https://example.com/ref",
-						Status.GENERAL_AVAILABILITY, false),
-				new ProjectDocumentation("3.0.0-SNAPSHOT", false, "https://example.com/api", "https://example.com/ref",
-						Status.SNAPSHOT, false));
-	}
-
-	private List<ProjectDocumentation> getEnterpriseDocumentations() {
-		return List.of(new ProjectDocumentation("2.2.11", false, "https://example.com/api", "https://example.com/ref",
-				Status.GENERAL_AVAILABILITY, false));
 	}
 
 	FieldDescriptor[] generationPayload() {

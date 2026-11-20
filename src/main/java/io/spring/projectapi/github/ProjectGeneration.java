@@ -66,15 +66,24 @@ public class ProjectGeneration {
 
 		private final Map<String, List<String>> linkedGenerations;
 
-		@JsonCreator(mode = Mode.PROPERTIES)
+		private final Map<String, String> latestVersions;
+
 		public Generation(String generation, YearMonth initialRelease, SupportType support, YearMonth ossSupportEnd,
 				YearMonth enterpriseSupportEnd, Map<String, List<String>> linkedGenerations) {
+			this(generation, initialRelease, support, ossSupportEnd, enterpriseSupportEnd, linkedGenerations, null);
+		}
+
+		@JsonCreator(mode = Mode.PROPERTIES)
+		public Generation(String generation, YearMonth initialRelease, SupportType support, YearMonth ossSupportEnd,
+				YearMonth enterpriseSupportEnd, Map<String, List<String>> linkedGenerations,
+				Map<String, String> latestVersions) {
 			this.generation = generation;
 			this.initialRelease = initialRelease;
 			this.support = (support != null) ? support : SupportType.DEFAULT;
 			this.ossSupportEnd = ossSupportEnd;
 			this.enterpriseSupportEnd = enterpriseSupportEnd;
 			this.linkedGenerations = linkedGenerations;
+			this.latestVersions = (latestVersions != null) ? latestVersions : Map.of();
 		}
 
 		/**
@@ -125,6 +134,15 @@ public class ProjectGeneration {
 		 */
 		public Map<String, List<String>> getLinkedGenerations() {
 			return this.linkedGenerations;
+		}
+
+		/**
+		 * Return the latest versions of this generation, keyed by {@code oss} and
+		 * {@code enterprise}.
+		 * @return the latest versions, never {@code null}
+		 */
+		public Map<String, String> getLatestVersions() {
+			return this.latestVersions;
 		}
 
 	}

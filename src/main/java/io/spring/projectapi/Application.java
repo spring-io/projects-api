@@ -18,7 +18,6 @@ package io.spring.projectapi;
 
 import java.time.Duration;
 
-import io.spring.projectapi.ApplicationProperties.Enterprise;
 import io.spring.projectapi.ApplicationProperties.Github;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.GithubQueries;
@@ -52,10 +51,7 @@ public class Application {
 		Github github = properties.getGithub();
 		String accessToken = github.getAccesstoken();
 		String branch = github.getBranch();
-		Enterprise enterprise = properties.getGithub().getEnterprise();
-		String enterpriseToken = enterprise.getAccesstoken();
-		String enterpriseBranch = enterprise.getBranch();
-		return new GithubQueries(builder, jsonMapper, accessToken, branch, enterpriseToken, enterpriseBranch);
+		return new GithubQueries(builder, jsonMapper, accessToken, branch);
 	}
 
 	@Bean

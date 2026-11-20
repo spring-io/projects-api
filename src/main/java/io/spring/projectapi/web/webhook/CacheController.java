@@ -28,7 +28,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.spring.projectapi.ApplicationProperties;
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import jakarta.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
@@ -64,8 +63,6 @@ public class CacheController {
 	private static final String PING_EVENT = "ping";
 
 	private static final String MAIN_BRANCH = "refs/heads/main";
-
-	private static final String ENTERPRISE_REPOSITORY = "spring-io/spring-website-commercial-content";
 
 	private final JsonMapper jsonMapper;
 
@@ -106,10 +103,9 @@ public class CacheController {
 		if (!push.get("ref").equals(MAIN_BRANCH)) {
 			return ResponseEntity.ok("{ \"message\": \"Push event not on main\" }");
 		}
-		ContentSource contentSource = getContentSource(push);
 		List<Map<String, ?>> commits = (List<Map<String, ?>>) push.get("commits");
 		List<String> changes = getChangedFiles(commits);
-		this.repository.update(changes, contentSource);
+		this.repository.update(changes);
 		return ResponseEntity.ok("{ \"message\": \"Successfully processed cache refresh\" }");
 	}
 
@@ -125,17 +121,6 @@ public class CacheController {
 			changedFiles.addAll(modified);
 		});
 		return changedFiles.stream().distinct().toList();
-	}
-
-	private static ContentSource getContentSource(Map<?, ?> push) {
-		Map<?, ?> repository = (Map<?, ?>) push.get("repository");
-		if (repository != null) {
-			String fullName = (String) repository.get("full_name");
-			if (ENTERPRISE_REPOSITORY.equals(fullName)) {
-				return ContentSource.ENTERPRISE;
-			}
-		}
-		return ContentSource.OSS;
 	}
 
 	@ExceptionHandler(WebhookAuthenticationException.class)

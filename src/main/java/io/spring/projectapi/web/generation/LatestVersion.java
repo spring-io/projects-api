@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package io.spring.projectapi;
+package io.spring.projectapi.web.generation;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.validation.constraints.NotBlank;
 
 /**
- * Source of content that changes relate to.
+ * Represents the input provided when updating the latest version of a generation.
  *
  * @author Madhura Bhave
  */
-public enum ContentSource {
+public class LatestVersion {
 
-	/**
-	 * Open source content.
-	 */
-	OSS,
+	@NotBlank
+	private final String version;
 
-	/**
-	 * Enterprise content.
-	 */
-	ENTERPRISE
+	@JsonCreator
+	public LatestVersion(String version) {
+		this.version = version;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
 
 }

@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.NoSuchGithubProjectException;
@@ -30,7 +29,6 @@ import io.spring.projectapi.github.ProjectDocumentation.Status;
 import io.spring.projectapi.test.ConstrainedFields;
 import io.spring.projectapi.test.WebApiTests;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -44,11 +42,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileCopyUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -59,7 +55,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -86,8 +81,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void releasesReturnsReleases() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$._embedded.releases.length()").value("2"))
@@ -125,7 +119,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void releasesWhenNotFoundReturns404() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
+		given(this.projectRepository.getProjectDocumentations("spring-boot"))
 			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc.perform(get("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isNotFound());
@@ -133,8 +127,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void releaseReturnsRelease() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))
@@ -147,8 +140,7 @@ class ReleasesControllerTests {
 
 	@Test
 	void currentReturnsCurrentRelease() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/projects/spring-boot/releases/current").accept(MediaTypes.HAL_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.version").value("2.3.0"))
@@ -161,8 +153,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addAddsRelease() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
 		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
 		this.mvc
@@ -170,53 +161,12 @@ class ReleasesControllerTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(from("add.json")))
 			.andExpect(status().isCreated())
-			.andExpect(header().string("Location", expectedLocation));
-		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
-		verify(this.githubOperations).addProjectDocumentation(eq("spring-boot"), captor.capture());
-		ProjectDocumentation added = captor.getValue();
-		assertThat(added.getVersion()).isEqualTo("2.8.0");
-		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
-		assertThat(added.getRef()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
-		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
-		assertThat(added.isCurrent()).isFalse();
-		assertThat(added.isAntora()).isFalse();
-	}
-
-	@Test
-	@WithMockUser(roles = "ADMIN")
-	void addWithAntoraVersionAddsRelease() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
-		String expectedLocation = "https://api.spring.io/projects/spring-boot/releases/2.8.0";
-		ConstrainedFields fields = ConstrainedFields.constraintsOn(NewRelease.class);
-		this.mvc
-			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(from("add-with-antora.json")))
-			.andExpect(status().isCreated())
 			.andExpect(header().string("Location", expectedLocation))
 			.andDo(document("create-release", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-					requestFields(fields.withPath("version").description("The Release version"), fields
-						.withPath("isAntora")
-						.type(JsonFieldType.BOOLEAN)
-						.optional()
-						.description(
-								"Indicates if the documentation for this release is on Antora. Defaults to false if not specified."),
-							fields.withPath("referenceDocUrl")
-								.description(
-										"URL of the reference documentation, {version} template variable is supported"),
-							fields.withPath("apiDocUrl")
-								.description(
-										"URL of the API documentation, {version} template variable is supported"))));
-		ArgumentCaptor<ProjectDocumentation> captor = ArgumentCaptor.forClass(ProjectDocumentation.class);
-		verify(this.githubOperations).addProjectDocumentation(eq("spring-boot"), captor.capture());
-		ProjectDocumentation added = captor.getValue();
-		assertThat(added.getVersion()).isEqualTo("2.8.0");
-		assertThat(added.getApi()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/api/");
-		assertThat(added.getRef()).isEqualTo("https://docs.spring.io/spring-boot/docs/{version}/reference/html/");
-		assertThat(added.getStatus()).isEqualTo(ProjectDocumentation.Status.GENERAL_AVAILABILITY);
-		assertThat(added.isCurrent()).isFalse();
-		assertThat(added.isAntora()).isTrue();
+					requestFields(fields.withPath("version").description("The Release version"),
+							fields.withPath("referenceDocUrl").description("URL of the reference documentation"),
+							fields.withPath("apiDocUrl").description("URL of the API documentation"))));
+		verify(this.githubOperations).updateLatestOssVersion("spring-boot", "2.8.x", "2.8.0");
 	}
 
 	@Test
@@ -231,7 +181,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenProjectDoesNotExistReturnsNotFound() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
+		given(this.projectRepository.getProjectDocumentations("spring-boot"))
 			.willThrow(NoSuchGithubProjectException.class);
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
@@ -243,8 +193,7 @@ class ReleasesControllerTests {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void addWhenReleaseAlreadyExistsReturnsBadRequest() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc
 			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -254,28 +203,14 @@ class ReleasesControllerTests {
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
-	void deleteDeletesDocumentation() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
-		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-			.andExpect(status().isNoContent())
-			.andDo(document("delete-release"));
-		verify(this.githubOperations).deleteDocumentation("spring-boot", "2.3.0");
-	}
-
-	@Test
-	void deleteWhenHasNoAdminRoleReturnsUnauthorized() throws Exception {
-		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-			.andExpect(status().isUnauthorized());
-	}
-
-	@Test
-	@WithMockUser(roles = "ADMIN")
-	void deleteWhenProjectDoesNotExistReturnsNotFound() throws Exception {
-		willThrow(NoSuchGithubProjectException.class).given(this.githubOperations)
-			.deleteDocumentation("spring-boot", "2.3.0");
-		this.mvc.perform(delete("/projects/spring-boot/releases/2.3.0").accept(MediaTypes.HAL_JSON))
-			.andExpect(status().isNotFound());
+	void addWhenVersionIsSnapshotReturnsBadRequest() throws Exception {
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
+		this.mvc
+			.perform(post("/projects/spring-boot/releases").accept(MediaTypes.HAL_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"version\":\"2.8.1-SNAPSHOT\"}"))
+			.andExpect(status().isBadRequest());
+		verifyNoInteractions(this.githubOperations);
 	}
 
 	private byte[] from(String path) throws IOException {
@@ -289,10 +224,10 @@ class ReleasesControllerTests {
 		List<ProjectDocumentation> result = new ArrayList<>();
 		String docsRoot;
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.0/";
-		result.add(new ProjectDocumentation("2.3.0", false, docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.0", docsRoot + "api/", docsRoot + "reference/html/",
 				Status.GENERAL_AVAILABILITY, true));
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/";
-		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", false, docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
 				Status.SNAPSHOT, false));
 		return result;
 	}

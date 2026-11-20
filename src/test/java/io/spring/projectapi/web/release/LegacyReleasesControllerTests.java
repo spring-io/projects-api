@@ -19,7 +19,6 @@ package io.spring.projectapi.web.release;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.github.ProjectDocumentation.Status;
@@ -52,8 +51,7 @@ class LegacyReleasesControllerTests {
 
 	@Test
 	void legacyReleasesReturnsReleases() throws Exception {
-		given(this.projectRepository.getProjectDocumentations("spring-boot", ContentSource.OSS))
-			.willReturn(getProjectDocumentations());
+		given(this.projectRepository.getProjectDocumentations("spring-boot")).willReturn(getProjectDocumentations());
 		this.mvc.perform(get("/project_metadata/spring-boot").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value("spring-boot"))
@@ -75,10 +73,10 @@ class LegacyReleasesControllerTests {
 		List<ProjectDocumentation> result = new ArrayList<>();
 		String docsRoot;
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.0/";
-		result.add(new ProjectDocumentation("2.3.0", false, docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.0", docsRoot + "api/", docsRoot + "reference/html/",
 				Status.GENERAL_AVAILABILITY, true));
 		docsRoot = "https://docs.spring.io/spring-boot/docs/2.3.1-SNAPSHOT/";
-		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", false, docsRoot + "api/", docsRoot + "reference/html/",
+		result.add(new ProjectDocumentation("2.3.1-SNAPSHOT", docsRoot + "api/", docsRoot + "reference/html/",
 				Status.SNAPSHOT, false));
 		return result;
 	}

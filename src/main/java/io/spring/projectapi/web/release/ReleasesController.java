@@ -19,11 +19,11 @@ package io.spring.projectapi.web.release;
 import java.net.URI;
 import java.util.List;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.ProjectRepository;
 import io.spring.projectapi.github.GithubOperations;
 import io.spring.projectapi.github.ProjectDocumentation;
 import io.spring.projectapi.web.error.ResourceNotFoundException;
+import io.spring.projectapi.web.generation.GenerationVersions;
 import io.spring.projectapi.web.project.ProjectsController;
 import io.spring.projectapi.web.release.Release.Status;
 import io.spring.projectapi.web.repository.RepositoriesController;
@@ -37,7 +37,6 @@ import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,8 +69,7 @@ public class ReleasesController {
 
 	@GetMapping
 	public CollectionModel<EntityModel<Release>> releases(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		CollectionModel<EntityModel<Release>> model = CollectionModel
 			.of(releases.stream().map((generation) -> asModel(id, generation)).toList());
@@ -84,8 +82,7 @@ public class ReleasesController {
 
 	@GetMapping("/{version}")
 	public EntityModel<Release> release(@PathVariable String id, @PathVariable String version) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter((candidate) -> candidate.getVersion().equals(version))
@@ -97,8 +94,7 @@ public class ReleasesController {
 
 	@GetMapping("/current")
 	public EntityModel<Release> current(@PathVariable String id) {
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		List<Release> releases = documentations.stream().map(this::asRelease).toList();
 		Release release = releases.stream()
 			.filter(Release::isCurrent)
@@ -111,25 +107,20 @@ public class ReleasesController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@PathVariable String id, @RequestBody NewRelease release) throws Exception {
 		String version = release.getVersion();
-		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id,
-				ContentSource.OSS);
+		List<ProjectDocumentation> documentations = this.projectRepository.getProjectDocumentations(id);
 		if (documentations.stream().anyMatch((candidate) -> candidate.getVersion().equals(version))) {
 			String message = "Release '%s' already present for project '%s'".formatted(version, id);
 			return ResponseEntity.badRequest().body(message);
 		}
-		Release.Status status = Release.Status.fromVersion(version);
-		ProjectDocumentation projectDocumentation = new ProjectDocumentation(release.getVersion(), release.isAntora(),
-				release.getApiDocUrl(), release.getReferenceDocUrl(),
-				ProjectDocumentation.Status.valueOf(status.name()), false);
-		this.githubOperations.addProjectDocumentation(id, projectDocumentation);
+		String generation = GenerationVersions.generationOf(version);
+		String problem = (generation != null) ? GenerationVersions.validateLatestVersion(generation, version)
+				: "Version '%s' is not a valid release version".formatted(version);
+		if (problem != null) {
+			return ResponseEntity.badRequest().body(problem);
+		}
+		this.githubOperations.updateLatestOssVersion(id, generation, version);
 		URI linkToRelease = linkTo(methodOn(ReleasesController.class).release(id, release.getVersion())).toUri();
 		return ResponseEntity.created(linkToRelease).build();
-	}
-
-	@DeleteMapping("/{version}")
-	public ResponseEntity<String> delete(@PathVariable String id, @PathVariable String version) throws Exception {
-		this.githubOperations.deleteDocumentation(id, version);
-		return ResponseEntity.noContent().build();
 	}
 
 	private Release asRelease(ProjectDocumentation documentation) {

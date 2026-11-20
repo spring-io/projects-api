@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import io.spring.projectapi.ContentSource;
 import io.spring.projectapi.github.Project.Status;
 import io.spring.projectapi.github.ProjectGeneration.SupportType;
 import org.hamcrest.text.MatchesPattern;
@@ -57,33 +56,25 @@ class GithubQueriesTests {
 
 	private MockRestServiceServer ossServer;
 
-	private MockRestServiceServer enterpriseServer;
-
 	@BeforeEach
 	void setup() {
 		MockServerRestTemplateCustomizer customizer = new MockServerRestTemplateCustomizer();
 		JsonMapper jsonMapper = new JsonMapper();
-		this.queries = new GithubQueries(new RestTemplateBuilder(customizer), jsonMapper, "test-token", "test",
-				"test-enterprise-token", "main");
+		this.queries = new GithubQueries(new RestTemplateBuilder(customizer), jsonMapper, "test-token", "test");
 		RestTemplate ossRestTemplate = (RestTemplate) ReflectionTestUtils.getField(this.queries, "restTemplate");
-		RestTemplate enterpriseRestTemplate = (RestTemplate) ReflectionTestUtils.getField(this.queries,
-				"enterpriseRestTemplate");
 		this.ossServer = customizer.getServer(ossRestTemplate);
-		this.enterpriseServer = customizer.getServer(enterpriseRestTemplate);
 	}
 
 	@Test
 	void getDataReturnsProjectData() throws Exception {
 		setupProjects();
 		setupProjectFiles("index\\.md", "project-index-response.json");
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
+		setupGeneratedDocumentationFiles("project-documentation-response.json");
 		setupGenerationsFiles("project-generations-response.json");
-		setupEnterpriseDocumentationFile();
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.project().size()).isEqualTo(3);
 		assertThat(projectData.project().get("spring-webflow").getSlug()).isEqualTo("spring-webflow");
 		assertThat(projectData.documentation().get("spring-webflow")).hasSize(9);
-		assertThat(projectData.enterpriseDocumentation().get("spring-webflow")).hasSize(3);
 		List<ProjectGeneration.Generation> generations = projectData.generation()
 			.get("spring-webflow")
 			.getGenerations();
@@ -100,8 +91,7 @@ class GithubQueriesTests {
 					requestTo(MatchesPattern.matchesPattern("\\/project\\/spring-w.+\\/index\\.md\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		setupEnterpriseDocumentationFile();
+		setupGeneratedDocumentationFiles("project-documentation-response.json");
 		setupGenerationsFiles("project-generations-response.json");
 		this.ossServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/index.md?ref=test"))
 			.andExpect(method(HttpMethod.GET))
@@ -121,9 +111,8 @@ class GithubQueriesTests {
 		this.ossServer.expect(requestTo("/project/spring-webflow/index.md?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
+		setupGeneratedDocumentationFiles("project-documentation-response.json");
 		setupGenerationsFiles("project-generations-response.json");
-		setupEnterpriseDocumentationFile();
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.project()).containsOnlyKeys("spring-webflow");
 		assertThat(projectData.documentation()).containsOnlyKeys("spring-webflow");
@@ -141,9 +130,8 @@ class GithubQueriesTests {
 		this.ossServer.expect(requestTo("/project/spring-webflow/index.md?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-index-response.json"), MediaType.APPLICATION_JSON));
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
+		setupGeneratedDocumentationFiles("project-documentation-response.json");
 		setupGenerationsFiles("project-generations-response.json");
-		setupEnterpriseDocumentationFile();
 		ProjectData projectData = this.queries.getData();
 		assertThat(projectData.project()).containsOnlyKeys("spring-webflow");
 		assertThat(projectData.documentation()).containsOnlyKeys("spring-webflow");
@@ -164,13 +152,13 @@ class GithubQueriesTests {
 		setupProjectFiles("index\\.md", "project-index-response.json");
 		this.ossServer
 			.expect(ExpectedCount.max(2),
-					requestTo(MatchesPattern
-						.matchesPattern("\\/project\\/spring-w.+\\/documentation\\.json\\?ref\\=test")))
+					requestTo(MatchesPattern.matchesPattern(
+							"\\/generated-data\\/project\\/spring-w.+\\/documentation\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		setupEnterpriseDocumentationFile();
 		setupGenerationsFiles("project-generations-response.json");
-		this.ossServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/documentation.json?ref=test"))
+		this.ossServer
+			.expect(ExpectedCount.once(), requestTo("/generated-data/project/spring-xd/documentation.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
 		ProjectData projectData = this.queries.getData();
@@ -178,31 +166,10 @@ class GithubQueriesTests {
 	}
 
 	@Test
-	void enterpriseProjectDocumentationWhenFileNotFoundReturnsEmptyList() throws Exception {
-		setupProjects();
-		setupProjectFiles("index\\.md", "project-index-response.json");
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		this.enterpriseServer
-			.expect(ExpectedCount.max(2),
-					requestTo(MatchesPattern
-						.matchesPattern("\\/project\\/spring-w.+\\/documentation\\.json\\?ref\\=main")))
-			.andExpect(method(HttpMethod.GET))
-			.andRespond(
-					withSuccess(from("enterprise-project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		setupGenerationsFiles("project-generations-response.json");
-		this.enterpriseServer.expect(ExpectedCount.once(), requestTo("/project/spring-xd/documentation.json?ref=main"))
-			.andExpect(method(HttpMethod.GET))
-			.andRespond(withResourceNotFound());
-		ProjectData projectData = this.queries.getData();
-		assertThat(projectData.enterpriseDocumentation().get("spring-xd")).isEmpty();
-	}
-
-	@Test
 	void projectGenerationWhenFileNotFoundReturnsEmptyList() throws Exception {
 		setupProjects();
 		setupProjectFiles("index\\.md", "project-index-response.json");
-		setupProjectFiles("documentation\\.json", "project-documentation-response.json");
-		setupEnterpriseDocumentationFile();
+		setupGeneratedDocumentationFiles("project-documentation-response.json");
 		this.ossServer
 			.expect(ExpectedCount.max(2),
 					requestTo(MatchesPattern
@@ -220,7 +187,8 @@ class GithubQueriesTests {
 	@Test
 	void updateDataUpdatesOnlyChangedOssData() throws Exception {
 		ProjectData data = getProjectData();
-		List<String> changes = List.of("project/spring-boot/index.md", "project/spring-framework/documentation.json");
+		List<String> changes = List.of("project/spring-boot/index.md",
+				"generated-data/project/spring-framework/documentation.json");
 		this.ossServer.expect(requestTo("/project/spring-boot?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess());
@@ -230,10 +198,10 @@ class GithubQueriesTests {
 		this.ossServer.expect(requestTo("/project/spring-framework?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess());
-		this.ossServer.expect(requestTo("/project/spring-framework/documentation.json?ref=test"))
+		this.ossServer.expect(requestTo("/generated-data/project/spring-framework/documentation.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.OSS);
+		ProjectData projectData = this.queries.updateData(data, changes);
 		assertThat(projectData.project().size()).isEqualTo(3);
 		assertThat(projectData.project().get("spring-boot").getTitle()).isEqualTo("Spring AMQP");
 		assertThat(projectData.documentation().get("spring-framework").size()).isEqualTo(9);
@@ -249,7 +217,7 @@ class GithubQueriesTests {
 		this.ossServer.expect(requestTo("/generated-data/project/spring-boot/generations.json?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from("project-generations-response.json"), MediaType.APPLICATION_JSON));
-		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.OSS);
+		ProjectData projectData = this.queries.updateData(data, changes);
 		assertThat(projectData.generation().get("spring-boot").getGenerations()).hasSize(16);
 		assertThat(projectData.generation()).containsOnlyKeys("spring-boot");
 		assertThat(projectData.documentation().get("spring-boot")).hasSize(2);
@@ -257,17 +225,17 @@ class GithubQueriesTests {
 	}
 
 	@Test
-	void updateDataRemovesDeletedProjectIncludingEnterpriseDocumentation() {
+	void updateDataRemovesDeletedProject() {
 		ProjectData data = getProjectData();
-		List<String> changes = List.of("project/spring-boot/index.md", "project/spring-boot/documentation.json");
+		List<String> changes = List.of("project/spring-boot/index.md",
+				"generated-data/project/spring-boot/documentation.json");
 		this.ossServer.expect(requestTo("/project/spring-boot?ref=test"))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withResourceNotFound());
-		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.OSS);
+		ProjectData projectData = this.queries.updateData(data, changes);
 		assertThat(projectData.project().size()).isEqualTo(2);
 		assertThat(projectData.project().get("spring-boot")).isNull();
 		assertThat(projectData.documentation().get("spring-boot")).isNull();
-		assertThat(projectData.enterpriseDocumentation().get("spring-boot")).isNull();
 		assertThat(projectData.generation().get("spring-boot")).isNull();
 		assertThat(projectData.supportPolicy().get("spring-boot")).isNull();
 	}
@@ -276,30 +244,13 @@ class GithubQueriesTests {
 	void updateDataWhenNoProjectFilesChangedDoesNothing() {
 		ProjectData data = getProjectData();
 		List<String> changes = List.of("blog.md");
-		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.OSS);
+		ProjectData projectData = this.queries.updateData(data, changes);
 		assertThat(projectData.project().size()).isEqualTo(3);
-	}
-
-	@Test
-	void updateDataUpdatesEnterpriseDocumentation() throws Exception {
-		ProjectData data = getProjectData();
-		List<String> changes = List.of("project/spring-boot/documentation.json");
-		this.enterpriseServer.expect(requestTo("/project/spring-boot/documentation.json?ref=main"))
-			.andExpect(method(HttpMethod.GET))
-			.andRespond(
-					withSuccess(from("enterprise-project-documentation-response.json"), MediaType.APPLICATION_JSON));
-		ProjectData projectData = this.queries.updateData(data, changes, ContentSource.ENTERPRISE);
-		assertThat(projectData.enterpriseDocumentation().get("spring-boot")).hasSize(3);
-		assertThat(projectData.documentation().get("spring-boot")).hasSize(2);
-		assertThat(projectData.project().size()).isEqualTo(3);
-		assertThat(projectData.project().get("spring-boot").getTitle()).isEqualTo("Spring Boot");
-		assertThat(projectData.generation().get("spring-boot").getGenerations()).hasSize(2);
-		assertThat(projectData.supportPolicy().get("spring-boot")).isEqualTo("UPSTREAM");
 	}
 
 	private ProjectData getProjectData() {
-		return new ProjectData(getProjects(), getProjectDocumentation(), getEnterpriseProjectDocumentation(),
-				getProjectSupports(), getProjectSupportPolicy());
+		return new ProjectData(getProjects(), getProjectDocumentation(), getProjectSupports(),
+				getProjectSupportPolicy());
 	}
 
 	private Map<String, Project> getProjects() {
@@ -323,17 +274,11 @@ class GithubQueriesTests {
 	}
 
 	private Map<String, List<ProjectDocumentation>> getProjectDocumentation() {
-		ProjectDocumentation documentation1 = new ProjectDocumentation("1.0", false, "api", "ref",
+		ProjectDocumentation documentation1 = new ProjectDocumentation("1.0", "api", "ref",
 				ProjectDocumentation.Status.PRERELEASE, true);
-		ProjectDocumentation documentation2 = new ProjectDocumentation("2.0", false, "api", "ref",
+		ProjectDocumentation documentation2 = new ProjectDocumentation("2.0", "api", "ref",
 				ProjectDocumentation.Status.PRERELEASE, true);
 		return Map.of("spring-boot", List.of(documentation1, documentation2));
-	}
-
-	private Map<String, List<ProjectDocumentation>> getEnterpriseProjectDocumentation() {
-		ProjectDocumentation documentation = new ProjectDocumentation("1.5", false, "api", "ref",
-				ProjectDocumentation.Status.GENERAL_AVAILABILITY, true);
-		return Map.of("spring-boot", List.of(documentation));
 	}
 
 	private Map<String, String> getProjectSupportPolicy() {
@@ -348,6 +293,15 @@ class GithubQueriesTests {
 			.andRespond(withSuccess(from(responseFileName), MediaType.APPLICATION_JSON));
 	}
 
+	private void setupGeneratedDocumentationFiles(String responseFileName) throws IOException {
+		this.ossServer
+			.expect(ExpectedCount.manyTimes(),
+					requestTo(MatchesPattern
+						.matchesPattern("\\/generated-data\\/project\\/.+\\/documentation\\.json\\?ref\\=test")))
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(from(responseFileName), MediaType.APPLICATION_JSON));
+	}
+
 	private void setupGenerationsFiles(String responseFileName) throws IOException {
 		this.ossServer
 			.expect(ExpectedCount.manyTimes(),
@@ -355,15 +309,6 @@ class GithubQueriesTests {
 						.matchesPattern("\\/generated-data\\/project\\/.+\\/generations\\.json\\?ref\\=test")))
 			.andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(from(responseFileName), MediaType.APPLICATION_JSON));
-	}
-
-	private void setupEnterpriseDocumentationFile() throws IOException {
-		this.enterpriseServer
-			.expect(ExpectedCount.manyTimes(),
-					requestTo(MatchesPattern.matchesPattern("\\/project\\/.+\\/documentation.json\\?ref\\=main")))
-			.andExpect(method(HttpMethod.GET))
-			.andRespond(
-					withSuccess(from("enterprise-project-documentation-response.json"), MediaType.APPLICATION_JSON));
 	}
 
 	private void setupProjectListing(String json) {

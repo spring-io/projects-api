@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 
-import io.spring.projectapi.github.ProjectDocumentation.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.SerializationFeature;
@@ -60,6 +59,8 @@ class GithubOperationsTests {
 
 	private static final String DOCUMENTATION_URI = "/project/test-project/documentation.json?ref=test";
 
+	private static final String PROJECT_JSON_URI = "/project/test-project/project.json?ref=test";
+
 	private RetryTemplate retryTemplate;
 
 	@BeforeEach
@@ -82,117 +83,43 @@ class GithubOperationsTests {
 	}
 
 	@Test
-	void addProjectDocumentationWhenProjectDoesNotExistThrowsException() throws Exception {
-		setupNonExistentProject("documentation.json");
-		assertThatExceptionOfType(NoSuchGithubProjectException.class).isThrownBy(() -> this.operations
-			.addProjectDocumentation("does-not-exist", getDocumentation("1.0", Status.GENERAL_AVAILABILITY)));
-	}
-
-	@Test
-	void addProjectDocumentationWhenConflictShouldRetry() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		setupFileUpdate("project-documentation-updated-content.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		ProjectDocumentation documentation = getDocumentation("3.15.1", Status.GENERAL_AVAILABILITY);
-		this.operations.addProjectDocumentation("test-project", documentation);
-	}
-
-	@Test
-	void addProjectDocumentationWhenConflictShouldThrowWhenRetriesFail() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
-		ProjectDocumentation documentation = getDocumentation("3.15.1", Status.GENERAL_AVAILABILITY);
-		assertThatExceptionOfType(ConflictingGithubContentException.class)
-			.isThrownBy(() -> this.operations.addProjectDocumentation("test-project", documentation));
-	}
-
-	@Test
-	void addProjectDocumentation() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		ProjectDocumentation documentation = getDocumentation("3.15.1", Status.GENERAL_AVAILABILITY);
-		setupFileUpdate("project-documentation-updated-content.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		this.operations.addProjectDocumentation("test-project", documentation);
-	}
-
-	@Test
-	void addProjectDocumentationForNonCurrent() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		ProjectDocumentation documentation = getDocumentation("0.7", Status.GENERAL_AVAILABILITY);
-		setupFileUpdate("project-documentation-updated-content-non-ga.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		this.operations.addProjectDocumentation("test-project", documentation);
-	}
-
-	@Test
-	void addFirstProjectDocumentationForGARelease() throws Exception {
-		setupResourceNotFound(DOCUMENTATION_URI);
-		setupProject();
-		this.customizer.getServer()
-			.expect(method(HttpMethod.PUT))
-			.andExpect(jsonPath("$.content")
-				.value(getEncodedContent("project-documentation-updated-content-first-ga.json"))) // FIXME
-			.andExpect(jsonPath("$.message").value("Update documentation"))
-			.andRespond(withStatus(HttpStatus.ACCEPTED));
-		ProjectDocumentation documentation = getDocumentation("1.0", ProjectDocumentation.Status.GENERAL_AVAILABILITY);
-		this.operations.addProjectDocumentation("test-project", documentation);
-
-	}
-
-	@Test
-	void addFirstProjectDocumentationForNonGARelease() throws Exception {
-		setupResourceNotFound(DOCUMENTATION_URI);
-		setupProject();
-		this.customizer.getServer()
-			.expect(method(HttpMethod.PUT))
-			.andExpect(jsonPath("$.content")
-				.value(getEncodedContent("project-documentation-updated-content-first-non-ga.json"))) // FIXME
-			.andExpect(jsonPath("$.message").value("Update documentation"))
-			.andRespond(withStatus(HttpStatus.ACCEPTED));
-		ProjectDocumentation documentation = getDocumentation("1.0-M1", Status.PRERELEASE);
-		this.operations.addProjectDocumentation("test-project", documentation);
-	}
-
-	@Test
-	void deleteProjectDocumentationWhenProjectDoesNotExistThrowsException() throws Exception {
-		setupNonExistentProject("documentation.json");
+	void updateLatestOssVersionWhenProjectDoesNotExistThrowsException() {
+		setupNonExistentProject("project.json");
 		assertThatExceptionOfType(NoSuchGithubProjectException.class)
-			.isThrownBy(() -> this.operations.deleteDocumentation("does-not-exist", "1.0"));
+			.isThrownBy(() -> this.operations.updateLatestOssVersion("does-not-exist", "4.1.x", "4.1.3"));
 	}
 
 	@Test
-	void deleteProjectDocumentationWhenProjectDocumentationDoesNotExistThrowsException() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		assertThatExceptionOfType(NoSuchGithubProjectDocumentationFoundException.class)
-			.isThrownBy(() -> this.operations.deleteDocumentation("test-project", "2.0"));
+	void updateLatestOssVersionWhenGenerationDoesNotExistThrowsException() throws Exception {
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		assertThatExceptionOfType(NoSuchGithubGenerationFoundException.class)
+			.isThrownBy(() -> this.operations.updateLatestOssVersion("test-project", "9.9.x", "9.9.1"));
 	}
 
 	@Test
-	void deleteProjectDocumentation() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		setupFileUpdate("project-documentation-deleted-content.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		this.operations.deleteDocumentation("test-project", "3.2.10");
+	void updateLatestOssVersionWhenConflictShouldRetry() throws Exception {
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		setupProjectJsonUpdate();
+		this.operations.updateLatestOssVersion("test-project", "4.1.x", "4.1.3");
 	}
 
 	@Test
-	void deleteCurrentProjectDocumentation() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		setupFileUpdate("project-documentation-deleted-current-content.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		this.operations.deleteDocumentation("test-project", "3.3.4");
+	void updateLatestOssVersionWhenConflictShouldThrowWhenRetriesFail() throws Exception {
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		this.customizer.getServer().expect(method(HttpMethod.PUT)).andRespond(withStatus(HttpStatus.CONFLICT));
+		assertThatExceptionOfType(ConflictingGithubContentException.class)
+			.isThrownBy(() -> this.operations.updateLatestOssVersion("test-project", "4.1.x", "4.1.3"));
 	}
 
 	@Test
-	void deletePreReleaseProjectDocumentation() throws Exception {
-		setupFile("project-documentation-response.json", DOCUMENTATION_URI);
-		setupFileUpdate("project-documentation-deleted-prerelease-content.json", "Update documentation",
-				"2d2f875ca7d476d8b01bc1db07d29b5eba1d5120");
-		this.operations.deleteDocumentation("test-project", "3.2.11-SNAPSHOT");
+	void updateLatestOssVersion() throws Exception {
+		setupFile("project-json-response.json", PROJECT_JSON_URI);
+		setupProjectJsonUpdate();
+		this.operations.updateLatestOssVersion("test-project", "4.1.x", "4.1.3");
 	}
 
 	@Test
@@ -235,6 +162,11 @@ class GithubOperationsTests {
 
 	private void setupProjectUpdate() throws Exception {
 		setupFileUpdate("project-index-updated.md", "Update project index", "8be3885df06f9b66581589b6447a4d49cfb1be32");
+	}
+
+	private void setupProjectJsonUpdate() throws Exception {
+		setupFileUpdate("project-json-updated-content.json", "Update latest OSS version to 4.1.3",
+				"3a3f875ca7d476d8b01bc1db07d29b5eba1d5121");
 	}
 
 	private void setupFileUpdate(String fileName, String message, String sha) throws Exception {
@@ -289,10 +221,6 @@ class GithubOperationsTests {
 		try (InputStream inputStream = resource.getInputStream()) {
 			return FileCopyUtils.copyToByteArray(inputStream);
 		}
-	}
-
-	private ProjectDocumentation getDocumentation(String version, Status status) {
-		return new ProjectDocumentation(version, true, "http://api.com", "http://ref.com", status, false);
 	}
 
 }

@@ -16,27 +16,22 @@
 
 package io.spring.projectapi.github;
 
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import io.spring.projectapi.github.ProjectDocumentation.Status;
-import org.apache.maven.artifact.versioning.ComparableVersion;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.jackson.core.JacksonException;
-import tools.jackson.core.type.TypeReference;
 import tools.jackson.core.util.DefaultIndenter;
 import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.util.Separators;
+import tools.jackson.core.util.Separators.Spacing;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -56,12 +51,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class GithubOperations {
 
-	private static final TypeReference<@NotNull List<ProjectDocumentation>> DOCUMENTATION_LIST = new TypeReference<>() {
-	};
-
 	private static final String GITHUB_URI = "https://api.github.com/repos/spring-io/spring-website-content/contents";
-
-	private static final Comparator<ProjectDocumentation> VERSION_COMPARATOR = GithubOperations::compare;
 
 	private static final Logger logger = LoggerFactory.getLogger(GithubOperations.class);
 
@@ -69,9 +59,11 @@ public class GithubOperations {
 
 	private final JsonMapper jsonMapper;
 
-	private static final String DOCUMENTATION_COMMIT_MESSAGE = "Update documentation";
-
 	private static final String INDEX_COMMIT_MESSAGE = "Update project index";
+
+	private static final String PROJECT_FILE = "project.json";
+
+	private static final String LATEST_VERSION_COMMIT_MESSAGE = "Update latest OSS version to %s";
 
 	private static final String CONFIG_COMMIT_MESSAGE = "Update Spring Boot Config";
 
@@ -82,6 +74,8 @@ public class GithubOperations {
 	};
 
 	private final DefaultPrettyPrinter prettyPrinter;
+
+	private final ObjectWriter projectPrettyWriter;
 
 	private final String branch;
 
@@ -97,57 +91,49 @@ public class GithubOperations {
 		this.jsonMapper = jsonMapper;
 		this.prettyPrinter = new DefaultPrettyPrinter();
 		this.prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+		DefaultPrettyPrinter projectPrinter = new DefaultPrettyPrinter(
+				Separators.createDefaultInstance().withObjectNameValueSpacing(Spacing.AFTER));
+		projectPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+		this.projectPrettyWriter = jsonMapper.writer().with(projectPrinter);
 	}
 
-	private static int compare(ProjectDocumentation o1, ProjectDocumentation o2) {
-		ComparableVersion version1 = new ComparableVersion(o1.getVersion());
-		ComparableVersion version2 = new ComparableVersion(o2.getVersion());
-		return -version1.compareTo(version2);
-	}
-
-	public void addProjectDocumentation(String projectSlug, ProjectDocumentation documentation) {
+	/**
+	 * Update the latest open source version of a generation in the project's
+	 * {@code project.json}.
+	 * @param projectSlug the project slug
+	 * @param generation the generation name (for example {@code 4.1.x})
+	 * @param version the new latest open source version
+	 */
+	public void updateLatestOssVersion(String projectSlug, String generation, String version) {
 		try {
 			this.retryTemplate.invoke(() -> {
-				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
-				List<ProjectDocumentation> documentations = new ArrayList<>();
-				String sha = null;
-				if (response != null) {
-					String content = getFileContents(response);
-					sha = getFileSha(response);
-					documentations.addAll(convertToProjectDocumentation(content));
+				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "project.json");
+				NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, PROJECT_FILE);
+				JsonNode root = this.jsonMapper.readTree(getFileContents(response));
+				ObjectNode generationNode = findGeneration(root, generation);
+				NoSuchGithubGenerationFoundException.throwIfNull(generationNode, projectSlug, generation);
+				JsonNode latestVersions = generationNode.get("latestVersions");
+				if (!(latestVersions instanceof ObjectNode)) {
+					latestVersions = generationNode.putObject("latestVersions");
 				}
-				documentations.add(documentation);
-				List<ProjectDocumentation> updatedDocumentation = computeCurrentRelease(documentations);
-				updateProjectDocumentation(projectSlug, updatedDocumentation, sha);
+				((ObjectNode) latestVersions).put("oss", version);
+				byte[] content = (this.projectPrettyWriter.writeValueAsString(root) + "\n").getBytes();
+				updateContents(content, getFileSha(response), projectSlug, PROJECT_FILE,
+						LATEST_VERSION_COMMIT_MESSAGE.formatted(version));
 			});
 		}
 		catch (HttpClientErrorException ex) {
-			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, "documentation.json");
-		}
-
-	}
-
-	private List<ProjectDocumentation> convertToProjectDocumentation(String content) {
-		return readValue(content, DOCUMENTATION_LIST);
-	}
-
-	private <T> T readValue(String contents, TypeReference<T> type) {
-		try {
-			return this.jsonMapper.readValue(contents, type);
-		}
-		catch (JacksonException ex) {
-			throw new RuntimeException(ex);
+			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, PROJECT_FILE);
 		}
 	}
 
-	private void updateProjectDocumentation(String projectSlug, List<ProjectDocumentation> documentations, String sha) {
-		try {
-			byte[] content = this.jsonMapper.writer().with(this.prettyPrinter).writeValueAsBytes(documentations);
-			updateContents(content, sha, projectSlug, "documentation.json", DOCUMENTATION_COMMIT_MESSAGE);
+	private ObjectNode findGeneration(JsonNode root, String generation) {
+		for (JsonNode candidate : root.path("generations")) {
+			if (candidate instanceof ObjectNode node && generation.equals(node.path("generation").asString())) {
+				return node;
+			}
 		}
-		catch (JacksonException ex) {
-			throw new RuntimeException(ex);
-		}
+		return null;
 	}
 
 	public void patchProjectDetails(String projectSlug, ProjectDetails projectDetails) {
@@ -184,52 +170,6 @@ public class GithubOperations {
 			.contentType(MediaType.APPLICATION_JSON)
 			.body(body);
 		this.restTemplate.exchange(request, Object.class);
-	}
-
-	private List<ProjectDocumentation> computeCurrentRelease(List<ProjectDocumentation> documentations) {
-		Map<Boolean, List<ProjectDocumentation>> partitioned = documentations.stream()
-			.collect(Collectors
-				.partitioningBy((documentation) -> Status.GENERAL_AVAILABILITY.equals(documentation.getStatus())));
-		List<ProjectDocumentation> gaList = partitioned.get(true);
-		List<ProjectDocumentation> sortedGaList = gaList.stream().sorted(VERSION_COMPARATOR).toList();
-		List<ProjectDocumentation> preReleaseList = partitioned.get(false);
-		List<ProjectDocumentation> updatedGaList = new ArrayList<>(getListWithUpdatedCurrentRelease(sortedGaList));
-		Collections.reverse(updatedGaList);
-		preReleaseList.addAll(updatedGaList);
-		return List.copyOf(preReleaseList);
-	}
-
-	@NotNull
-	private static List<ProjectDocumentation> getListWithUpdatedCurrentRelease(
-			List<ProjectDocumentation> sortedGaList) {
-		return IntStream.range(0, sortedGaList.size())
-			.mapToObj((i) -> updateCurrent(sortedGaList.get(i), i == 0))
-			.toList();
-	}
-
-	private static ProjectDocumentation updateCurrent(ProjectDocumentation documentation, boolean current) {
-		return new ProjectDocumentation(documentation.getVersion(), documentation.isAntora(), documentation.getApi(),
-				documentation.getRef(), documentation.getStatus(), current);
-	}
-
-	public void deleteDocumentation(String projectSlug, String version) {
-		try {
-			this.retryTemplate.invoke(() -> {
-				ResponseEntity<Map<String, Object>> response = getFile(projectSlug, "documentation.json");
-				NoSuchGithubFileFoundException.throwWhenFileNotFound(response, projectSlug, "documentation.json");
-				String content = getFileContents(response);
-				String sha = getFileSha(response);
-				List<ProjectDocumentation> documentation = convertToProjectDocumentation(content);
-				NoSuchGithubProjectDocumentationFoundException.throwIfHasNotPresent(documentation, projectSlug,
-						version);
-				documentation.removeIf((y) -> y.getVersion().equals(version));
-				List<ProjectDocumentation> documentations1 = computeCurrentRelease(documentation);
-				updateProjectDocumentation(projectSlug, documentations1, sha);
-			});
-		}
-		catch (HttpClientErrorException ex) {
-			ConflictingGithubContentException.throwIfConflict(ex, projectSlug, "documentation.json");
-		}
 	}
 
 	private ResponseEntity<Map<String, Object>> getFile(String projectSlug, String fileName) {

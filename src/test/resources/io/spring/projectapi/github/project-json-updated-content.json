@@ -1,0 +1,20 @@
+{
+  "coordinates": "org.springframework.boot:spring-boot",
+  "generations": [
+    {
+      "generation": "3.4.x",
+      "initialRelease": "2024-11",
+      "latestVersions": {
+        "oss": "3.4.13",
+        "enterprise": "3.4.19"
+      }
+    },
+    {
+      "generation": "4.1.x",
+      "initialRelease": "2026-06",
+      "latestVersions": {
+        "oss": "4.1.3"
+      }
+    }
+  ]
+}

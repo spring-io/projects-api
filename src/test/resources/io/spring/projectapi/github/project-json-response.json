@@ -1,0 +1,8 @@
+{
+  "name": "project.json",
+  "path": "project/test-project/project.json",
+  "sha": "3a3f875ca7d476d8b01bc1db07d29b5eba1d5121",
+  "type": "file",
+  "content": "ewogICJjb29yZGluYXRlcyI6ICJvcmcuc3ByaW5nZnJhbWV3b3JrLmJvb3Q6c3ByaW5nLWJvb3Qi\nLAogICJnZW5lcmF0aW9ucyI6IFsKICAgIHsKICAgICAgImdlbmVyYXRpb24iOiAiMy40LngiLAog\nICAgICAiaW5pdGlhbFJlbGVhc2UiOiAiMjAyNC0xMSIsCiAgICAgICJsYXRlc3RWZXJzaW9ucyI6\nIHsKICAgICAgICAib3NzIjogIjMuNC4xMyIsCiAgICAgICAgImVudGVycHJpc2UiOiAiMy40LjE5\nIgogICAgICB9CiAgICB9LAogICAgewogICAgICAiZ2VuZXJhdGlvbiI6ICI0LjEueCIsCiAgICAg\nICJpbml0aWFsUmVsZWFzZSI6ICIyMDI2LTA2IiwKICAgICAgImxhdGVzdFZlcnNpb25zIjogewog\nICAgICAgICJvc3MiOiAiNC4xLjIiCiAgICAgIH0KICAgIH0KICBdCn0K\n",
+  "encoding": "base64"
+}
