@@ -1,0 +1,17 @@
+[{
+		"title": "enterprise",
+		"body": null,
+		"springBootConfig": null,
+		"status": "ENTERPRISE_ONLY",
+		"description": null,
+		"image": null,
+		"featured": false,
+		"stackOverflow": null,
+		"github": "gh",
+		"site": null,
+		"slug": "enterprise",
+		"order": null,
+		"samples": null,
+		"support": null
+	}
+]

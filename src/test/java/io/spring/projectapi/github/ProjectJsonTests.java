@@ -65,4 +65,11 @@ class ProjectJsonTests {
 		assertThat(project.getStatus()).isEqualTo(Status.ACTIVE);
 	}
 
+	@Test
+	void readObjectWhenEnterpriseOnlyProjectReadsJson() throws IOException {
+		Project project = this.json.readObject("project-enterprise-only.json")[0];
+		assertThat(project.getSlug()).isEqualTo("enterprise");
+		assertThat(project.getStatus()).isEqualTo(Status.ENTERPRISE_ONLY);
+	}
+
 }

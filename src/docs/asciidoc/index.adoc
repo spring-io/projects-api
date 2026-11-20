@@ -85,6 +85,7 @@ Each Project has an official support status; the goal here is to set expectation
 Incubating:: an experiment which might/might no be officially supported in the future.
 Active:: actively and officially supported by the Spring team.
 Community:: actively supported by the Spring community with limited involvement from the Spring team.
+Enterprise Only:: only supported for enterprise customers.
 End Of Life:: not supported anymore; there won't be new releases for this project.
 
 [[project-details]]

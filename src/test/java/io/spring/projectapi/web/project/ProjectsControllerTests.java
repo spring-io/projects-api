@@ -119,6 +119,18 @@ class ProjectsControllerTests {
 					responseFields(projectPayload())));
 	}
 
+	@Test
+	void projectsWhenEnterpriseOnlyReturnsProject() throws Exception {
+		given(this.projectRepository.getProjects())
+			.willReturn(List.of(new io.spring.projectapi.github.Project("Spring Enterprise", "spring-enterprise",
+					"https://github.com/spring-projects/spring-enterprise", Status.ENTERPRISE_ONLY)));
+		this.mvc.perform(get("/projects").accept(MediaTypes.HAL_JSON))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$._embedded.projects.length()").value("1"))
+			.andExpect(jsonPath("$._embedded.projects[0].slug").value("spring-enterprise"))
+			.andExpect(jsonPath("$._embedded.projects[0].status").value("ENTERPRISE_ONLY"));
+	}
+
 	private List<io.spring.projectapi.github.Project> getProjects() {
 		List<io.spring.projectapi.github.Project> projects = new ArrayList<>();
 		projects.add(new io.spring.projectapi.github.Project("Spring Boot", "spring-boot",

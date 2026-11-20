@@ -86,6 +86,11 @@ public class Project {
 		COMMUNITY,
 
 		/**
+		 * Enterprise Only.
+		 */
+		ENTERPRISE_ONLY,
+
+		/**
 		 * End of Life.
 		 */
 		END_OF_LIFE
